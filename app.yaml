@@ -1,0 +1,34 @@
+application: geholimport
+version: 1
+runtime: python
+api_version: 1
+
+handlers:
+- url: /stylesheets
+  static_dir: stylesheets
+
+- url: /.*
+  script: main.py
+
+- url: /.*
+  script: gehol2csv.py
+
+- url: /.*
+  script: csvwriter.py
+
+- url: /.*
+  script: icalwriter.py
+
+- url: /.*
+  script: importCalendar.py
+
+- url: /.*
+  script: utils.py
+
+- url: /.*
+  script: coursecalendar.py
+
+- url: /.*
+  script: BeautyfulSoup.py
+
+
