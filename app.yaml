@@ -10,25 +10,5 @@ handlers:
 - url: /.*
   script: main.py
 
-- url: /.*
-  script: gehol2csv.py
-
-- url: /.*
-  script: csvwriter.py
-
-- url: /.*
-  script: icalwriter.py
-
-- url: /.*
-  script: importCalendar.py
-
-- url: /.*
-  script: utils.py
-
-- url: /.*
-  script: coursecalendar.py
-
-- url: /.*
-  script: BeautyfulSoup.py
 
 

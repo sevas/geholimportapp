@@ -36,7 +36,7 @@ class CourseCalendar(object):
             html_content = html_page.read()
             return html_content
         except:
-            raise ValueError('Could not get html content for course : %s' % self.mnemo)
+            raise ValueError('Could not get html content for course : %s [%s]' % (self.mnemo,self.url))
     
 
     def _extract_header(self, html):
