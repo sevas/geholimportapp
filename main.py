@@ -42,8 +42,14 @@ class Guestbook(webapp.RequestHandler):
 
         if users.get_current_user():
             greeting.author = users.get_current_user()
+        [csv,ical] = gehol2csv('INFOH500')
+        print "="*80
+        print csv
+        print "="*80
+        print ical
+        print "="*80
 
-        greeting.content = gehol2csv('INFOH500') + self.request.get('content')
+        greeting.content = self.request.get('content')
         greeting.put()
         self.redirect('/')
 
