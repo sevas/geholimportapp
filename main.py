@@ -42,20 +42,40 @@ class Guestbook(webapp.RequestHandler):
 
         if users.get_current_user():
             greeting.author = users.get_current_user()
-        [csv,ical] = gehol2csv('INFOH500')
-        print "="*80
-        print csv
-        print "="*80
-        print ical
-        print "="*80
 
         greeting.content = self.request.get('content')
         greeting.put()
         self.redirect('/')
 
+class Calendar(webapp.RequestHandler):
+    def post(self):
+        content = self.request.get('content')
+        [csv,ical] = gehol2csv(content)
+        events = csv.splitlines()
+#        events = ['event %d'%i for i in range(10)]
+
+        if users.get_current_user():
+            url = users.create_logout_url(self.request.uri)
+            url_linktext = 'Logout'
+        else:
+            url = users.create_login_url(self.request.uri)
+            url_linktext = 'Login'
+
+        template_values = {
+            'content':content,
+            'events': events,
+            'url': url,
+            'url_linktext': url_linktext,
+            }
+
+        path = os.path.join(os.path.dirname(__file__), 'calendar.html')
+        self.response.out.write(template.render(path, template_values))
+
+
 application = webapp.WSGIApplication(
                                      [('/', MainPage),
-                                      ('/sign', Guestbook)],
+                                      ('/sign', Guestbook),
+                                     ('/cal', Calendar)],
                                      debug=True)
 
 def main():

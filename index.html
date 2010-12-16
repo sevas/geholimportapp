@@ -10,11 +10,17 @@
        An anonymous person wrote:
       {% endif %}
       <blockquote>{{ greeting.content|escape }}</blockquote>
+      <a href="/cal">to calendar</a></br>
     {% endfor %}
 
     <form action="/sign" method="post">
       <div><textarea name="content" rows="3" cols="60"></textarea></div>
       <div><input type="submit" value="Sign Guestbook"></div>
+    </form>
+
+    <form action="/cal" method="post">
+      <div><textarea name="content" rows="1" cols="60"></textarea></div>
+      <div><input type="submit" value="Import"></div>
     </form>
 
     <a href="{{ url }}">{{ url_linktext }}</a>

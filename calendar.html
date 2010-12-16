@@ -1,0 +1,14 @@
+<html>
+<head>
+  <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
+</head>
+  <body>
+    <h4>{{content}}</h4>
+    {% for event in events %}
+          {{ event|escape }}</br>
+    {% endfor %}    
+
+    <a href="/">Back</a>
+
+  </body>
+</html>
