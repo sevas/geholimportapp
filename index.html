@@ -3,27 +3,15 @@
   <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
 </head>
   <body>
-    {% for greeting in greetings %}
-      {% if greeting.author %}
-        <b>{{ greeting.author.nickname }}</b> wrote:
-      {% else %}
-       An anonymous person wrote:
-      {% endif %}
-      <blockquote>{{ greeting.content|escape }}</blockquote>
-      <a href="/cal">to calendar</a></br>
-    {% endfor %}
-
-    <form action="/sign" method="post">
-      <div><textarea name="content" rows="3" cols="60"></textarea></div>
-      <div><input type="submit" value="Sign Guestbook"></div>
-    </form>
-
+    <h3>Introduce here a course mnemonic</h3>
     <form action="/cal" method="post">
       <div><textarea name="content" rows="1" cols="60"></textarea></div>
       <div><input type="submit" value="Import"></div>
     </form>
-
-    <a href="{{ url }}">{{ url_linktext }}</a>
+    <h3>Example of request:</h3>
+    {% for request in requests %}
+          {{ request.content|escape }}</br>
+    {% endfor %}
 
   </body>
 </html>

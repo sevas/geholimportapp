@@ -10,15 +10,20 @@ from google.appengine.ext import db
 
 from gehol2csv import gehol2csv
 
-class Greeting(db.Model):
+#class Greeting(db.Model):
+#    author = db.UserProperty()
+#    content = db.StringProperty(multiline=True)
+#    date = db.DateTimeProperty(auto_now_add=True)
+
+class PreviousRequest(db.Model):
     author = db.UserProperty()
     content = db.StringProperty(multiline=True)
     date = db.DateTimeProperty(auto_now_add=True)
 
 class MainPage(webapp.RequestHandler):
     def get(self):
-        greetings_query = Greeting.all().order('-date')
-        greetings = greetings_query.fetch(10)
+        requests_query = PreviousRequest.all().order('-date')
+        requests = requests_query.fetch(10)
 
         if users.get_current_user():
             url = users.create_logout_url(self.request.uri)
@@ -28,31 +33,32 @@ class MainPage(webapp.RequestHandler):
             url_linktext = 'Login'
 
         template_values = {
-            'greetings': greetings,
+            'requests': requests,
             'url': url,
-            'url_linktext': url_linktext,
             }
 
         path = os.path.join(os.path.dirname(__file__), 'index.html')
         self.response.out.write(template.render(path, template_values))
 
-class Guestbook(webapp.RequestHandler):
-    def post(self):
-        greeting = Greeting()
 
-        if users.get_current_user():
-            greeting.author = users.get_current_user()
-
-        greeting.content = self.request.get('content')
-        greeting.put()
-        self.redirect('/')
 
 class Calendar(webapp.RequestHandler):
     def post(self):
+
+        request = PreviousRequest()
+
+        if users.get_current_user():
+            request.author = users.get_current_user()
+
         content = self.request.get('content')
-        [csv,ical] = gehol2csv(content)
-        events = csv.splitlines()
-#        events = ['event %d'%i for i in range(10)]
+        [error,csv,ical] = gehol2csv(content)
+        events_csv = csv.splitlines()
+        events_ical = ical.splitlines()
+
+        #if success, the request is recorded
+        if not error:
+            request.content = self.request.get('content')
+            request.put()
 
         if users.get_current_user():
             url = users.create_logout_url(self.request.uri)
@@ -63,7 +69,8 @@ class Calendar(webapp.RequestHandler):
 
         template_values = {
             'content':content,
-            'events': events,
+            'events_csv': events_csv,
+            'events_ical': events_ical,
             'url': url,
             'url_linktext': url_linktext,
             }
@@ -74,7 +81,6 @@ class Calendar(webapp.RequestHandler):
 
 application = webapp.WSGIApplication(
                                      [('/', MainPage),
-                                      ('/sign', Guestbook),
                                      ('/cal', Calendar)],
                                      debug=True)
 

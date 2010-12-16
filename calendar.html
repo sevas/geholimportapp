@@ -4,9 +4,30 @@
 </head>
   <body>
     <h4>{{content}}</h4>
-    {% for event in events %}
-          {{ event|escape }}</br>
-    {% endfor %}    
+    <h5>CSV format</h5>
+    <table border="1">
+    <tr>
+    <td>
+        {% for event in events_csv %}
+              {{ event|escape }}</br>
+        {% endfor %}
+    </td>
+    </tr>
+    </table>
+
+    </br>
+
+    <h5>iCal format</h5>
+    <table border="1">
+        <tr>
+        <td>
+
+        {% for event in events_ical %}
+              {{ event|escape }}</br>
+        {% endfor %}
+    </td>
+    </tr>
+    </table>
 
     <a href="/">Back</a>
 

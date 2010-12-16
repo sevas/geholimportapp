@@ -2,7 +2,7 @@ import sys
 sys.path.append('./dependencies')
 from gehol.coursecalendar import CourseCalendar
 from gehol.converters.csvwriter import to_csv
-#from gehol.icalwriter import export_ical
+from gehol.converters.icalwriter import to_ical
 from gehol import GeholProxy
 
 
@@ -15,8 +15,12 @@ def gehol2csv(course_mnemonic):
     try:
         cal = gehol_proxy.get_course_calendar(course_mnemonic)
         csv_string = to_csv(cal.metadata, cal.events, first_monday)
+        ical_string = to_ical(cal.metadata, cal.events, first_monday)
+        error = False
     except Exception,e:
-        csv_string = 'Problem with:%s [%s]'%(course_mnemonic,e.message)
+        error = True
+        csv_string = 'Problem with: "%s" [%s]'%(course_mnemonic,e.message)
+        ical_string = ''
 
-    return [csv_string,'no ical yet']
+    return [error, csv_string,ical_string]
 
