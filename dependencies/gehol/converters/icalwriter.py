@@ -3,7 +3,7 @@ from icalendar import Calendar, Event, vText
 
 
 
-def export_ical(head,events,filename,first_monday):
+def to_ical(head,events,first_monday):
     '''export events into iCal format
     the file is returned as a string
     first_monday corresponds to the monday date of week 1 in Gehol
@@ -42,3 +42,8 @@ def export_ical(head,events,filename,first_monday):
             cal.add_component(cal_event)
 
     return cal.as_string()
+
+def export_ical(head,events,dest_filename, first_monday):
+    ical_string = to_ical(head,events,first_monday)
+    fd = open(dest_filename,'w')
+    fd.write(ical_string)
