@@ -10,10 +10,6 @@ from google.appengine.ext import db
 
 from gehol2csv import gehol2csv
 
-#class Greeting(db.Model):
-#    author = db.UserProperty()
-#    content = db.StringProperty(multiline=True)
-#    date = db.DateTimeProperty(auto_now_add=True)
 
 class PreviousRequest(db.Model):
     author = db.UserProperty()
@@ -37,7 +33,7 @@ class MainPage(webapp.RequestHandler):
             'url': url,
             }
 
-        path = os.path.join(os.path.dirname(__file__), 'index.html')
+        path = os.path.join(os.path.dirname(__file__), 'templates/index.html')
         self.response.out.write(template.render(path, template_values))
 
 
@@ -75,7 +71,7 @@ class Calendar(webapp.RequestHandler):
             'url_linktext': url_linktext,
             }
 
-        path = os.path.join(os.path.dirname(__file__), 'calendar.html')
+        path = os.path.join(os.path.dirname(__file__), 'templates/calendar.html')
         self.response.out.write(template.render(path, template_values))
 
 
