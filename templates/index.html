@@ -8,11 +8,15 @@
       <div><input type="submit" value="Get schedule"></div>
     </form>
 
-      <!--h3>Latest requests</h3>
-      <div >
-       {% for request in requests %}
-         {{ request.content|escape }}</br>
-       {% endfor %}
-      </div-->
+    <br/><br/>
+    <h3>Latest requests:</h3>
+    <div >
+    {% for request in requests %}
+       {{ request.content|escape }}</br>
+    {% endfor %}
+    </div>
+
+        
+    <br/><br/>
 
 {% endblock %}

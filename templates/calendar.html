@@ -4,13 +4,13 @@
     <h4>{{content}}</h4>
     <h5>CSV format</h5>
     <table border="1">
-    <tr>
-    <td>
+      <tr>
+        <td>
         {% for event in events_csv %}
               {{ event|escape }}</br>
         {% endfor %}
-    </td>
-    </tr>
+       </td>
+      </tr>
     </table>
 
     </br>
