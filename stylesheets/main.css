@@ -1,4 +1,57 @@
 body {
   font-family: "Gill Sans", Helvetica, sans-serif;
-  background-color: #DDDDDD;
+  line-height: 1;
+}
+
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+
+
+
+
+
+#siteWrapper{
+  margin: 0 auto;
+  padding-top: 15px;
+  width: 800px;
+  text-align: center;
+  position: relative;
+
+}
+
+/* Main Content Body
+-------------------------------------------------------------------*/
+
+#coreContent{
+  float: left;
+  width: 500px;
+  margin-top: 8px;
+}
+
+
+/* footer */
+#footer{
+  width: 500px;
+  margin: 40px auto 0;
+  padding: 20px 0 35px 0;
+  border-top: 4px double #ccc;
+  color: #666;
+  text-align: center;
+}
+.footerContent{
+  width: 500px;
+  margin: 20px auto 0;
+  clear: left;
+}
+#footer p{
+  line-height: 1.4em;
 }
