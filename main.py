@@ -13,24 +13,16 @@ from gehol2csv import gehol2csv
 
 class PreviousRequest(db.Model):
     author = db.UserProperty()
-    content = db.StringProperty(multiline=True)
+    content = db.StringProperty(multiline=False)
     date = db.DateTimeProperty(auto_now_add=True)
 
 class MainPage(webapp.RequestHandler):
     def get(self):
         requests_query = PreviousRequest.all().order('-date')
         requests = requests_query.fetch(10)
-
-        if users.get_current_user():
-            url = users.create_logout_url(self.request.uri)
-            url_linktext = 'Logout'
-        else:
-            url = users.create_login_url(self.request.uri)
-            url_linktext = 'Login'
-
+        
         template_values = {
             'requests': requests,
-            'url': url,
             }
 
         path = os.path.join(os.path.dirname(__file__), 'templates/index.html')
@@ -43,11 +35,8 @@ class Calendar(webapp.RequestHandler):
 
         request = PreviousRequest()
 
-        if users.get_current_user():
-            request.author = users.get_current_user()
-
         content = self.request.get('content')
-        [error,csv,ical] = gehol2csv(content)
+        error,csv,ical = gehol2csv(content)
         events_csv = csv.splitlines()
         events_ical = ical.splitlines()
 
@@ -56,23 +45,17 @@ class Calendar(webapp.RequestHandler):
             request.content = self.request.get('content')
             request.put()
 
-        if users.get_current_user():
-            url = users.create_logout_url(self.request.uri)
-            url_linktext = 'Logout'
-        else:
-            url = users.create_login_url(self.request.uri)
-            url_linktext = 'Login'
 
         template_values = {
             'content':content,
             'events_csv': events_csv,
             'events_ical': events_ical,
-            'url': url,
-            'url_linktext': url_linktext,
             }
 
         path = os.path.join(os.path.dirname(__file__), 'templates/calendar.html')
         self.response.out.write(template.render(path, template_values))
+
+
 
 
 application = webapp.WSGIApplication(
