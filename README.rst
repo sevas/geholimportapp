@@ -7,7 +7,6 @@ What is this ?
 
 `GeHOL <http://164.15.72.157/GeHoL/horaire_cours.php>`_  is the scheduling system used at
 `Brussels University <http://www.ulb.ac.be>`_.
-
 `Gehol Importer <http://geholimport.appspot.com/>`_ is a tool to
 convert GeHOL queries into something usable by calendar softwares such
 as `Google Calendar <http://www.google.com/calendar>`_,

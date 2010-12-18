@@ -8,7 +8,7 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
 
-from gehol2csv import gehol2csv
+from gehol2csv import get_calendar, convert_calendar
 
 
 class PreviousRequest(db.Model):
@@ -35,8 +35,11 @@ class Calendar(webapp.RequestHandler):
 
         request = PreviousRequest()
 
-        content = self.request.get('content')
-        error,csv,ical = gehol2csv(content)
+        course_mnemo = self.request.get('content')
+
+        cal = get_calendar(course_mnemo)
+
+        error,csv,ical = convert_calendar(cal)
         events_csv = csv.splitlines()
         events_ical = ical.splitlines()
 
@@ -45,12 +48,14 @@ class Calendar(webapp.RequestHandler):
             request.content = self.request.get('content')
             request.put()
 
-
         template_values = {
-            'content':content,
+            'mnemo':course_mnemo,
+            'calendar':cal,
             'events_csv': events_csv,
             'events_ical': events_ical,
             }
+
+        template_values.update(cal.metadata)
 
         path = os.path.join(os.path.dirname(__file__), 'templates/calendar.html')
         self.response.out.write(template.render(path, template_values))
