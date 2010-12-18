@@ -1,58 +1,18 @@
-<html>
-<head>
-  <link type="text/css" rel="stylesheet" href="/stylesheets/blueprint/screen.css" />
-  <title>Gehol Import</title>
-</head>
-  <body>
-    <div class="container">
-        <!-- header-->
-        <div class="span-24 last">
-        <span style="font-size: 32pt">Gehol Importer</span>
-        <hr>
-        </div>
+{% extends "main.html"  %}
 
-        <!-- content -->
-        <div class="span-15 colborder">
-          <h3>Which course do you want the schedule for ? </h3>
-            <form action="/cal" method="post">
-              <div><input name="content" rows="1" cols="60"></textarea></div>
-              <div><input type="submit" value="Get schedule"></div>
-            </form>
-        </div>
+{% block content %}
 
-        <!-- sidebar -->
-        <div class="span-8 last">
-          <h3>About</h3>
-          <div class="box">
-              <a href="http://164.15.72.157/GeHoL/horaire_cours.php">GeHOL</a> is the scheduling system used at
-              <a href="http://www.ulb.ac.be">Brussels University.</a>
-              <br/>
-            <a href="/">Gehol Importer</a> is a tool to convert GeHOL queries into something usable by calendar softwares such as
-              <a href="http://www.google.com/calendar">Google Calendar</a>,
-              <a href="http://www.apple.com/macosx/what-is-macosx/mail-ical-address-book.html">Apple iCal</a>,
-              <a href="http://www.mozilla.org/projects/calendar/sunbird/">Mozilla Sunbird</a>,
-              <a href="http://office.microsoft.com/en-us/outlook/">Microsoft Outlook.</a>
-          </div>
+    <h3>Which course do you want the schedule for ? </h3>
+    <form action="/cal" method="post">
+      <div><input name="content" rows="1" cols="60"></textarea></div>
+      <div><input type="submit" value="Get schedule"></div>
+    </form>
 
-          <h3>Latest requests</h3>
-          <div class="box">
-           {% for request in requests %}
-             {{ request.content|escape }}</br>
-           {% endfor %}
-          </div>
-        </div>
+      <!--h3>Latest requests</h3>
+      <div >
+       {% for request in requests %}
+         {{ request.content|escape }}</br>
+       {% endfor %}
+      </div-->
 
-
-
-        <!--footer-->
-        <div class="span-24 last">
-          <hr>
-          <p>Powered by <a href="http://code.google.com/appengine/">Google App Engine</a>
-         <br/>
-              Painless layout made possible through the
-              <a href="http://www.blueprintcss.org/">Blueprint CSS framework</a>
-          </p>
-        </div>
-    </div>
-  </body>
-</html>
+{% endblock %}

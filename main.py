@@ -60,7 +60,8 @@ class Calendar(webapp.RequestHandler):
 
 application = webapp.WSGIApplication(
                                      [('/', MainPage),
-                                     ('/cal', Calendar)],
+                                     ('/cal', Calendar),
+                                     ],
                                      debug=True)
 
 def main():

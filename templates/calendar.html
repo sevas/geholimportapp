@@ -1,8 +1,6 @@
-<html>
-<head>
-  <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
-</head>
-  <body>
+{% extends "main.html" %}
+
+{% block content %}
     <h4>{{content}}</h4>
     <h5>CSV format</h5>
     <table border="1">
@@ -30,6 +28,4 @@
     </table>
 
     <a href="/">Back</a>
-
-  </body>
-</html>
+{% endblock %}
