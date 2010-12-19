@@ -8,23 +8,9 @@
     Type:  {{type}} <br/>
     <br/>
         
-    <hr>    
-    <h5>CSV format</h5>
-    <div class="filecontent">
-    <table border="1">
-      <tr>
-        <td>
-        {% for event in events_csv %}
-              {{ event|escape }}</br>
-        {% endfor %}
-       </td>
-      </tr>
-    </table>
-    </div>
-
-    <br/>
     <hr>
 
+    <!--ical output-->
     <h5>iCal format</h5>
     <div class="filecontent">
     <table border="1">
@@ -38,6 +24,25 @@
     </tr>
     </table>
     </div>
+
+    <br/>
+    <hr>
+
+    <!--csv output -->
+    <h5>CSV format</h5>
+    <div class="filecontent">
+    <table border="1">
+      <tr>
+        <td>
+        {% for event in events_csv %}
+              {{ event|escape }}</br>
+        {% endfor %}
+       </td>
+      </tr>
+    </table>
+    </div>
+
+
 
 
     <br/>
