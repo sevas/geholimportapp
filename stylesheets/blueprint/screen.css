@@ -268,3 +268,16 @@ hr.space {background:#fff;color:#fff;visibility:hidden;}
     color:black;
 
 }
+
+
+.filecontent {
+    border: 1px solid gray;
+    font-family: Courier, monospace;
+    height: 470px;
+    margin: 5px;
+    overflow: auto;
+    padding: 15px;
+    white-space: pre-line;
+    width: 90%;
+
+}
