@@ -30,7 +30,7 @@ class Calendar(webapp.RequestHandler):
 
         request = PreviousRequest()
 
-        course_mnemo = self.request.get('content')
+        course_mnemo = self.request.get('course_mnemo')
 
         cal = get_calendar(course_mnemo)
 
@@ -40,7 +40,7 @@ class Calendar(webapp.RequestHandler):
 
         #if success, the request is recorded
         if not error:
-            request.content = self.request.get('content')
+            request.content = self.request.get('course_mnemo')
             request.put()
 
         template_values = {
