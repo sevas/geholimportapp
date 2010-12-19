@@ -4,10 +4,14 @@ from datetime import datetime, timedelta
 from BeautifulSoup import BeautifulSoup
 from utils import split_weeks, convert_time
 
-class CourseNotFoundException(Exception):
+
+class GeholException(Exception):
     pass
 
-class UnknowErrorException(Exception):
+class CourseNotFoundException(GeholException):
+    pass
+
+class UnknowErrorException(GeholException):
     pass
 
 class CourseCalendar(object):
