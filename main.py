@@ -1,4 +1,5 @@
 import os
+import urlparse
 from google.appengine.ext import db
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
@@ -57,10 +58,26 @@ class Calendar(webapp.RequestHandler):
 
 
 
+class IcalRenderer(webapp.RequestHandler):
+    def get(self):
+
+        self.response.headers['Content-Type'] = 'text/plain'
+        parsed = urlparse.urlparse(self.request.uri)
+        course_mnemo = parsed.path.split("/")[2].rstrip(".ics")
+
+        cal = get_calendar(course_mnemo)
+
+        error,csv,ical = convert_calendar(cal)
+        #events_csv = csv.splitlines()
+        events_ical = ical#.splitlines()
+
+        self.response.out.write(events_ical)
+
 
 application = webapp.WSGIApplication(
                                      [('/', MainPage),
                                      ('/cal', Calendar),
+                                     ('/ical/.*\.ics', IcalRenderer),
                                      ],
                                      debug=True)
 
