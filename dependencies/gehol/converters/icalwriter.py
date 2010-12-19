@@ -11,8 +11,11 @@ def to_ical(head,events,first_monday):
     date_init = datetime.strptime(first_monday,'%d/%m/%Y')
 
     cal = Calendar()
-    cal.add('prodid', 'https://bitbucket.org/odebeir/ulbcalendar2cvs')
+    cal.add('prodid', 'https://bitbucket.org/odebeir/geholimport')
     cal.add('version', '2.0')
+    cal.add('summary', head['title'])
+    cal.add('x-wr-calname', "%s - %s"  % (head['mnemo'], head['title']))
+    cal.add('x-wr-caldesc', "%s - %s (%s)" % (head['mnemo'], head['title'], head['tutor']))
 
     for event in events:
         n = len(event['weeks'])
@@ -20,8 +23,10 @@ def to_ical(head,events,first_monday):
             summary = '%s%s (%d/%d)'%(head['mnemo'],event['type'],i+1,n)
             #add offset corresponding to week numbers for each event repetition
             delta = timedelta(days=(sub-1)*7+(event['day']))
-            dtstart = date_init+delta + timedelta(hours = event['start'].hour, minutes = event['start'].minute)
-            dtend = date_init+delta + timedelta(hours = event['end'].hour, minutes = event['end'].minute)
+            dtstart = date_init+delta + timedelta(hours = event['start'].hour,
+                                                  minutes = event['start'].minute)
+            dtend = date_init+delta + timedelta(hours = event['end'].hour,
+                                                minutes = event['end'].minute)
 
             organizer = head['title']+' titulaire : '+ head['tutor']
             location = event['location']
