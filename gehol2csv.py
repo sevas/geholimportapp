@@ -25,8 +25,8 @@ def convert_calendar(cal):
         error = False
     except Exception,e:
         error = True
-        csv_string = 'Problem with: "%s" [%s]'%(course_mnemonic,e.message)
+        csv_string = 'Problem with: "%s" [%s]'%(cal.metadata['mnemo'], e.message)
         ical_string = ''
-
+        
     return (error, csv_string,ical_string)
 
