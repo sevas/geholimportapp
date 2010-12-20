@@ -5,7 +5,7 @@ from google.appengine.ext.webapp import template
 from status import is_status_down, get_last_status_update
 from gehol2csv import get_calendar
 from utils import is_course_mnemo_valid
-
+from savedrequests import PreviousRequest
 
 class CourseCalendar(webapp.RequestHandler):
     def get(self):
@@ -27,6 +27,10 @@ class CourseCalendar(webapp.RequestHandler):
 
             path = os.path.join(os.path.dirname(__file__), 'templates/course.html')
             self.response.out.write(template.render(path, template_values))
+
+            request = PreviousRequest()
+            request.content = course_mnemo
+            request.put()
 
         else:
             self._render_not_found_page(course_mnemo)
