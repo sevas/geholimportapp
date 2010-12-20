@@ -1,7 +1,7 @@
 {% extends "main.html" %}
 
 {% block content %}
-    <h2>Report for <b>{{mnemo}}</b></h2>
+    <h2>Report for <strong>{{mnemo}}</strong></h2>
 
     Title: {{title}} <br/>
     Lecturer(s): {{tutor}} <br/>
@@ -18,7 +18,7 @@
         <td>
 
         {% for event in events_ical %}
-              {{ event|escape }}</br>
+              {{ event|escape }}<br/>
         {% endfor %}
     </td>
     </tr>
@@ -35,7 +35,7 @@
       <tr>
         <td>
         {% for event in events_csv %}
-              {{ event|escape }}</br>
+              {{ event|escape }}<br/>
         {% endfor %}
        </td>
       </tr>

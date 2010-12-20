@@ -1,0 +1,16 @@
+{% extends "main.html" %}
+
+{% block content %}
+
+    <h2>Report for <strong>{{mnemo}}</strong></h2>
+
+    Title: {{title}} <br/>
+    Lecturer(s): {{tutor}} <br/>
+    Type:  {{type}} <br/>
+
+    <br/><br/>
+
+    <a href="{{ical_url}}">{{mnemo}}.ics</a>
+    <br/>
+    <a href="{{csv_url}}">{{mnemo}}.csv</a>
+{% endblock %}
