@@ -2,7 +2,6 @@ import httplib
 import socket
 import logging
 from google.appengine.ext import webapp
-from google.appengine.ext.webapp.util import run_wsgi_app
 from status import set_status_down
 
 class UpdateGeholStatus(webapp.RequestHandler):
@@ -22,15 +21,3 @@ class UpdateGeholStatus(webapp.RequestHandler):
             set_status_down(False)
         except socket.error,e:
             set_status_down(True)
-
-
-
-        
-#application = webapp.WSGIApplication([('/geholstatus', UpdateGeholStatus)],
-#                                     debug=True)
-# 
-#def main():
-#    run_wsgi_app(application)
-# 
-#if __name__ == "__main__":
-#    main()
