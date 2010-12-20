@@ -6,6 +6,7 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext.webapp import template
 from gehol2csv import get_calendar, convert_calendar
 from status import is_status_down, get_last_status_update
+from check_status import UpdateGeholStatus
 
 class PreviousRequest(db.Model):
     author = db.UserProperty()
@@ -82,6 +83,7 @@ application = webapp.WSGIApplication(
                                      [('/', MainPage),
                                      ('/cal', Calendar),
                                      ('/ical/.*\.ics', IcalRenderer),
+                                     ('/geholstatus',  UpdateGeholStatus),
                                      ],
                                      debug=True)
 
