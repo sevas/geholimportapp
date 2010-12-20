@@ -3,12 +3,13 @@ import logging
 from google.appengine.ext import db
 
 class GeholStatus(db.Model):
-    is_down = db.BooleanProperty(False)
+    is_down = db.BooleanProperty()
     last_checked = db.DateTimeProperty(auto_now=True)
 
 def create_unique_entry():
     logging.info("Creating unique GeholStatus datastore entry")
     unique = GeholStatus(key_name='unique')
+    unique.is_down = True
     unique.put()
     return unique
 
