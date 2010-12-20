@@ -14,27 +14,29 @@ class CourseCalendar(webapp.RequestHandler):
 
         if is_course_mnemo_valid(course_mnemo):
             cal = get_calendar(course_mnemo)
-            ical_url, csv_url = self._build_file_urls(course_mnemo)
+            if cal:
+                ical_url, csv_url = self._build_file_urls(course_mnemo)
 
-            template_values = {'gehol_is_down': is_status_down(),
-                               'last_status_update': get_last_status_update(),
-                               'mnemo':course_mnemo,
-                               'ical_url':ical_url,
-                               'csv_url':csv_url
-            }
+                template_values = {'gehol_is_down': is_status_down(),
+                                 'last_status_update': get_last_status_update(),
+                                'mnemo':course_mnemo,
+                                'ical_url':ical_url,
+                                'csv_url':csv_url
+                }
 
-            template_values.update(cal.metadata)
+                template_values.update(cal.metadata)
 
-            path = os.path.join(os.path.dirname(__file__), 'templates/course.html')
-            self.response.out.write(template.render(path, template_values))
+                path = os.path.join(os.path.dirname(__file__), 'templates/course.html')
+                self.response.out.write(template.render(path, template_values))
 
-            request = PreviousRequest()
-            request.content = course_mnemo
-            request.put()
-
+                request = PreviousRequest()
+                request.content = course_mnemo
+                request.put()
+            else:
+                self._render_not_found_page(course_mnemo)
         else:
             self._render_not_found_page(course_mnemo)
-
+            
 
     def _render_not_found_page(self, course_mnemo):
         template_values = {'gehol_is_down': is_status_down(),

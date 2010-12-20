@@ -1,6 +1,6 @@
 import sys
 sys.path.append('./dependencies')
-from gehol.coursecalendar import CourseCalendar
+from gehol.coursecalendar import CourseCalendar, GeholException
 from gehol.converters.csvwriter import to_csv
 from gehol.converters.icalwriter import to_ical
 from gehol import GeholProxy
@@ -14,7 +14,7 @@ def get_calendar(course_mnemonic):
     gehol_proxy = GeholProxy(host)
     try:
         return gehol_proxy.get_course_calendar(course_mnemonic)
-    except Exception:
+    except GeholException:
         return None
 
 

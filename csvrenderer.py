@@ -14,14 +14,18 @@ class CSVRenderer(webapp.RequestHandler):
         if is_course_mnemo_valid(course_mnemo):
             cal = get_calendar(course_mnemo)
 
-            error,csv,ical = convert_calendar(cal)
-            events_csv = csv
+            if cal:
+                error,csv,ical = convert_calendar(cal)
+                events_csv = csv
 
-            self.response.headers['Content-Type'] = "text/csv;  charset=utf-8"
-            self.response.headers['Content-disposition'] = "attachment; filename=%s.csv" % course_mnemo
-            self.response.out.write(events_csv)
+                self.response.headers['Content-Type'] = "text/csv;  charset=utf-8"
+                self.response.headers['Content-disposition'] = "attachment; filename=%s.csv" % course_mnemo
+                self.response.out.write(events_csv)
+            else:
+                self._render_not_found_page(course_mnemo)
         else:
             self._render_not_found_page(course_mnemo)
+
 
             
     def _render_not_found_page(self, course_mnemo):
