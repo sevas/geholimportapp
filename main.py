@@ -5,7 +5,7 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext.webapp import template
 from gehol2csv import get_calendar, convert_calendar
-
+from status import is_status_down, get_last_status_update
 
 class PreviousRequest(db.Model):
     author = db.UserProperty()
@@ -16,10 +16,12 @@ class MainPage(webapp.RequestHandler):
     def get(self):
         requests_query = PreviousRequest.all().order('-date')
         requests = requests_query.fetch(10)
-        
-        template_values = {
-            'requests': requests,
-            }
+
+
+        template_values = {'requests': requests,
+                           'gehol_status': is_status_down(),
+                           'last_status_update': get_last_status_update()
+                        }
 
         path = os.path.join(os.path.dirname(__file__), 'templates/index.html')
         self.response.out.write(template.render(path, template_values))
@@ -52,6 +54,8 @@ class Calendar(webapp.RequestHandler):
             }
 
         template_values.update(cal.metadata)
+        template_values.update({'gehol_status' : is_status_down(),
+                                'last_status_update': get_last_status_update()})
 
         path = os.path.join(os.path.dirname(__file__), 'templates/calendar.html')
         self.response.out.write(template.render(path, template_values))

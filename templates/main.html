@@ -1,6 +1,7 @@
 <html>
 <head>
   <link type="text/css" rel="stylesheet" href="/stylesheets/blueprint/screen.css"  media="screen, projection"/>
+  <link type="text/css" rel="stylesheet" href="/stylesheets/blueprint/plugins/buttons/screen.css" media="screen, projection">
   <title>Gehol Import</title>
 </head>
   <body>
@@ -25,6 +26,7 @@
 
         <!-- sidebar -->
         <div class="span-8 last">
+          <!-- About -->
           <h3>About</h3>
           <div class="box">
               <p>
@@ -41,15 +43,38 @@
                   This service is still under development. We will try to keep the core functionality running, but you
                   are likely to experience changes as we add features and improve usability.
               </p>
-
           </div>
-            <h3>Contact</h3>
+
+          <!--status-->
+          <h3>GeHOL Status</h3>
+          <div class="box">
+            {% if gehol_status %}
+                <span style="vertical-align:top;">
+                <img src="/stylesheets/blueprint/plugins/buttons/icons/tick.png" alt=""/>
+                Everything shiny, cap'n!
+                </span>
+            {% else %}
+                <span style="vertical-align:top;">
+	            <img src="/stylesheets/blueprint/plugins/buttons/icons/cross.png" alt=""/>
+                GeHOL server is offline.
+                    </span>
+                <br/>
+                Relax and try again later. There is nothing we can do right now.
+            {% endif %}
+
+            <br/><br/>
+            <span style="text-align:right; font-style:italic;font-size:smaller;">
+                 Last updated : {{ last_status_update }} </span>
+          </div>
+
+          <!-- contact -->
+            <!--h3>Contact</h3>
             <div class="box">
               <p>
                   Issues and suggestions should be reported on our
                   <a href="https://bitbucket.org/odebeir/geholimportapp/issues?status=new&status=open">bitbucket issue tracker.</a>
               </p>
-            </div>
+            </div-->
         </div>
 
 
