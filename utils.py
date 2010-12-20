@@ -19,3 +19,7 @@ def split_weeks(weeks):
             w.append(int(f))
     return w
 
+
+
+def is_course_mnemo_valid(course_mnemo):
+    return course_mnemo.isalnum() and len(course_mnemo) == 8

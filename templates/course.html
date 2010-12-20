@@ -4,13 +4,25 @@
 
     <h2>Report for <strong>{{mnemo}}</strong></h2>
 
-    Title: {{title}} <br/>
-    Lecturer(s): {{tutor}} <br/>
-    Type:  {{type}} <br/>
+    <h3>Summary:</h3>
+    <i>Title:</i> {{title}} <br/>
+    <i>Lecturer(s):</i> {{tutor}} <br/>
+    <i>Type:</i>  {{type}} <br/>
 
     <br/><br/>
 
-    <a href="{{ical_url}}">{{mnemo}}.ics</a>
-    <br/>
-    <a href="{{csv_url}}">{{mnemo}}.csv</a>
+    <h3><a href="{{ical_url}}">{{mnemo}}.ics</a></h3>
+    <p>
+    Click this link to start downloading an iCal file with the events for this course. iCal files can be opened with
+    Apple iCal, Microsoft Outlook and Mozilla Sunbird.
+    </p>
+        
+
+    <br/><br/>
+    <h3><a href="{{csv_url}}">{{mnemo}}.csv</a></h3>
+    <p>
+    Click this link to start downloading a CVS file with the events for this course. This file can be imported in
+    Google Calendar.
+    </p>
+
 {% endblock %}

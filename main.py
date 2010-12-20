@@ -9,13 +9,14 @@ from status import is_status_down, get_last_status_update
 from check_status import UpdateGeholStatus
 from coursecalendar import CourseCalendar
 from icalrenderer import IcalRenderer
-#from csvrenderer import CSVRenderer
+from csvrenderer import CSVRenderer
 
 
 class PreviousRequest(db.Model):
     author = db.UserProperty()
     content = db.StringProperty(multiline=False)
     date = db.DateTimeProperty(auto_now_add=True)
+
 
 class MainPage(webapp.RequestHandler):
     def get(self):
@@ -76,7 +77,8 @@ application = webapp.WSGIApplication(
                                      [('/', MainPage),
                                      ('/cal', Calendar),
                                      ('/course/.*', CourseCalendar),
-                                     ('/ical/.*\.ics', IcalRenderer),
+                                     ('/ical/.*', IcalRenderer),
+                                     ('/csv/.*', CSVRenderer),
                                      ('/geholstatus',  UpdateGeholStatus),
                                      ],
                                      debug=True)
