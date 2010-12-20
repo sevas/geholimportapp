@@ -29,7 +29,7 @@ def is_status_down():
 
 def get_last_status_update():
     status_entry = get_unique_status_entry()
-    return status_entry.last_checked.strftime("%d %b %Y at %H:%M")
+    return status_entry.last_checked.strftime("%d %b %Y at %H:%M UTC")
 
 
 
