@@ -1,4 +1,4 @@
 cron:
-	- description: checking whether gehol is down or not. Updates the relevant entry in datastore
-	url: /geholstatus
-	schedule: every 30 minutes
+- description: checking whether gehol is down or not. Updates the relevant entry in datastore
+  url: /geholstatus
+  schedule: every 30 minutes
