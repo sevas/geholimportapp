@@ -11,4 +11,5 @@ handlers:
   script: main.py
 
 
-
+- url: /geholstatus
+  script: check_status.py
