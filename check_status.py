@@ -1,6 +1,6 @@
 import httplib
 import socket
-
+import logging
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from status import set_status_down
@@ -10,8 +10,8 @@ def update_gehol_status():
     headers = {"Content-type": "application/x-www-form-urlencoded",
                "Accept": "text/plain"}
 
-    conn = httplib.HTTPConnection(host)
     try:
+        conn = httplib.HTTPConnection(host)
         conn.request("GET", '/', headers = headers)
         response = conn.getresponse()
         set_status_down(False)
@@ -21,6 +21,7 @@ def update_gehol_status():
 
 class UpdateGeholStatus(webapp.RequestHandler):
     def get(self):
+        logging.info("Launching UpdateGeholStatus cron job")
         update_gehol_status()
         
 application = webapp.WSGIApplication([('/geholstatus', UpdateGeholStatus)],

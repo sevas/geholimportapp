@@ -19,7 +19,7 @@ class MainPage(webapp.RequestHandler):
 
 
         template_values = {'requests': requests,
-                           'gehol_status': is_status_down(),
+                           'gehol_is_down': is_status_down(),
                            'last_status_update': get_last_status_update()
                         }
 
@@ -54,7 +54,7 @@ class Calendar(webapp.RequestHandler):
             }
 
         template_values.update(cal.metadata)
-        template_values.update({'gehol_status' : is_status_down(),
+        template_values.update({'gehol_is_down' : is_status_down(),
                                 'last_status_update': get_last_status_update()})
 
         path = os.path.join(os.path.dirname(__file__), 'templates/calendar.html')

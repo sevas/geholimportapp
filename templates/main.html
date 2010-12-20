@@ -48,18 +48,20 @@
           <!--status-->
           <h3>GeHOL Status</h3>
           <div class="box">
-            {% if gehol_status %}
+            {% if gehol_is_down %}
                 <span style="vertical-align:top;">
-                <img src="/stylesheets/blueprint/plugins/buttons/icons/tick.png" alt=""/>
-                Everything shiny, cap'n!
+	                <img src="/stylesheets/blueprint/plugins/buttons/icons/cross.png" alt=""/>
+                    GeHOL server is offline.
                 </span>
-            {% else %}
-                <span style="vertical-align:top;">
-	            <img src="/stylesheets/blueprint/plugins/buttons/icons/cross.png" alt=""/>
-                GeHOL server is offline.
-                    </span>
-                <br/>
                 Relax and try again later. There is nothing we can do right now.
+                <br/>
+            {% else %}
+              <span style="vertical-align:top;">
+                <img src="/stylesheets/blueprint/plugins/buttons/icons/tick.png" alt=""/>
+                GeHOL server is online
+              </span>
+              <br/>
+              Everything shiny, cap'n!
             {% endif %}
 
             <br/><br/>

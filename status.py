@@ -1,5 +1,5 @@
 
-
+import logging
 from google.appengine.ext import db
 
 class GeholStatus(db.Model):
@@ -7,19 +7,19 @@ class GeholStatus(db.Model):
     last_checked = db.DateTimeProperty(auto_now=True)
 
 def create_unique_entry():
+    logging.info("Creating unique GeholStatus datastore entry")
     unique = GeholStatus(key_name='unique')
     unique.put()
     return unique
 
 
 def get_unique_status_entry():
-    #status_entry = db.GqlQuery("SELECT * FROM GeholStatus WHERE __key__ = 'unique'")
+    logging.info("Getting Gehol status from datastore")
     status_entry = GeholStatus.get_by_key_name('unique')
     if not status_entry:
         status_entry = create_unique_entry()
 
     return status_entry
-    
 
 def is_status_down():
     status_entry = get_unique_status_entry()
@@ -33,5 +33,6 @@ def get_last_status_update():
 
 def set_status_down(down=True):
     status_entry = get_unique_status_entry()
+    logging.info("Setting Gehol's down status to %s" % down)
     status_entry.is_down = down
     status_entry.put()
