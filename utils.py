@@ -1,4 +1,5 @@
 from datetime import datetime
+from status import is_status_down, get_last_status_update
 
 def convert_time(s):
     '''convert string time into datetime struct'''
