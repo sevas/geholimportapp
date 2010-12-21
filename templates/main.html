@@ -2,7 +2,7 @@
 <head>
   <link type="text/css" rel="stylesheet" href="/stylesheets/blueprint/screen.css"  media="screen, projection"/>
   <link type="text/css" rel="stylesheet" href="/stylesheets/blueprint/plugins/buttons/screen.css" media="screen, projection">
-
+  <!-- Google Analytics-->
   <script type="text/javascript">
 
     var _gaq = _gaq || [];
@@ -16,23 +16,20 @@
     })();
   </script>
 
-
-
   <title>Gehol Import</title>
 </head>
   <body>
     <div class="container">
-    <!-- header-->
+    <!--Site logo & stuff-->
     <div class="span-24 last">
-        <div id="banner"
-            <b><a href="/"> Gehol Importer </a></b>
-        </div>
-        <hr>
+      <div id="banner">
+        <strong><a href="/"> Gehol Importer </a></strong>
+      </div>
+      <hr>
     </div>
 
     <!-- content -->
     <div class="span-15 colborder">
-
     {% block content %}{% endblock %}
     </div>
 
@@ -41,33 +38,33 @@
       <!-- About -->
       <h3>About</h3>
       <div class="box">
-          <p>
+        <p>
           <a href="http://164.15.72.157/GeHoL/horaire_cours.php">GeHoL</a> is the scheduling system used at
           <a href="http://www.ulb.ac.be">Brussels University.</a>
           <br/>
-        <a href="/">Gehol Importer</a> is a tool to convert GeHoL queries into something usable by calendar software such as
+          <a href="/">Gehol Importer</a> is a tool to convert GeHoL queries into something usable by calendar software such as
           <a href="http://www.google.com/calendar">Google Calendar</a>,
           <a href="http://www.apple.com/macosx/what-is-macosx/mail-ical-address-book.html">Apple iCal</a>,
           <a href="http://www.mozilla.org/projects/calendar/sunbird/">Mozilla Sunbird</a>,
           <a href="http://office.microsoft.com/en-us/outlook/">Microsoft Outlook</a>, the way it should have been from the start.
-          </p>
-          <p>
-              This service is still under development. We will try to keep the core functionality running, but you
-              are likely to experience changes as we add features and improve usability.
-          </p>
-          <p>
-            The authors of this application are not affiliated with the original GeHoL service.
-          </p>
+        </p>
+        <p>
+           This service is still under development. We will try to keep the core functionality running, but you
+           are likely to experience changes as we add features and improve usability.
+        </p>
+        <p>
+          The authors of this application are not affiliated with the original GeHoL service.
+        </p>
       </div>
 
       <!--status-->
       <h3>GeHoL Status</h3>
       <div class="box">
         {% if gehol_is_down %}
-            <span style="vertical-align:top;">
-                <img src="/stylesheets/blueprint/plugins/buttons/icons/cross.png" alt=""/>
-                GeHoL server is offline.
-            </span>
+          <span style="vertical-align:top;">
+            <img src="/stylesheets/blueprint/plugins/buttons/icons/cross.png" alt=""/>
+            GeHoL server is offline.
+          </span>
           <br/>
             Relax and try again later. There is nothing we can do right now.
             <br/>
@@ -82,26 +79,24 @@
 
         <br/><br/>
         <div style="text-align:right; font-style:italic;font-size:smaller;">
-             Checking every 30 minutes. <br/>
-             Last updated : {{ last_status_update }}
+           Checking every 30 minutes. <br/>
+           Last updated : {{ last_status_update }}
         </div>
       </div>
-
     </div>
-
 
     <!--footer-->
     <div class="span-24 last">
-        <div style="text-align: center;">
-      <hr>
-      <p>
+      <div style="text-align: center;">
+        <hr>
+        <p>
            Painless layout made possible through the
           <a href="http://www.blueprintcss.org/">Blueprint CSS framework</a>
           <br/>
           Powered by <a href="http://code.google.com/appengine/">Google App Engine</a>
-      </p>
+        </p>
       </div>
     </div>
-
-  </body>
+  </div>
+</body>
 </html>
