@@ -19,5 +19,5 @@ class UpdateGeholStatus(webapp.RequestHandler):
             conn.request("GET", '/', headers = headers)
             response = conn.getresponse()
             set_status_down(False)
-        except socket.error,e:
+        except Exception,e:
             set_status_down(True)

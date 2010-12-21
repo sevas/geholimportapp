@@ -12,16 +12,19 @@ class IcalRenderer(webapp.RequestHandler):
         course_mnemo = parsed.path.split("/")[2].rstrip(".ics")
 
         if is_course_mnemo_valid(course_mnemo):
-            cal = get_calendar(course_mnemo)
-            if cal:
-                error,csv,ical = convert_calendar(cal)
-                events_ical = ical
-
-                self.response.headers['Content-Type'] = "text/calendar;  charset=utf-8"
-                self.response.headers['Content-disposition'] = "attachment; filename=%s.ics" % course_mnemo
-                self.response.out.write(events_ical)
+            if is_status_down():
+                self._render_gehol_down_page(course_mnemo)
             else:
-                self._render_not_found_page(course_mnemo)
+                cal = get_calendar(course_mnemo)
+                if cal:
+                    error,csv,ical = convert_calendar(cal)
+                    events_ical = ical
+
+                    self.response.headers['Content-Type'] = "text/calendar;  charset=utf-8"
+                    self.response.headers['Content-disposition'] = "attachment; filename=%s.ics" % course_mnemo
+                    self.response.out.write(events_ical)
+                else:
+                    self._render_not_found_page(course_mnemo)
         else:
             self._render_not_found_page(course_mnemo)
 
@@ -35,4 +38,15 @@ class IcalRenderer(webapp.RequestHandler):
         }
 
         path = os.path.join(os.path.dirname(__file__), 'templates/ical_notfound.html')
+        self.response.out.write(template.render(path, template_values))
+
+
+    def _render_gehol_down_page(self, course_mnemo):
+        reason = "You asked the iCal file for the following course : %s." % course_mnemo
+        template_values = {'gehol_is_down': True,
+                           'last_status_update': get_last_status_update(),
+                           'request':reason
+        }
+
+        path = os.path.join(os.path.dirname(__file__), 'templates/gehol_down.html')
         self.response.out.write(template.render(path, template_values))
