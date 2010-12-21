@@ -4,7 +4,7 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from status import is_status_down, get_last_status_update
 from gehol2csv import get_calendar
-from utils import is_course_mnemo_valid
+from utils import is_course_mnemo_valid, render_resource_notfound_page
 from savedrequests import PreviousRequest
 
 class CourseCalendar(webapp.RequestHandler):
@@ -43,13 +43,7 @@ class CourseCalendar(webapp.RequestHandler):
             
 
     def _render_not_found_page(self, course_mnemo):
-        template_values = {'gehol_is_down': is_status_down(),
-                           'last_status_update': get_last_status_update(),
-                           'mnemo':course_mnemo,
-        }
-
-        path = os.path.join(os.path.dirname(__file__), 'templates/course_notfound.html')
-        self.response.out.write(template.render(path, template_values))
+        render_resource_notfound_page(self, course_mnemo, 'course')
 
 
     def _render_gehol_down_page(self, course_mnemo):

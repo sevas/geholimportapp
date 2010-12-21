@@ -4,7 +4,7 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from gehol2csv import get_calendar, convert_calendar
 from status import is_status_down, get_last_status_update
-from utils import is_course_mnemo_valid
+from utils import is_course_mnemo_valid, render_resource_notfound_page
 
 class CSVRenderer(webapp.RequestHandler):
     def get(self, *args):
@@ -31,13 +31,8 @@ class CSVRenderer(webapp.RequestHandler):
 
             
     def _render_not_found_page(self, course_mnemo):
-        template_values = {'gehol_is_down': is_status_down(),
-                           'last_status_update': get_last_status_update(),
-                           'mnemo':course_mnemo,
-        }
+        render_resource_notfound_page(self, course_mnemo, 'csv')
 
-        path = os.path.join(os.path.dirname(__file__), 'templates/csv_notfound.html')
-        self.response.out.write(template.render(path, template_values))
 
 
     def _render_gehol_down_page(self, course_mnemo):

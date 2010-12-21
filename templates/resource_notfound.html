@@ -1,0 +1,24 @@
+{% extends "main.html" %}
+
+{% block title %}
+    Something went wrong | Gehol Importer
+{% endblock %}
+
+{% block content %}
+
+<h2>Aww, snap!</h2>
+
+<p>
+    {% if resource_type == "course" %}
+        It seems you tried to directly access the calendar page for the following course: {{mnemo}}.
+    {% elif resource_type == "csv" %}
+        It seems you tried to directly access the CSV file for the following course: {{mnemo}}.
+    {% elif resource_type == "ical" %}
+        It seems you tried to directly access the iCal file for the following course: {{mnemo}}.
+    {% endif %}
+
+    <br/>
+    As this is not a valid course mnemonic, you might want to check your query and try again.
+</p>
+
+{% endblock %}
