@@ -23,11 +23,9 @@ Roadmap
 Upcoming
 ~~~~~~~~
 
-- Generates a downloadable files (csv/ics), rather than presenting the content
 - Get a bundle schedule after supplying several course mnemonics
-- Generate csv/ics by supplying the complete GeHOL query URL
 - Add an "import to Google Calendar" link 
-
+- Get ics/csv files for a user-supplied GeHoL url.
 
 Maybe
 ~~~~~
