@@ -1,5 +1,9 @@
 {% extends "main.html" %}
 
+{% block title %}
+       Summary for course {{mnemo}} | Gehol Importer
+{% endblock %}
+
 {% block content %}
 
     <h2>Report for <strong>{{mnemo}}</strong></h2>
@@ -13,16 +17,16 @@
 
     <h3><a href="{{ical_url}}">{{mnemo}}.ics</a></h3>
     <p>
-    Click this link to download an iCal file with the events for this course. iCal files can be opened with
-    Apple iCal, Microsoft Outlook and Mozilla Sunbird.
+        Click this link to download an iCal file with the events for this course. iCal files can be opened with
+        Apple iCal, Microsoft Outlook and Mozilla Sunbird.
     </p>
         
 
     <br/><br/>
     <h3><a href="{{csv_url}}">{{mnemo}}.csv</a></h3>
     <p>
-    Click this link to download a CSV file with the events for this course. This file can be imported in
-    Google Calendar.
+        Click this link to download a CSV file with the events for this course. This file can be imported in
+        Google Calendar.
     </p>
 
 {% endblock %}
