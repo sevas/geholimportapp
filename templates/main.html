@@ -27,28 +27,31 @@
           <h3>About</h3>
           <div class="box">
               <p>
-              <a href="http://164.15.72.157/GeHoL/horaire_cours.php">GeHOL</a> is the scheduling system used at
+              <a href="http://164.15.72.157/GeHoL/horaire_cours.php">GeHoL</a> is the scheduling system used at
               <a href="http://www.ulb.ac.be">Brussels University.</a>
               <br/>
-            <a href="/">Gehol Importer</a> is a tool to convert GeHOL queries into something usable by calendar softwares such as
+            <a href="/">Gehol Importer</a> is a tool to convert GeHoL queries into something usable by calendar software such as
               <a href="http://www.google.com/calendar">Google Calendar</a>,
               <a href="http://www.apple.com/macosx/what-is-macosx/mail-ical-address-book.html">Apple iCal</a>,
               <a href="http://www.mozilla.org/projects/calendar/sunbird/">Mozilla Sunbird</a>,
-              <a href="http://office.microsoft.com/en-us/outlook/">Microsoft Outlook.</a>
+              <a href="http://office.microsoft.com/en-us/outlook/">Microsoft Outlook</a>, the way it should have been from the start.
               </p>
               <p>
                   This service is still under development. We will try to keep the core functionality running, but you
                   are likely to experience changes as we add features and improve usability.
               </p>
+              <p>
+                The authors of this application are not affiliated with the original GeHoL service.
+              </p>
           </div>
 
           <!--status-->
-          <h3>GeHOL Status</h3>
+          <h3>GeHoL Status</h3>
           <div class="box">
             {% if gehol_is_down %}
                 <span style="vertical-align:top;">
 	                <img src="/stylesheets/blueprint/plugins/buttons/icons/cross.png" alt=""/>
-                    GeHOL server is offline.
+                    GeHoL server is offline.
                 </span>
               <br/>
                 Relax and try again later. There is nothing we can do right now.
@@ -56,7 +59,7 @@
             {% else %}
               <span style="vertical-align:top;">
                 <img src="/stylesheets/blueprint/plugins/buttons/icons/tick.png" alt=""/>
-                GeHOL server is online
+                GeHoL server is online
               </span>
               <br/>
               Everything shiny, cap'n!
