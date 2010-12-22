@@ -43,7 +43,7 @@ class CourseCalendar(webapp.RequestHandler):
             
 
     def _render_not_found_page(self, course_mnemo):
-        render_resource_notfound_page(self, course_mnemo, 'course')
+        render_resource_notfound_page(self, course_mnemo, 'summary page')
 
 
     def _render_gehol_down_page(self, course_mnemo):

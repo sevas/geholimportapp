@@ -31,7 +31,7 @@ class CSVRenderer(webapp.RequestHandler):
 
             
     def _render_not_found_page(self, course_mnemo):
-        render_resource_notfound_page(self, course_mnemo, 'csv')
+        render_resource_notfound_page(self, course_mnemo, 'csv file')
 
 
 

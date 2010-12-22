@@ -1,5 +1,7 @@
 from datetime import datetime
 from status import is_status_down, get_last_status_update
+import os
+from google.appengine.ext.webapp import template
 
 def convert_time(s):
     '''convert string time into datetime struct'''

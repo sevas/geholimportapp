@@ -31,7 +31,7 @@ class IcalRenderer(webapp.RequestHandler):
 
 
     def _render_not_found_page(self, course_mnemo):
-        render_resource_notfound_page(self, course_mnemo, 'ical')
+        render_resource_notfound_page(self, course_mnemo, 'iCal file')
 
 
     def _render_gehol_down_page(self, course_mnemo):
