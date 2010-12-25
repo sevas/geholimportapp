@@ -1,5 +1,6 @@
 import csv, codecs, cStringIO
 from datetime import datetime, timedelta
+from utils import write_content_to_file
 
 class Buffer(object):
     """Buufer claas enable to write result of the CSV class to a in memory string"""
@@ -72,5 +73,4 @@ def to_csv(head, events, first_monday):
 
 def export_csv(head,events,dest_filename, first_monday):
     csv_string = to_csv(head,events,first_monday)
-    fd = open(dest_filename,'w')
-    fd.write(csv_string)
+    write_content_to_file(csv_string, dest_filename)

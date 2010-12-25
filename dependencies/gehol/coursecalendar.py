@@ -3,33 +3,29 @@ import re
 from datetime import datetime, timedelta
 from BeautifulSoup import BeautifulSoup
 from utils import split_weeks, convert_time
+from calendar import BaseCalendar
 
-
-class GeholException(Exception):
-    pass
-
-class CourseNotFoundException(GeholException):
-    pass
-
-class UnknowErrorException(GeholException):
-    pass
-
-class CourseCalendar(object):
+class CourseCalendar(BaseCalendar):
     '''Loads events for a given course'''
-
     def __init__(self, markup):
+        super(CourseCalendar, self).__init__()
         if self._is_file_type_object(markup):
             markup = markup.read()
         self.html_content = markup
         self.events = []
         self.metadata = {}
-
         self._load_events()
 
+        
+    @property
+    def name(self):
+        return "%s - %s" % (self.metadata['mnemo'], self.metadata['title'])
 
-    @staticmethod
-    def _is_file_type_object(f):
-        return hasattr(f, 'read')
+
+    @property
+    def description(self):
+        return "%s - %s (%s) [%s]" % tuple([self.metadata[k] for k in ('mnemo', 'title', 'type', 'tutor')])
+
 
     def __repr__(self):
         return "{Mnemo : %s   Title : %s   Tutor : %s   Type : %s    (%d events)}" % (self.metadata['mnemo'],
@@ -92,7 +88,7 @@ class CourseCalendar(object):
         for (no_line,line) in enumerate(lines[1:]):
             if not n:
                 n = n_rows[no_line]
-                day = day + 1
+                day += 1
                 current_time = -1
             else:
                 current_time = 0
@@ -126,20 +122,3 @@ class CourseCalendar(object):
                     current_time += 1
         #now event are ready for export
         return event_list
-
-    
-    def _guess_query_error(self, html_content):
-        if self._find_error_400(html_content):
-            raise CourseNotFoundException("Gehol returned Error 400. This can happen for non-existent courses")
-        raise UnknowErrorException("The fetched data is not a course calendar page. Check your query URL")
-
-    
-    def _find_error_400(self, html_content):
-        soup = BeautifulSoup(html_content)
-        error_header = soup.findAll(name="h1")
-        if error_header:
-            h1_tag = error_header[0]
-            return h1_tag.contents[0].replace(" ", "") == u'400BadRequest'
-        return False
-
-    

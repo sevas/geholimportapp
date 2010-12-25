@@ -6,10 +6,11 @@ __author__ = 'Frederic'
 from datetime import datetime, timedelta
 from BeautifulSoup import BeautifulSoup
 from utils import split_weeks, convert_time
-import chardet
+from calendar import BaseCalendar
 
-class StudentCalendar(object):
+class StudentCalendar(BaseCalendar):
     def __init__(self, markup):
+        super(StudentCalendar, self).__init__()
         if self._is_file_type_object(markup):
             markup = markup.read()
         self.html_content = markup
@@ -18,27 +19,31 @@ class StudentCalendar(object):
         self.events = []
         self._load_content_from_soup(soup)
 
+
     @property
     def description(self):
         descr = "[%s] %s" % (self.header_data['faculty'], self.header_data['student_profile'])
-        return descr.replace(':', '-') #.encode("iso-8859-2")
+        return descr.replace(':', '-')
 
 
     @property
-    def profile(self):
+    def name(self):
         return  self.header_data['student_profile'].replace(':', '-')
 
 
     def _load_content_from_soup(self, soup):
-        top_level_tables = soup.html.body.findAll(name="table", recursive=False)
-        # Take only the first 3 top-level tables. Sometimes the html is broken and we don't get the 4th.
-        # We also don't get the closing tags. This piece of software is pretty brilliant
-        header, event_grid, footer = top_level_tables[:3]
+        try:
+            top_level_tables = soup.html.body.findAll(name="table", recursive=False)
+            # Take only the first 3 top-level tables. Sometimes the html is broken and we don't get the 4th.
+            # We also don't get the closing tags. This piece of software is pretty brilliant
+            header, event_grid, footer = top_level_tables[:3]
 
-        self._load_header_data(header)
-        self._load_events(event_grid)
+            self._load_header_data(header)
+            self._load_events(event_grid)
+        except AttributeError,e:
+            self._guess_query_error(self.html_content)
 
-
+            
     def _load_header_data(self, header):
         all_entries = header.findAll(name='table')
         faculty_table = all_entries[4]
@@ -65,7 +70,6 @@ class StudentCalendar(object):
         self.events = []
 
         rows_per_day = self._get_num_row_per_day(event_rows)
-        #print rows_per_day
         current_row_index = 0
 
         for (num_day, day_string, num_rows) in rows_per_day:
@@ -75,12 +79,24 @@ class StudentCalendar(object):
                                                           num_day,
                                                           hours)
                 day_events.extend(events_in_row)
-            #print "found %d events for day: %s" % (len(day_events), day_string)
             self.events.extend(day_events)
             current_row_index += num_rows
 
 
     def _get_num_row_per_day(self, event_rows):
+        """
+        Extracts the number of rows allocated for each day in the html table
+
+        Params:
+        - event_rows : a list of table rows. Each row contains parsed html data (w/ BeautifulSoup)
+
+        Returns:
+        - A list of (num_day, day_string, num_rows) tuples.
+        """
+
+        # This is a first pass on the whole table of events. We extract the number of rows allocated for each day in
+        # the layout algorithm. We use the 'rowspan' attribute present in the first column of the first row of each day.
+        # TODO: this needs work
         day_string = ['lun.', 'mar.', 'mer.' , 'jeu.', 'ven.', 'sam.']
         num_rows = []
         for row in event_rows:
@@ -90,6 +106,10 @@ class StudentCalendar(object):
 
     def _load_weekday_events(self, weekday_row, num_day, hours):
         """
+        Finds and load the events in one row of a day.
+        - weekday_row : the parsed data (w/ BeautifulSoup) for the current day row
+        - num_day : number of the current day (0 to 6)
+        - hours : a list of all the timeslot hours (as datetime objects) for a day.
         """
         # At this point we should have a bunch of <td> elements. Some cells are empty, some cells have an event in them.
         # First <td> is the weekday string, so we skip it.
@@ -101,15 +121,17 @@ class StudentCalendar(object):
         for time_slot in all_day_slots:
             if self._slot_has_event(time_slot):
                 new_event = self._process_event(time_slot, hours[current_time_idx], num_day)
-                #print "[%d] %s (ts:%d)" % (num_day, new_event['title'], current_time_idx)
                 events.append(new_event)
                 current_time_idx += new_event['num_timeslots']
             else:
+                # This is tricky : in the first row of each day, the first column (which contains the name of t
+                # he current day) does not count as a time slot.
+                # Another way to say it is, for each row, the time slots
+                # go from 1 to n in the first row, and 0 to n in all the others.
+                # Thus, we increment the current time slot index only if we're not in the first column of the first row.
+                # Thanks a lot, Scientia.nl
                 if time_slot.text not in ['lun.', 'mar.', 'mer.' , 'jeu.', 'ven.', 'sam.']:
                     current_time_idx += 1
-                    #print "[%d] ." % num_day
-                #else:
-                #    print "[%d] #" % num_day
                 
         return events
 
@@ -152,8 +174,3 @@ class StudentCalendar(object):
     @staticmethod
     def _slot_has_event(slot):
         return slot.table is not None
-
-
-    @staticmethod
-    def _is_file_type_object(f):
-        return hasattr(f, 'read')

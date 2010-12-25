@@ -2,7 +2,9 @@
 import urllib
 import urlparse
 import httplib
-from coursecalendar import CourseCalendar, GeholException
+from exceptions import *
+from coursecalendar import CourseCalendar
+from studentcalendar import StudentCalendar
 
 
 class GeholProxy(object):
@@ -15,6 +17,7 @@ class GeholProxy(object):
         """
         self.host = host
 
+        
     def get_course_calendar(self, course_mnemonic):
         """
         Builds a Gehol query YRL and retrieves the events associated to the given course
@@ -39,6 +42,20 @@ class GeholProxy(object):
         return cal
         
 
+    def get_student_calendar(self, group_id):
+        url = self._build_student_query_url(group_id)
+        return self.get_student_calendar_from_url(url)
+
+
+    def get_student_calendar_from_url(self, url):
+        parsed_url = urlparse.urlparse(url)
+        scheme, netloc, path, params, query, frag = parsed_url
+        self.host = netloc
+        html_data = self._get_html_data("%s;%s?%s" % (path, params, query))
+        cal = StudentCalendar(html_data)
+        return cal
+
+
     def _build_course_query_url(self, mnemo):
         """
         Builds a Gehol query url for the given course mnemonic.
@@ -51,6 +68,18 @@ class GeholProxy(object):
                                    'height':0})
         url = '/Reporting/Individual;Courses;name;%s?%s'%(mnemo, params)
         return url
+
+
+    def _build_student_query_url(self, group_id):
+        #http://164.15.72.157:8080/Reporting/Individual;Student%20Set%20Groups;id;%23SPLUS0FACD0?&template=Ann%E9e%20d%27%E9tude&weeks=1-14&days=1-6&periods=5-33&width=0&height=0
+
+        params = urllib.urlencode({'template':"Ann%E9e%20d%27%E9tude",
+                                    'weeks':"1-14",
+                                    'days':"1-6",
+                                    'periods':"5-33",
+                                    'width':0,
+                                    'height':0})
+        return "/Reporting/Individual;Student%20;Set%20Groups;id;+" + group_id + "?" + params
 
 
     def _get_html_data(self, url):
