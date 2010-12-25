@@ -1,0 +1,22 @@
+{% extends "main.html" %}
+
+{% block title %}
+      Calendar for student profile  | Gehol Importer
+{% endblock %}
+
+{% block content %}
+
+
+    <h3>Insert the complete gehol query URL for the desired student profile</h3>
+
+    <form action="/student" method="post">
+      <div>
+          <label>
+              <input name="gehol_url" style="width:400px">
+          </label>
+          <input type="submit" value="Get schedule">
+      </div>
+    </form>
+
+
+{% endblock %}

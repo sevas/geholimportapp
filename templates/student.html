@@ -1,0 +1,37 @@
+{% extends "main.html" %}
+
+{% block title %}
+    {{cal_student_profile}} | Gehol Importer
+{% endblock %}
+
+{% block content %}
+
+    
+     <h3>We fetched the events from the <a href="{{gehol_url}}">URL</a> you gave us.</h3>
+    We found the schedule for the following profile:
+        <br/>
+    <i>Faculty : </i>{{cal_faculty}} <br/>
+    <i>Student profile : </i>{{cal_student_profile}}<br/>
+    <br/>
+
+    <h3><a href="{{ical_url}}">{{ical_url_title}}.ics</a></h3>
+    <p>
+        Click this link to download an iCal file with the entire schedule. iCal files can be opened with
+        Apple iCal, Microsoft Outlook and Mozilla Sunbird. This link can also be imported or added as a live url
+        in Google Calendar.
+    </p>
+
+
+        
+
+     <br/>
+    <h3>This schedule contains events for the following courses:</h3>
+    <ul>
+    {% for event in cal_events %}
+        <li>{{event}}</li>
+    {% endfor %}
+    </ul>
+
+        
+
+{% endblock %}

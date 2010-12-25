@@ -46,14 +46,6 @@ class CourseCalendar(object):
         except AttributeError:
             self._guess_query_error(self.html_content)
 
-            conn.request("GET", self.url, headers = headers)
-            response = conn.getresponse()
-
-            print response.status, response.reason
-            html_content = response.read()
-
-            print html_content
-            conn.close()
 
 
     def _extract_header(self, html):

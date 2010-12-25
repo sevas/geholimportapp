@@ -8,6 +8,7 @@ from check_status import UpdateGeholStatus
 from coursecalendar import CourseCalendar
 from icalrenderer import IcalRenderer
 from csvrenderer import CSVRenderer
+from studentcalendar import StudentCalendarPage, StudentURLQuery, StudentCalendarIcalRenderer
 from savedrequests import PreviousRequest
 
 
@@ -41,6 +42,9 @@ application = webapp.WSGIApplication(
                                      ('/ical/.*', IcalRenderer),
                                      ('/csv/.*', CSVRenderer),
                                      ('/geholstatus',  UpdateGeholStatus),
+                                     ('/student_url', StudentURLQuery),
+                                     ('/student/ical.*', StudentCalendarIcalRenderer),
+                                     ('/student', StudentCalendarPage )
                                      ],
                                      debug=True)
 
