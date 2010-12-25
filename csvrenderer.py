@@ -2,14 +2,14 @@ import os
 import urlparse
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
-from gehol2csv import get_calendar, convert_calendar
+from geholwrapper import get_calendar, convert_calendar
 from status import is_status_down, get_last_status_update
 from utils import is_course_mnemo_valid, render_resource_notfound_page
 
 class CSVRenderer(webapp.RequestHandler):
     def get(self, *args):
         parsed = urlparse.urlparse(self.request.uri)
-        course_mnemo = parsed.path.split("/")[2].rstrip(".csv")
+        course_mnemo = parsed.path.split("/")[3].rstrip(".csv")
 
         if is_course_mnemo_valid(course_mnemo):
             if is_status_down():

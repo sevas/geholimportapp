@@ -44,7 +44,7 @@ class GeholProxy(object):
 
     def get_student_calendar(self, group_id):
         url = self._build_student_query_url(group_id)
-        return self.get_student_calendar_from_url(url)
+        return self.get_student_calendar_from_url("http://%s%s" % (self.host, url))
 
 
     def get_student_calendar_from_url(self, url):
@@ -72,14 +72,8 @@ class GeholProxy(object):
 
     def _build_student_query_url(self, group_id):
         #http://164.15.72.157:8080/Reporting/Individual;Student%20Set%20Groups;id;%23SPLUS0FACD0?&template=Ann%E9e%20d%27%E9tude&weeks=1-14&days=1-6&periods=5-33&width=0&height=0
-
-        params = urllib.urlencode({'template':"Ann%E9e%20d%27%E9tude",
-                                    'weeks':"1-14",
-                                    'days':"1-6",
-                                    'periods':"5-33",
-                                    'width':0,
-                                    'height':0})
-        return "/Reporting/Individual;Student%20;Set%20Groups;id;+" + group_id + "?" + params
+        params = "&template=Ann%E9e%20d%27%E9tude&weeks=1-14&days=1-6&periods=5-33&width=0&height=0"
+        return "/Reporting/Individual;Student%20Set%20Groups;id;" + group_id + "?" + params
 
 
     def _get_html_data(self, url):

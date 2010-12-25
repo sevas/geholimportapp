@@ -3,7 +3,7 @@ import urlparse
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from status import is_status_down, get_last_status_update
-from gehol2csv import get_calendar
+from geholwrapper import get_calendar
 from utils import is_course_mnemo_valid, render_resource_notfound_page
 from savedrequests import PreviousRequest
 
@@ -58,8 +58,8 @@ class CourseCalendar(webapp.RequestHandler):
 
     @staticmethod
     def _build_file_urls(course_mnemo):
-        return ("/ical/%s.ics" % course_mnemo,
-                "/csv/%s.csv" % course_mnemo)
+        return ("/course/ical/%s.ics" % course_mnemo,
+                "/course/csv/%s.csv" % course_mnemo)
 
     @staticmethod
     def _get_course_mnemo(path):

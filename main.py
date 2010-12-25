@@ -8,7 +8,7 @@ from check_status import UpdateGeholStatus
 from coursecalendar import CourseCalendar
 from icalrenderer import IcalRenderer
 from csvrenderer import CSVRenderer
-from studentcalendar import StudentCalendarPage, StudentURLQuery, StudentCalendarIcalRenderer
+from studentsetcalendar import StudentCalendarPage, StudentURLQuery, StudentCalendarIcalRenderer
 from savedrequests import PreviousRequest
 
 
@@ -31,20 +31,28 @@ class MainPage(webapp.RequestHandler):
 class Calendar(webapp.RequestHandler):
     def post(self):
         course_mnemo = self.request.get('course_mnemo')
-        self.redirect("/course/%s" % course_mnemo.upper())
+        if course_mnemo:
+            self.redirect("/course/%s" % course_mnemo.upper())
+        else:
+            gehol_url = self.request.get('gehol_url')
+            if gehol_url:
+                group_id = StudentCalendarPage._extract_group_id(gehol_url)
+                self.redirect("/student_set/%s" % group_id)
+            else:
+                self.redirect("/")
 
 
 
 application = webapp.WSGIApplication(
                                      [('/', MainPage),
                                      ('/cal', Calendar),
+                                     ('/course/ical/.*', IcalRenderer),
+                                     ('/course/csv/.*', CSVRenderer),
                                      ('/course/.*', CourseCalendar),
-                                     ('/ical/.*', IcalRenderer),
-                                     ('/csv/.*', CSVRenderer),
                                      ('/geholstatus',  UpdateGeholStatus),
                                      ('/student_url', StudentURLQuery),
-                                     ('/student/ical.*', StudentCalendarIcalRenderer),
-                                     ('/student', StudentCalendarPage )
+                                     ('/student_set/ical/.*', StudentCalendarIcalRenderer),
+                                     ('/student_set/.*', StudentCalendarPage )
                                      ],
                                      debug=True)
 

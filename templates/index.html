@@ -8,7 +8,7 @@
 
     <h3>Which course do you want the schedule for ? </h3>
 
-      Put the 8 characters (5 letters, 3 numbers) course mnemonic in the input box
+      Put the 8 characters (5 letters, 3 numbers) course mnemonic in the input box below:
     <form action="/cal" method="post">
       <div>
           <label>
@@ -17,9 +17,6 @@
           <input type="submit" value="Get schedule">
       </div>
     </form>
-
-     <br/><br/>
-
         
     <br/><br/>
     <h3>Latest requests:</h3>
@@ -30,8 +27,19 @@
        </li>
     {% endfor %}
     </ul>
+    <br/><br/>
+    <hr>
+
+    <h3>You're a student, and you want your entire schedule at once ? </h3>
+    Paste the complete GeHoL URL for your schedule in the input box below (<a href="/student_set_howto.html">Wait, what?</a>):
+    <form action="/cal" method="post">
+      <div>
+          <label>
+              <input name="gehol_url" style="width:400px">
+          </label>
+          <input type="submit" value="Get schedule">
+      </div>
+    </form>
 
         
-    <br/><br/>
-
 {% endblock %}
