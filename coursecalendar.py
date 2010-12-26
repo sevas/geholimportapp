@@ -6,6 +6,7 @@ from status import is_status_down, get_last_status_update
 from geholwrapper import get_calendar
 from utils import is_course_mnemo_valid, render_course_notfound_page
 from savedrequests import PreviousRequest
+from gehol.utils import convert_weekspan_to_dates
 
 class CourseCalendar(webapp.RequestHandler):
     def get(self):
@@ -20,12 +21,16 @@ class CourseCalendar(webapp.RequestHandler):
                 cal = get_calendar(course_mnemo)
                 if cal:
                     ical_url, csv_url = self._build_file_urls(course_mnemo)
+                    start, end = convert_weekspan_to_dates("1-36", "20/09/2010")
+                    caption = "Schedule from %s to %s" % (start.strftime("%B %d, %Y"),
+                                                          end.strftime("%B %d, %Y"))
 
                     template_values = {'gehol_is_down': is_status_down(),
                                      'last_status_update': get_last_status_update(),
                                     'mnemo':course_mnemo,
                                     'ical_url':ical_url,
-                                    'csv_url':csv_url
+                                    'csv_url':csv_url,
+                                    'caption':caption
                     }
 
                     template_values.update(cal.metadata)

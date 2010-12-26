@@ -6,27 +6,34 @@
 
 {% block content %}
 
-    <h2>Report for <strong>{{mnemo}}</strong></h2>
+    <div class="span-15">
+        <h2>Summary for <strong>{{mnemo}}</strong></h2>
+        <i>Title:</i> {{title}} <br/>
+        <i>Lecturer(s):</i> {{tutor}} <br/>
 
-    <h3>Summary:</h3>
-    <i>Title:</i> {{title}} <br/>
-    <i>Lecturer(s):</i> {{tutor}} <br/>
-    <i>Type:</i>  {{type}} <br/>
-
-    <br/><br/>
-
-    <h3><a href="{{ical_url}}">{{mnemo}}.ics</a></h3>
-    <p>
-        Click this link to download an iCal file with the events for this course. iCal files can be opened with
-        Apple iCal, Microsoft Outlook and Mozilla Sunbird.
-    </p>
+    <br/> <br/>
         
+    <h3>We can generate the following files for you:</h3>
 
-    <br/><br/>
-    <h3><a href="{{csv_url}}">{{mnemo}}.csv</a></h3>
-    <p>
-        Click this link to download a CSV file with the events for this course. This file can be imported in
-        Google Calendar.
-    </p>
+        <div class="box" style="text-align:center">
+            <h3><a href="{{ical_url}}">{{mnemo}}.ics</a></h3>
+            <div class="quiet" style="font-style:italic;">  {{caption}}</div>
+        </div>
 
+        <p>
+            Click this link to download an iCal file with the events for this course. iCal files can be opened with
+            Apple iCal, Microsoft Outlook and Mozilla Sunbird.
+        </p>
+
+
+    <br/><br/><br/>
+    <div class="box" style="text-align:center">
+            <h3><a href="{{csv_url}}">{{mnemo}}.csv</a></h3>
+            <div class="quiet" style="font-style:italic;">{{caption}}</div>
+        </div>
+        <p>
+            Click this link to download a CSV file with the events for this course. This file can be imported in
+            Google Calendar.
+        </p>
+</div>
 {% endblock %}
