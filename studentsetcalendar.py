@@ -32,7 +32,7 @@ class StudentSetSummary(webapp.RequestHandler):
         group_id = parsed.path.split("/")[2]
 
         if is_studentset_groupid_valid(group_id):
-            logging.info("group id is valid")
+            logging.debug("group '%s' id is valid" % group_id)
             cal = get_student_calendar(group_id)
             if cal:
                 logging.info("got a calendar from gorup id")
@@ -57,9 +57,10 @@ class StudentSetSummary(webapp.RequestHandler):
                 path = os.path.join(os.path.dirname(__file__), 'templates/student.html')
                 self.response.out.write(template.render(path, template_values))
             else:
-                logging.info("did not receive a calendar")
+                logging.debug("did not receive a calendar")
                 self._render_not_found_page()
         else:
+            logging.debug("group id '%s' is not valid" % group_id)
             self._render_not_found_page()
 
 
