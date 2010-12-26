@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 __author__ = 'sevas'
 
 import os
@@ -6,7 +7,7 @@ import logging
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from status import is_status_down, get_last_status_update
-from geholwrapper import get_student_calendar, convert_student_calendar
+from geholwrapper import get_student_q1_calendar, get_student_q2_calendar,convert_student_calendar_to_ical_string
 from savedrequests import PreviousStudentSetRequests
 
 def rebuild_gehol_url(group_id):
@@ -33,7 +34,7 @@ class StudentSetSummary(webapp.RequestHandler):
 
         if is_studentset_groupid_valid(group_id):
             logging.debug("group '%s' id is valid" % group_id)
-            cal = get_student_calendar(group_id)
+            cal = get_student_q1_calendar(group_id)
             if cal:
                 logging.info("got a calendar from gorup id")
                 faculty, student_profile = cal.header_data['faculty'], cal.header_data['student_profile']
@@ -89,14 +90,13 @@ class StudentSetIcalRenderer(webapp.RequestHandler):
         parsed = urlparse.urlparse(self.request.uri)
         group_id = parsed.path.split("/")[3].rstrip(".ics")
 
-        cal = get_student_calendar(group_id)
+        cal = get_student_q1_calendar(group_id)
         if cal:
-            ical_data = convert_student_calendar(cal)
+            ical_data = convert_student_calendar_to_ical_string(cal)
 
             student_profile = cal.header_data['student_profile']
-            ical_filename = "ULB - %s" % student_profile
-
-            self.response.headers['Content-Type'] = "text/calendar;  charset=utf-8"
+            ical_filename = "ULB - " + student_profile.encode("iso-8859-1")
+            self.response.headers['Content-Type'] = "text/calendar; charset=utf-8"
             self.response.headers['Content-disposition'] = "attachment; filename=%s.ics" % ical_filename
             self.response.out.write(ical_data)
         else:
