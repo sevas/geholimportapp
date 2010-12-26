@@ -6,31 +6,49 @@
 
 {% block content %}
 
-    
-     <h3>We fetched the events from the <a href="{{gehol_url}}">URL</a> you gave us.</h3>
+    <div class="span-15">
+    <h3>We fetched some informations from the <a href="{{gehol_url}}">URL</a> you gave us.</h3>
     We found the schedule for the following profile:
-        <br/>
+    <br/>
     <i>Faculty : </i>{{cal_faculty}} <br/>
     <i>Student profile : </i>{{cal_student_profile}}<br/>
-    <br/>
+    <br/><br/>
 
-    <h3><a href="{{ical_url}}">{{ical_url_title}}.ics</a></h3>
+
+    <h3>Two calendars can be generated. Pick what you need.</h3>
+
+
+    <div class="box" style="text-align:center">
+    <h4><a href="{{ical_q1_url}}">{{ical_q1_url_title}}.ics</a></h4>
+    <div class="quiet" style="font-style:italic;"> First quadrimester : {{q1_span}}</div>
+    </div>
+
+
+    <div class="box" style="text-align:center">
+    <h4><a href="{{ical_q2_url}}">{{ical_q2_url_title}}.ics</a></h4>
+    <div class="quiet" style="font-style:italic;"> Second quadrimester : {{q2_span}}</div>
+    </div>
+
+        
+    <br/><br/>
     <p>
-        Click this link to download an iCal file with the entire schedule. iCal files can be opened with
+        Clicking one of those links will start the download of an <a href="http://en.wikipedia.org/wiki/ICalendar">iCalendar</a>
+        file. iCalendar files can be opened with
         Apple iCal, Microsoft Outlook and Mozilla Sunbird. This link can also be imported or added as a live url
         in Google Calendar.
     </p>
 
 
+   </div>
         
 
-     <br/>
+     <!--br/>
     <h3>This schedule contains events for the following courses:</h3>
     <ul>
     {% for event in cal_events %}
         <li>{{event}}</li>
     {% endfor %}
-    </ul>
+    </ul-->
 
         
 

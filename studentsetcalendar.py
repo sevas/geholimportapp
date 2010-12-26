@@ -9,6 +9,7 @@ from google.appengine.ext.webapp import template
 from status import is_status_down, get_last_status_update
 from geholwrapper import get_student_q1_calendar, get_student_q2_calendar,convert_student_calendar_to_ical_string
 from savedrequests import PreviousStudentSetRequests
+from gehol.utils import convert_weekspan_to_dates
 
 def rebuild_gehol_url(group_id):
     return "http://164.15.72.157:8080/Reporting/Individual;Student%20Set%20Groups;id;"+group_id+"?&template=Ann%E9e%20d%27%E9tude&weeks=1-14&days=1-6&periods=5-33&width=0&height=0"
@@ -36,11 +37,16 @@ class StudentSetSummary(webapp.RequestHandler):
             logging.debug("group '%s' id is valid" % group_id)
             cal = get_student_q1_calendar(group_id)
             if cal:
-                logging.info("got a calendar from gorup id")
+                logging.info("got a calendar from group id")
                 faculty, student_profile = cal.header_data['faculty'], cal.header_data['student_profile']
                 event_titles = set(["%s (%s) [%s]" %  (e['title'], e['type'], e['organizer']) for e in cal.events])
-                ical_url = "/student_set/ical/%s.ics" % group_id
-                ical_url_title = "ULB - %s" % student_profile
+
+                ical_urls = ["/student_set/ical/%s/%s.ics" % (q, group_id) for q in ("q1", "q2")]
+                ical_url_titles = ["ULB - %s -  %s" % (q, student_profile) for q in ("Q1", "Q2")]
+
+
+                q1_span = convert_weekspan_to_dates("1-14", "20/09/2010")
+                q2_span = convert_weekspan_to_dates("21-36", "20/09/2010")
 
 
 
@@ -50,8 +56,12 @@ class StudentSetSummary(webapp.RequestHandler):
                                  'cal_faculty':faculty,
                                  'cal_student_profile':student_profile,
                                  'cal_events':event_titles,
-                                 'ical_url':ical_url,
-                                 'ical_url_title':ical_url_title
+                                 'ical_q1_url':ical_urls[0],
+                                 'ical_q2_url':ical_urls[1],
+                                 'ical_q1_url_title':ical_url_titles[0],
+                                 'ical_q2_url_title':ical_url_titles[1],
+                                 'q1_span': "from %s to %s" % tuple([q1_span[i].strftime("%B %d, %Y") for i in (0, 1)]),
+                                 'q2_span': "from %s to %s" % tuple([q2_span[i].strftime("%B %d, %Y") for i in (0, 1)])
                 }
 
                 self._save_successful_request(student_profile, "/student_set/%s" % group_id)
@@ -86,19 +96,26 @@ class StudentSetSummary(webapp.RequestHandler):
 
 
 class StudentSetIcalRenderer(webapp.RequestHandler):
+    calendar_fetch_funcs = {'q1': get_student_q1_calendar,
+                            'q2': get_student_q2_calendar}
     def get(self):
         parsed = urlparse.urlparse(self.request.uri)
-        group_id = parsed.path.split("/")[3].rstrip(".ics")
+        group_id = parsed.path.split("/")[4].rstrip(".ics")
+        quadrimester = parsed.path.split("/")[3]
 
-        cal = get_student_q1_calendar(group_id)
-        if cal:
-            ical_data = convert_student_calendar_to_ical_string(cal)
+        if quadrimester in ("q1", "q2"):
+            cal = self.calendar_fetch_funcs[quadrimester](group_id)
+            if cal:
+                ical_data = convert_student_calendar_to_ical_string(cal)
 
-            student_profile = cal.header_data['student_profile']
-            ical_filename = "ULB - " + student_profile.encode("iso-8859-1")
-            self.response.headers['Content-Type'] = "text/calendar; charset=utf-8"
-            self.response.headers['Content-disposition'] = "attachment; filename=%s.ics" % ical_filename
-            self.response.out.write(ical_data)
+                student_profile = cal.header_data['student_profile']
+                ical_filename = "ULB - "+ quadrimester + " - " + student_profile.encode("iso-8859-1")
+                self.response.headers['Content-Type'] = "text/calendar; charset=utf-8"
+                self.response.headers['Content-disposition'] = "attachment; filename=%s.ics" % ical_filename
+                self.response.out.write(ical_data)
+            else:
+                render_studentset_notfound_page(self, resource_type="iCal file")
         else:
             render_studentset_notfound_page(self, resource_type="iCal file")
+
 
