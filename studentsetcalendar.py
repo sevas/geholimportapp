@@ -9,16 +9,8 @@ from geholwrapper import get_student_calendar, convert_student_calendar
 from utils import render_resource_notfound_page
 
 
-class StudentURLQuery(webapp.RequestHandler):
-    def get(self):
-
-        template_values = {'gehol_is_down': is_status_down(),
-                         'last_status_update': get_last_status_update(),
-        }
-
-        #http://164.15.72.157:8080/Reporting/Individual;Student%20Set%20Groups;id;%23SPLUS3C1E8E?&template=Ann%E9e%20d%27%E9tude&weeks=1-14&days=1-6&periods=5-33&width=0&height=0
-        path = os.path.join(os.path.dirname(__file__), 'templates/student_url.html')
-        self.response.out.write(template.render(path, template_values))
+def rebuild_gehol_url(group_id):
+    return "http://164.15.72.157:8080/Reporting/Individual;Student%20Set%20Groups;id;"+group_id+"?&template=Ann%E9e%20d%27%E9tude&weeks=1-14&days=1-6&periods=5-33&width=0&height=0"
 
 
 class StudentCalendarPage(webapp.RequestHandler):
@@ -31,14 +23,14 @@ class StudentCalendarPage(webapp.RequestHandler):
         if cal:
             faculty, student_profile = cal.header_data['faculty'], cal.header_data['student_profile']
             event_titles = set(["%s (%s) [%s]" %  (e['title'], e['type'], e['organizer']) for e in cal.events])
-            ical_url = "/student_set/ical/%s" % group_id
+            ical_url = "/student_set/ical/%s.ics" % group_id
             ical_url_title = "ULB - %s" % student_profile
 
 
 
             template_values = {'gehol_is_down': is_status_down(),
                              'last_status_update': get_last_status_update(),
-                             #'gehol_url':gehol_url,
+                             'gehol_url':rebuild_gehol_url(group_id),
                              'cal_faculty':faculty,
                              'cal_student_profile':student_profile,
                              'cal_events':event_titles,
@@ -69,7 +61,7 @@ class StudentCalendarPage(webapp.RequestHandler):
 class StudentCalendarIcalRenderer(webapp.RequestHandler):
     def get(self):
         parsed = urlparse.urlparse(self.request.uri)
-        group_id = parsed.path.split("/")[3]
+        group_id = parsed.path.split("/")[3].rstrip(".ics")
 
         cal = get_student_calendar(group_id)
         if cal:
@@ -84,6 +76,3 @@ class StudentCalendarIcalRenderer(webapp.RequestHandler):
         else:
             pass
 
-    @staticmethod
-    def _rebuild_gehol_url(group_id):
-        return "http://164.15.72.157:8080/Reporting/Individual;Student%20Set%20Groups;id;"+group_id+"?&template=Ann%E9e%20d%27%E9tude&weeks=1-14&days=1-6&periods=5-33&width=0&height=0"
