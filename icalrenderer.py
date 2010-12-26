@@ -2,7 +2,7 @@ import os
 import urlparse
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
-from geholwrapper import get_calendar, convert_calendar
+from geholwrapper import get_calendar, convert_course_calendar_to_ical
 from status import is_status_down, get_last_status_update
 from utils import is_course_mnemo_valid, render_course_notfound_page
 
@@ -17,12 +17,10 @@ class IcalRenderer(webapp.RequestHandler):
             else:
                 cal = get_calendar(course_mnemo)
                 if cal:
-                    error,csv,ical = convert_calendar(cal)
-                    events_ical = ical
-
+                    ical_content = convert_course_calendar_to_ical(cal)
                     self.response.headers['Content-Type'] = "text/calendar;  charset=utf-8"
                     self.response.headers['Content-disposition'] = "attachment; filename=%s.ics" % course_mnemo
-                    self.response.out.write(events_ical)
+                    self.response.out.write(ical_content)
                 else:
                     self._render_not_found_page(course_mnemo)
         else:

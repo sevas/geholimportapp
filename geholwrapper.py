@@ -15,24 +15,36 @@ def get_calendar(course_mnemonic):
         return None
 
 
-def convert_calendar(cal):
+def convert_course_calendar_to_csv(cal):
     try:
         csv_string = to_csv(cal.metadata, cal.events, first_monday)
-        ical_string = cal.as_string()
-        return csv_string,ical_string
+        return csv_string
 
     except Exception,e:
+        logging.debug("something went wrong while converting calendar %s : %s" % (cal.name, e.message))
         return None
-        
 
 
-def get_student_calendar(group_id):
+def convert_course_calendar_to_ical(cal):
+    ical = convert_geholcalendar_to_ical(cal, first_monday)
+    return ical.as_string()
+
+
+def get_student_q1_calendar(group_id):
+    return get_student_calendar(group_id, "1-14")
+
+
+def get_student_q2_calendar(group_id):
+    return get_student_calendar(group_id, "21-36")
+
+
+def get_student_calendar(group_id, weeks):
     gehol_proxy = gehol.GeholProxy(host)
-    cal = gehol_proxy.get_studentset_calendar(group_id, "1-14")
+    cal = gehol_proxy.get_studentset_calendar(group_id, weeks)
     return cal
     
 
-def convert_student_calendar(cal):
+def convert_student_calendar_to_ical_string(cal):
     try:
         ical_data = convert_geholcalendar_to_ical(cal, first_monday)
         return ical_data.as_string()

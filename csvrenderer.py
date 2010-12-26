@@ -2,7 +2,7 @@ import os
 import urlparse
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
-from geholwrapper import get_calendar, convert_calendar
+from geholwrapper import get_calendar, convert_course_calendar_to_csv
 from status import is_status_down, get_last_status_update
 from utils import is_course_mnemo_valid, render_course_notfound_page
 
@@ -17,12 +17,11 @@ class CSVRenderer(webapp.RequestHandler):
             else:
                 cal = get_calendar(course_mnemo)
                 if cal:
-                    error,csv,ical = convert_calendar(cal)
-                    events_csv = csv
+                    csv_content = convert_course_calendar_to_csv(cal)
 
                     self.response.headers['Content-Type'] = "text/csv;  charset=utf-8"
                     self.response.headers['Content-disposition'] = "attachment; filename=%s.csv" % course_mnemo
-                    self.response.out.write(events_csv)
+                    self.response.out.write(csv_content)
                 else:
                     self._render_not_found_page(course_mnemo)
         else:

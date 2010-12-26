@@ -82,7 +82,7 @@ class Calendar(object):
         ical_string = out.getvalue()
         out.close()
 
-        return ical_string.encode('utf-8')
+        return ical_string
 
 
 def convert_geholcalendar_to_ical(gehol_calendar, first_monday):
