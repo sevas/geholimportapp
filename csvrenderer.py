@@ -4,7 +4,7 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from geholwrapper import get_calendar, convert_calendar
 from status import is_status_down, get_last_status_update
-from utils import is_course_mnemo_valid, render_resource_notfound_page
+from utils import is_course_mnemo_valid, render_course_notfound_page
 
 class CSVRenderer(webapp.RequestHandler):
     def get(self, *args):
@@ -31,7 +31,7 @@ class CSVRenderer(webapp.RequestHandler):
 
             
     def _render_not_found_page(self, course_mnemo):
-        render_resource_notfound_page(self, course_mnemo, 'csv file')
+        render_course_notfound_page(self, course_mnemo, "csv file")
 
 
 

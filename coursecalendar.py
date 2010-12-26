@@ -4,7 +4,7 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from status import is_status_down, get_last_status_update
 from geholwrapper import get_calendar
-from utils import is_course_mnemo_valid, render_resource_notfound_page
+from utils import is_course_mnemo_valid, render_course_notfound_page
 from savedrequests import PreviousRequest
 
 class CourseCalendar(webapp.RequestHandler):
@@ -43,7 +43,7 @@ class CourseCalendar(webapp.RequestHandler):
             
 
     def _render_not_found_page(self, course_mnemo):
-        render_resource_notfound_page(self, course_mnemo, 'summary page')
+        render_course_notfound_page(self, course_mnemo, "summary page")
 
 
     def _render_gehol_down_page(self, course_mnemo):

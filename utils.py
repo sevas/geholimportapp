@@ -29,12 +29,11 @@ def is_course_mnemo_valid(course_mnemo):
 
 
 
-def render_resource_notfound_page(request_handler, course_mnemo, resource_type):
+def render_course_notfound_page(request_handler, mnemo, resource_type):
     template_values = {'gehol_is_down': is_status_down(),
                        'last_status_update': get_last_status_update(),
-                       'mnemo':course_mnemo,
+                       'mnemo':mnemo,
                        'resource_type':resource_type
     }
-
-    path = os.path.join(os.path.dirname(__file__), 'templates/resource_notfound.html')
+    path = os.path.join(os.path.dirname(__file__), 'templates/course_notfound.html')
     request_handler.response.out.write(template.render(path, template_values))
