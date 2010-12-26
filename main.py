@@ -28,7 +28,7 @@ class MainPage(webapp.RequestHandler):
 
 
 
-class Calendar(webapp.RequestHandler):
+class Redirect(webapp.RequestHandler):
     def post(self):
         course_mnemo = self.request.get('course_mnemo')
         if course_mnemo:
@@ -45,7 +45,7 @@ class Calendar(webapp.RequestHandler):
 
 application = webapp.WSGIApplication(
                                      [('/', MainPage),
-                                     ('/cal', Calendar),
+                                     ('/redirect', Redirect),
                                      ('/course/ical/.*', IcalRenderer),
                                      ('/course/csv/.*', CSVRenderer),
                                      ('/course/.*', CourseCalendar),
