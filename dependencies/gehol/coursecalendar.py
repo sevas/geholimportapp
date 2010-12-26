@@ -100,13 +100,13 @@ class CourseCalendar(BaseCalendar):
                 if len(cell)>1:
                     event = {'no_line': no_line,
                              'day': day,
-                             'start': hours[current_time],
+                             'start_time': hours[current_time],
                              'duration': int(s['colspan'])
                     }
                     #duration in hours is extract from the colspan
                     #compute end time (1 colspan=1/2 hour)
                     delta = timedelta(hours=event['duration']/2)
-                    event['end'] = hours[current_time]+delta
+                    event['stop_time'] = hours[current_time]+delta
                     td = cell[0].tr.findAll(name='td',recursive=False)
                     # Gehol weeks when the event occurs
                     event['weeks'] = split_weeks(td[0].contents[0].string)
@@ -117,8 +117,9 @@ class CourseCalendar(BaseCalendar):
                     # activity
                     event['type'] = cell[1].tr.td.contents[0].string
                     current_time = current_time + event['duration']
+                    event['organizer'] = self.metadata['tutor']
+                    event['title'] = "%s - %s" % (self.metadata['mnemo'], self.metadata['title'])
                     event_list.append(event)
                 else:
                     current_time += 1
-        #now event are ready for export
         return event_list
