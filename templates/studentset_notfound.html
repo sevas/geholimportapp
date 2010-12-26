@@ -1,0 +1,17 @@
+{% extends "main.html" %}
+
+{% block title %}
+    Something went wrong | Gehol Importer
+{% endblock %}
+
+{% block content %}
+
+<h2>Aww, snap!</h2>
+
+<p>
+    It seems you tried to directly access the {{resource_type}} for a particular student profile.
+    <br/>
+    Unfortunately, it does not look like a valid profile, you might want to check your query and try again.
+</p>
+
+{% endblock %}
