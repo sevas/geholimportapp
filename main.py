@@ -14,14 +14,11 @@ from savedrequests import PreviousRequest, PreviousStudentSetRequests
 
 class MainPage(webapp.RequestHandler):
     def get(self):
-        requests_query = PreviousRequest.all().order('-date')
-        requests = requests_query.fetch(10)
-        studentset_query = PreviousStudentSetRequests.all().order('-date')
-        studentset_requests = studentset_query.fetch(10)
+        last_fetched_courses = self._get_last_entries_from_store(PreviousRequest)
+        last_fetched_studentsets = self._get_last_entries_from_store(PreviousStudentSetRequests)
 
-
-        template_values = {'requests': requests,
-                           'studentset_requests':studentset_requests,
+        template_values = {'last_courses': last_fetched_courses,
+                           'last_studentsets':last_fetched_studentsets,
                            'gehol_is_down': is_status_down(),
                            'last_status_update': get_last_status_update()
                         }
@@ -29,6 +26,11 @@ class MainPage(webapp.RequestHandler):
         path = os.path.join(os.path.dirname(__file__), 'templates/index.html')
         self.response.out.write(template.render(path, template_values))
 
+
+    def _get_last_entries_from_store(self, Datastore):
+        # TODO : see if we can filter the last 10 entries earlier
+        query = Datastore.all().order('-date')
+        return query.fetch(10)
 
 
 class Redirect(webapp.RequestHandler):

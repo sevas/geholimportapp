@@ -21,9 +21,9 @@
     <br/><br/>
     <h3>Latest requests:</h3>
     <ul>
-    {% for request in requests %}
+    {% for course in last_courses %}
        <li>
-        <a href="/course/{{ request.content|escape }}">{{ request.content|escape|upper }}</a>
+        <a href="/course/{{ course.content|escape }}">{{ course.content|escape|upper }}</a>
        </li>
     {% endfor %}
     </ul>
@@ -44,9 +44,9 @@
         <br/><br/>
     <h3>Latest requests:</h3>
     <ul>
-    {% for studentset_request in studentset_requests %}
+    {% for studentset in last_studentsets %}
        <li>
-        <a href="{{studentset_request.url}}">{{ studentset_request.title|escape }}</a>
+        <a href="{{studentset.url}}">{{ studentset.title|escape }}</a>
        </li>
     {% endfor %}
     </ul>
