@@ -41,5 +41,16 @@
       </div>
     </form>
 
+        <br/><br/>
+    <h3>Latest requests:</h3>
+    <ul>
+    {% for studentset_request in studentset_requests %}
+       <li>
+        <a href="{{studentset_request.url}}">{{ studentset_request.title|escape }}</a>
+       </li>
+    {% endfor %}
+    </ul>
+    <br/><br/>
+
         
 {% endblock %}

@@ -7,13 +7,13 @@ from google.appengine.ext.webapp import template
 from status import is_status_down, get_last_status_update
 from geholwrapper import get_student_calendar, convert_student_calendar
 from utils import render_resource_notfound_page
-
+from savedrequests import PreviousStudentSetRequests
 
 def rebuild_gehol_url(group_id):
     return "http://164.15.72.157:8080/Reporting/Individual;Student%20Set%20Groups;id;"+group_id+"?&template=Ann%E9e%20d%27%E9tude&weeks=1-14&days=1-6&periods=5-33&width=0&height=0"
 
 
-class StudentCalendarPage(webapp.RequestHandler):
+class StudentSetSummary(webapp.RequestHandler):
     def get(self):
         parsed = urlparse.urlparse(self.request.uri)
         group_id = parsed.path.split("/")[2]
@@ -38,6 +38,7 @@ class StudentCalendarPage(webapp.RequestHandler):
                              'ical_url_title':ical_url_title
             }
 
+            self._save_successful_request(student_profile, "/student_set/%s" % group_id)
             path = os.path.join(os.path.dirname(__file__), 'templates/student.html')
             self.response.out.write(template.render(path, template_values))
         else:
@@ -56,9 +57,15 @@ class StudentCalendarPage(webapp.RequestHandler):
         # we keep the last part
         return p.split(';')[-1]
 
+    
+    def _save_successful_request(self, title, url):
+        request = PreviousStudentSetRequests()
+        request.url = url
+        request.title = title
+        request.put()
 
 
-class StudentCalendarIcalRenderer(webapp.RequestHandler):
+class StudentSetIcalRenderer(webapp.RequestHandler):
     def get(self):
         parsed = urlparse.urlparse(self.request.uri)
         group_id = parsed.path.split("/")[3].rstrip(".ics")

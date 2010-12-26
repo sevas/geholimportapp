@@ -8,17 +8,20 @@ from check_status import UpdateGeholStatus
 from coursecalendar import CourseCalendar
 from icalrenderer import IcalRenderer
 from csvrenderer import CSVRenderer
-from studentsetcalendar import StudentCalendarPage, StudentCalendarIcalRenderer
-from savedrequests import PreviousRequest
+from studentsetcalendar import StudentSetSummary, StudentSetIcalRenderer
+from savedrequests import PreviousRequest, PreviousStudentSetRequests
 
 
 class MainPage(webapp.RequestHandler):
     def get(self):
         requests_query = PreviousRequest.all().order('-date')
         requests = requests_query.fetch(10)
+        studentset_query = PreviousStudentSetRequests.all().order('-date')
+        studentset_requests = studentset_query.fetch(10)
 
 
         template_values = {'requests': requests,
+                           'studentset_requests':studentset_requests,
                            'gehol_is_down': is_status_down(),
                            'last_status_update': get_last_status_update()
                         }
@@ -36,7 +39,7 @@ class Redirect(webapp.RequestHandler):
         else:
             gehol_url = self.request.get('gehol_url')
             if gehol_url:
-                group_id = StudentCalendarPage._extract_group_id(gehol_url)
+                group_id = StudentSetSummary._extract_group_id(gehol_url)
                 self.redirect("/student_set/%s" % group_id)
             else:
                 self.redirect("/")
@@ -50,8 +53,8 @@ application = webapp.WSGIApplication(
                                      ('/course/csv/.*', CSVRenderer),
                                      ('/course/.*', CourseCalendar),
                                      ('/geholstatus',  UpdateGeholStatus),
-                                     ('/student_set/ical/.*\.ics', StudentCalendarIcalRenderer),
-                                     ('/student_set/.*', StudentCalendarPage )
+                                     ('/student_set/ical/.*\.ics', StudentSetIcalRenderer),
+                                     ('/student_set/.*', StudentSetSummary )
                                      ],
                                      debug=True)
 
