@@ -55,7 +55,7 @@ application = webapp.WSGIApplication(
                                      ('/course/csv/.*', CSVRenderer),
                                      ('/course/.*', CourseCalendar),
                                      ('/geholstatus',  UpdateGeholStatus),
-                                     ('/student_set/ical/.*\.ics', StudentSetIcalRenderer),
+                                     ('/student_set/ical/q./.*\.ics', StudentSetIcalRenderer),
                                      ('/student_set/.*', StudentSetSummary )
                                      ],
                                      debug=True)
