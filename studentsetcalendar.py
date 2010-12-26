@@ -2,6 +2,7 @@ __author__ = 'sevas'
 
 import os
 import urlparse
+import logging
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from status import is_status_down, get_last_status_update
@@ -30,10 +31,11 @@ class StudentSetSummary(webapp.RequestHandler):
         parsed = urlparse.urlparse(self.request.uri)
         group_id = parsed.path.split("/")[2]
 
-        # TODO = sanitize url
         if is_studentset_groupid_valid(group_id):
+            logging.info("group id is valid")
             cal = get_student_calendar(group_id)
             if cal:
+                logging.info("got a calendar from gorup id")
                 faculty, student_profile = cal.header_data['faculty'], cal.header_data['student_profile']
                 event_titles = set(["%s (%s) [%s]" %  (e['title'], e['type'], e['organizer']) for e in cal.events])
                 ical_url = "/student_set/ical/%s.ics" % group_id
@@ -55,6 +57,7 @@ class StudentSetSummary(webapp.RequestHandler):
                 path = os.path.join(os.path.dirname(__file__), 'templates/student.html')
                 self.response.out.write(template.render(path, template_values))
             else:
+                logging.info("did not receive a calendar")
                 self._render_not_found_page()
         else:
             self._render_not_found_page()
