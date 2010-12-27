@@ -1,14 +1,14 @@
 <html>
 <head>
-  <link type="text/css" rel="stylesheet" href="/stylesheets/blueprint/screen.css"  media="screen, projection"/>
-  <link type="text/css" rel="stylesheet" href="/stylesheets/blueprint/plugins/buttons/screen.css" media="screen, projection">
-  <link rel="stylesheet" href="/stylesheets/blueprint/print.css" type="text/css" media="print">
-  <!--[if  IE ]>
+    <link type="text/css" rel="stylesheet" href="/stylesheets/blueprint/screen.css"  media="screen, projection"/>
+    <link type="text/css" rel="stylesheet" href="/stylesheets/blueprint/plugins/buttons/screen.css" media="screen, projection">
+    <link rel="stylesheet" href="/stylesheets/blueprint/print.css" type="text/css" media="print">
+    <!--[if  IE ]>
     <link rel="stylesheet" href="/stylesheets/blueprint/ie.css" type="text/css" media="screen, projection">
-   <![endif]-->
+    <![endif]-->
     
-  <!-- Google Analytics-->
-  <script type="text/javascript">
+    <!-- Google Analytics-->
+    <script type="text/javascript">
 
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-20363215-1']);
@@ -19,94 +19,96 @@
       ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     })();
-  </script>
+    </script>
 
-  <title>{%block title%}{% endblock %}</title>
+    <title>{%block title%}{% endblock %}</title>
 </head>
-  <body>
+<body>
     <div class="container">
     <!--Site logo & stuff-->
     <div class="span-24 last">
-      <div id="banner">
-        <strong><a href="/"> Gehol Importer </a></strong>
-      </div>
-      <hr>
+        <div id="banner">
+            <strong><a href="/"> Gehol Importer </a></strong>
+        </div>
+        <hr>
     </div>
 
-    <!-- content -->
+    <!-- dynamic content -->
     <div class="span-15 colborder">
     {% block content %}{% endblock %}
     </div>
 
+        
     <!-- sidebar -->
     <div class="span-8 last">
-      <!-- About -->
-      <h3>About</h3>
-      <div class="box">
-        <p>
-          <a href="http://164.15.72.157/GeHoL/horaire_cours.php">GeHoL</a> is the scheduling system used at
-          <a href="http://www.ulb.ac.be">Brussels University.</a> It
-          is based on
-          the <a href="http://www.scientia.com/ca/products/planning/">Scientia&reg;
-          Course Planner</a>
-          platform, which is pretty much what would come out of a
-          slightly below average student project, not even with the best tools
-          the mid-nineties had to offer.
-          <br/><br/>
-          <a href="/">Gehol Importer</a> is a tool to convert GeHoL queries into something usable by calendar software such as
-          <a href="http://www.google.com/calendar">Google Calendar</a>,
-          <a href="http://www.apple.com/macosx/what-is-macosx/mail-ical-address-book.html">Apple iCal</a>,
-          <a href="http://www.mozilla.org/projects/calendar/sunbird/">Mozilla Sunbird</a>,
-          <a href="http://office.microsoft.com/en-us/outlook/">Microsoft Outlook</a>, the way it should have been from the start.
-        </p>
-        <p>
-           This service is still under development. We will try to keep the core functionality running, but you
-           are likely to experience changes as we add features and improve usability.
-        </p>
-        <p>
-          The authors of this application are not affiliated with the original GeHoL service.
-        </p>
-      </div>
-
-      <!--status-->
-      <h3>GeHoL Status</h3>
-      <div class="box">
-        {% if gehol_is_down %}
-          <span style="vertical-align:top;">
-            <img src="/stylesheets/blueprint/plugins/buttons/icons/cross.png" alt=""/>
-            GeHoL server is offline.
-          </span>
-          <br/>
-            Relax and try again later. There is nothing we can do right now.
-            <br/>
-        {% else %}
-          <span style="vertical-align:top;">
-            <img src="/stylesheets/blueprint/plugins/buttons/icons/tick.png" alt=""/>
-            GeHoL server is online
-          </span>
-          <br/>
-          Everything shiny, cap'n!
-        {% endif %}
-
-        <br/><br/>
-        <div class="quiet" style="text-align:right; font-style:italic;font-size:smaller;">
-           Checking every 30 minutes. <br/>
-           Last updated : {{ last_status_update }}
+        <!-- About -->
+        <h3>About</h3>
+        <div class="box">
+            <p>
+                <a href="http://164.15.72.157/GeHoL/horaire_cours.php">GeHoL</a> is the scheduling system used at
+                <a href="http://www.ulb.ac.be">Brussels University.</a> It
+                is based on
+                the <a href="http://www.scientia.com/ca/products/planning/">Scientia&reg; Course Planner</a>
+                platform. We think its interface is abysmal. We think no one should be forced to use what can best be described
+                as a slightly-below-average amateur project made in the mid-nineties.
+            </p>
+            <p>
+                <a href="/">Gehol Importer</a> is a tool to convert GeHoL queries into something usable by calendar software such as
+                <a href="http://www.google.com/calendar">Google Calendar</a>,
+                <a href="http://www.apple.com/macosx/what-is-macosx/mail-ical-address-book.html">Apple iCal</a>,
+                <a href="http://www.mozilla.org/projects/calendar/sunbird/">Mozilla Sunbird</a>,
+                <a href="http://office.microsoft.com/en-us/outlook/">Microsoft Outlook</a>, the way it should have been from the start.
+            </p>
+            <p>
+                This service is still under development. We will try to keep the core functionality running, but you
+                are likely to experience changes as we add features and improve usability
+                For more information, consult <a href="/questions.html">this page</a>.
+            </p>
+            <p>
+                The authors of this application are not affiliated with either the original GeHoL service
+                or Scientia&reg;.
+            </p>
         </div>
-      </div>
+
+        <!--status-->
+        <h3>GeHoL Status</h3>
+        <div class="box">
+            {% if gehol_is_down %}
+                <span style="vertical-align:top;">
+                <img src="/stylesheets/blueprint/plugins/buttons/icons/cross.png" alt=""/>
+                GeHoL server is offline.
+                </span>
+                <br/>
+                Relax and try again later. There is nothing we can do right now.
+                <br/>
+            {% else %}
+                <span style="vertical-align:top;">
+                    <img src="/stylesheets/blueprint/plugins/buttons/icons/tick.png" alt=""/>
+                    GeHoL server is online
+                </span>
+                <br/>
+                Everything shiny, cap'n!
+            {% endif %}
+
+            <br/><br/>
+            <div class="quiet" style="text-align:right; font-style:italic;font-size:smaller;">
+                Checking every 30 minutes. <br/>
+                Last updated : {{ last_status_update }}
+            </div>
+        </div>
     </div>
 
     <!--footer-->
     <div class="span-24 last">
-      <div style="text-align: center;">
-        <hr>
-        <p>
-           Painless layout made possible through the
-          <a href="http://www.blueprintcss.org/">Blueprint CSS framework</a>
-          <br/>
-          Powered by <a href="http://code.google.com/appengine/">Google App Engine</a>
-        </p>
-      </div>
+        <div style="text-align: center;">
+            <hr>
+            <p>
+                Painless layout made possible through the
+                <a href="http://www.blueprintcss.org/">Blueprint CSS framework</a>
+                <br/>
+                Powered by <a href="http://code.google.com/appengine/">Google App Engine</a>
+            </p>
+        </div>
     </div>
   </div>
 </body>
