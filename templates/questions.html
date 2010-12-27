@@ -9,6 +9,7 @@
 {% block content%}
 <div class="span-15">
 <br/><br/>
+
     <h3>Where do you get your data from and why should I trust the schedules I get from this service?</h3>
     <p>We fetch the data directly from the GeHoL service. The <a href="http://en.wikipedia.org/wiki/HTML">HTML</a>
         content is then parsed using the popular <a href="http://www.crummy.com/software/BeautifulSoup/">BeautifulSoup</a> python library.
@@ -23,12 +24,38 @@
     </p>
     <br/>
 
+
+
+    <br/>
+    <h3 id="geholurl">What do you mean by <i>"complete GeHoL URL"</i> ? </h3>
+    <p>
+        This service can get you two types of schedules. The first one is per-course schedule. Using the course mnemonic,
+        we can easily reconstruct the complete URL and fetch the data for you.
+        The second type of schedules, however, is problematic, and we need a little work on your part to generate the iCalendar files.
+    </p>
+    <p>
+        You'll need to go <a href="http://164.15.72.157/GeHoL/horaire_anet.php">here</a> and select the values of interest as you normally would.
+        The first two values are mandatory. The third one should be selected only if it makes sense to you. The fourth value won't be used, as we will
+        generate events for the whole term. At the end, you should get something like this:
+
+    <p>
+        <a href="/media/Horaires.jpg"><img src="/media/Horaires.jpg" width="100%" alt="Get yourself a GeHoL URL, for awesome superpowers" /></a>
+    </p>
+    <p>
+        Right click on the generated URL and copy it.
+        Come back to our main page, paste this URL in the input box, click the <b>Get Schedule</b> button.
+    </p>
+
+
+    <br/>
     <h3>Something went wrong, what can I do? </h3>
     <p>
         We tried to test this service with many different kind of schedules, from every faculty.
         However, parsing that kind of HTML is very fragile. Even more so when it sometimes comes back with incomplete data.
         We will soon add some sort of feedback strategy, so you can report unsuccessful queries.
     </p>
+
+
 
     <br/>
     <h3>The GeHoL server is down, now what?</h3>
@@ -37,11 +64,14 @@
         We try at least to show it clearly in the sidebar on the right.
     </p>
 
+
+
     <br/>
     <h3>Why is all the site in english ?</h3>
     <p>
         English is the language civilized people speak on the internet. Get used to it.
     </p>
+
 
 </div>
 

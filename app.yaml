@@ -7,10 +7,9 @@ handlers:
 - url: /stylesheets
   static_dir: stylesheets
 
+- url: /media
+  static_dir: media
 
 - url: /.*
   script: main.py
 
-
-- url: /geholstatus
-  script: main.py

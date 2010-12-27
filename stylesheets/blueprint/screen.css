@@ -281,3 +281,9 @@ hr.space {background:#fff;color:#fff;visibility:hidden;}
     width: 95%;
 
 }
+
+
+.faq-entry-link {
+    color:black;
+    text-decoration:none;
+}
