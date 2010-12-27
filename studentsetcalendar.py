@@ -101,15 +101,15 @@ class StudentSetIcalRenderer(webapp.RequestHandler):
     def get(self):
         parsed = urlparse.urlparse(self.request.uri)
         group_id = parsed.path.split("/")[4].rstrip(".ics")
-        quadrimester = parsed.path.split("/")[3]
+        term = parsed.path.split("/")[3]
 
-        if quadrimester in ("q1", "q2"):
-            cal = self.calendar_fetch_funcs[quadrimester](group_id)
+        if term in ("q1", "q2"):
+            cal = self.calendar_fetch_funcs[term](group_id)
             if cal:
                 ical_data = convert_student_calendar_to_ical_string(cal)
 
                 student_profile = cal.header_data['student_profile']
-                ical_filename = "ULB - "+ quadrimester + " - " + student_profile.encode("iso-8859-1")
+                ical_filename = "ULB - "+ term + " - " + student_profile.encode("iso-8859-1")
                 self.response.headers['Content-Type'] = "text/calendar; charset=utf-8"
                 self.response.headers['Content-disposition'] = "attachment; filename=%s.ics" % ical_filename
                 self.response.out.write(ical_data)
