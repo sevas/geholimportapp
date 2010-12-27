@@ -47,6 +47,16 @@ class Redirect(webapp.RequestHandler):
                 self.redirect("/")
 
 
+class QuestionsPage(webapp.RequestHandler):
+    def get(self):
+        template_values = {'gehol_is_down': is_status_down(),
+                          'last_status_update': get_last_status_update()
+        }
+
+        path = os.path.join(os.path.dirname(__file__), 'templates/questions.html')
+        self.response.out.write(template.render(path, template_values))
+
+
 
 application = webapp.WSGIApplication(
                                      [('/', MainPage),
@@ -56,7 +66,8 @@ application = webapp.WSGIApplication(
                                      ('/course/.*', CourseCalendar),
                                      ('/geholstatus',  UpdateGeholStatus),
                                      ('/student_set/ical/q./.*\.ics', StudentSetIcalRenderer),
-                                     ('/student_set/.*', StudentSetSummary )
+                                     ('/student_set/.*', StudentSetSummary ),
+                                     ('/questions.*', QuestionsPage)
                                      ],
                                      debug=True)
 
