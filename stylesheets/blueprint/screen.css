@@ -282,8 +282,14 @@ hr.space {background:#fff;color:#fff;visibility:hidden;}
 
 }
 
+.faq-entry {
+    border-bottom: solid #ddd 1px;
+    padding-bottom:64px;
+    padding-top:8px;
+}
 
-.faq-entry-link {
-    color:black;
-    text-decoration:none;
+.faq-entry-last {
+    border-bottom:none;
+    padding-bottom:64px;
+    padding-top:16px;
 }
