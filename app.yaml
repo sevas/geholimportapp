@@ -10,6 +10,10 @@ handlers:
 - url: /media
   static_dir: media
 
+- url: /favicon.ico
+  static_files: media/favicon.ico
+  upload: media/favicon.ico
+
 - url: /.*
   script: main.py
 
