@@ -109,7 +109,7 @@ class StudentSetIcalRenderer(webapp.RequestHandler):
                 ical_data = convert_student_calendar_to_ical_string(cal)
 
                 student_profile = cal.header_data['student_profile']
-                ical_filename = "ULB - "+ term + " - " + student_profile.encode("iso-8859-1")
+                ical_filename = "ULB - "+ term.upper() + " - " + student_profile.encode("iso-8859-1")
                 self.response.headers['Content-Type'] = "text/calendar; charset=utf-8"
                 self.response.headers['Content-disposition'] = "attachment; filename=%s.ics" % ical_filename
                 self.response.out.write(ical_data)
