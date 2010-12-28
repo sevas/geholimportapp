@@ -11,7 +11,7 @@ def get_calendar(course_mnemonic):
     gehol_proxy = gehol.GeholProxy(host)
     try:
         return gehol_proxy.get_course_calendar(course_mnemonic)
-    except GeholException:
+    except gehol.GeholException:
         return None
 
 
@@ -39,10 +39,12 @@ def get_student_q2_calendar(group_id):
 
 
 def get_student_calendar(group_id, weeks):
-    gehol_proxy = gehol.GeholProxy(host)
-    cal = gehol_proxy.get_studentset_calendar(group_id, weeks)
-    return cal
-    
+    try:
+        gehol_proxy = gehol.GeholProxy(host)
+        cal = gehol_proxy.get_studentset_calendar(group_id, weeks)
+        return cal
+    except gehol.GeholException:
+        return None
 
 def convert_student_calendar_to_ical_string(cal):
     try:
