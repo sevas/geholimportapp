@@ -3,10 +3,15 @@ import urlparse
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from status import is_status_down, get_last_status_update
-from geholwrapper import get_calendar
+from geholwrapper import get_calendar, rebuild_course_gehol_url
 from utils import is_course_mnemo_valid, render_course_notfound_page
 from savedrequests import PreviousRequest
 from gehol.utils import convert_weekspan_to_dates
+
+def rebuild_gehol_url(group_id):
+    return "http://164.15.72.157:8080/Reporting/Individual;Student%20Set%20Groups;id;"+group_id+"?&template=Ann%E9e%20d%27%E9tude&weeks=1-14&days=1-6&periods=5-33&width=0&height=0"
+
+
 
 class CourseCalendar(webapp.RequestHandler):
     def get(self):
@@ -30,7 +35,8 @@ class CourseCalendar(webapp.RequestHandler):
                                     'mnemo':course_mnemo,
                                     'ical_url':ical_url,
                                     'csv_url':csv_url,
-                                    'caption':caption
+                                    'caption':caption,
+                                    'gehol_url': rebuild_course_gehol_url(course_mnemo)
                     }
 
                     template_values.update(cal.metadata)
