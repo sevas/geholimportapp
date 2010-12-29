@@ -32,7 +32,6 @@ class MainPage(webapp.RequestHandler):
         query = Datastore.all().order('-date')
         return query.fetch(10)
 
-
 class Redirect(webapp.RequestHandler):
     def post(self):
         course_mnemo = self.request.get('course_mnemo')
@@ -67,7 +66,8 @@ application = webapp.WSGIApplication(
                                      ('/geholstatus',  UpdateGeholStatus),
                                      ('/student_set/ical/q./.*\.ics', StudentSetIcalRenderer),
                                      ('/student_set/.*', StudentSetSummary ),
-                                     ('/questions.*', QuestionsPage)
+                                     ('/questions.*', QuestionsPage),
+                                     #('.*', MainPage)
                                      ],
                                      debug=True)
 
