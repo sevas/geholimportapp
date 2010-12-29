@@ -56,3 +56,10 @@ def convert_student_calendar_to_ical_string(cal):
         return ical_data.as_string()
     except Exception,e:
         return None
+
+
+def rebuild_studentset_gehol_url(group_id):
+    return "http://164.15.72.157:8080/Reporting/Individual;Student%20Set%20Groups;id;"+group_id+"?&template=Ann%E9e%20d%27%E9tude&weeks=1-14&days=1-6&periods=5-33&width=0&height=0"
+
+def rebuild_course_gehol_url(course_mnemo):
+    return "http://164.15.72.157:8080/Reporting/Individual;Courses;name;"+course_mnemo+"?days=1-6&height=0&width=0&periods=5-29&template=cours&weeks=1-36"

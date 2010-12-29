@@ -7,9 +7,19 @@
 {% block content %}
 
     <div class="span-15">
-        <h2>Summary for <strong>{{mnemo}}</strong></h2>
-        <i>Title:</i> {{title}} <br/>
-        <i>Lecturer(s):</i> {{tutor}} <br/>
+        <h3>We fetched some information for  <strong>{{mnemo}}</strong>  from this <a href="{{gehol_url}}">URL</a>.</h3>
+
+        We found the schedule for the following course:
+        <div style="padding-left:32px;padding-top:16px;">
+            <i>Title: </i>{{title}} <br/>
+            {% if tutor %}
+               <i>Lecturer(s):</i> {{tutor}} <br/>
+            {% else %}
+                <i>No lecturer information was found</i><br/>
+            {% endif %}
+        </div>
+
+
 
     <br/> <br/>
         
