@@ -29,6 +29,16 @@
     <div class="quiet" style="font-style:italic;"> Second term : {{q2_span}}</div>
     </div>
 
+    {% if show_test_session %}
+        <div class="box" style="text-align:center">
+            <h4><a href="{{ical_tests_jan_url}}">{{ical_tests_jan_url_title}}.ics</a></h4>
+            <div class="quiet" style="font-style:italic;"> January 2010 test session : {{tests_jan_span}}</div>
+        </div>
+    {% else %}
+
+        No events were found for the january tests period. Maybe your faculty is not using the system yet. 
+    {% endif%}
+
         
     <br/><br/>
     <p>
