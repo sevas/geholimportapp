@@ -5,9 +5,8 @@ from geholexceptions import *
 
 class BaseCalendar(object):
     def __init__(self):
-        pass
-
-
+        self.events = []
+        
     @property
     def name(self):
         raise NotImplementedError
@@ -21,6 +20,10 @@ class BaseCalendar(object):
     @staticmethod
     def _is_file_type_object(f):
         return hasattr(f, 'read')
+
+
+    def has_events(self):
+        return len(self.events)
 
 
     def _guess_query_error(self, html_content):
