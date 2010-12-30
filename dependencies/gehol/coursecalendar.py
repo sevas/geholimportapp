@@ -12,7 +12,6 @@ class CourseCalendar(BaseCalendar):
         if self._is_file_type_object(markup):
             markup = markup.read()
         self.html_content = markup
-        self.events = []
         self.metadata = {}
         self._load_events()
 

@@ -16,7 +16,6 @@ class StudentSetCalendar(BaseCalendar):
         self.html_content = markup
         soup = BeautifulSoup(self.html_content, fromEncoding='iso-8859-1')
         self.header_data = {'student_profile':None, 'faculty':None}
-        self.events = []
         self._load_content_from_soup(soup)
 
 

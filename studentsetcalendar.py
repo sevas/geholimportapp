@@ -7,7 +7,7 @@ import logging
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from status import is_status_down, get_last_status_update
-from geholwrapper import get_student_q1_calendar, get_student_q2_calendar,convert_student_calendar_to_ical_string
+from geholwrapper import get_student_q1_calendar, get_student_q2_calendar,convert_student_calendar_to_ical_string, get_student_jan_calendar
 from savedrequests import PreviousStudentSetRequests
 from gehol.utils import convert_weekspan_to_dates
 
@@ -41,14 +41,13 @@ class StudentSetSummary(webapp.RequestHandler):
                 faculty, student_profile = cal.header_data['faculty'], cal.header_data['student_profile']
                 event_titles = set(["%s (%s) [%s]" %  (e['title'], e['type'], e['organizer']) for e in cal.events])
 
+
                 ical_urls = ["/student_set/ical/%s/%s.ics" % (q, group_id) for q in ("q1", "q2")]
                 ical_url_titles = ["ULB - %s -  %s" % (q, student_profile) for q in ("Q1", "Q2")]
-
+                
 
                 q1_span = convert_weekspan_to_dates("1-14", "20/09/2010")
                 q2_span = convert_weekspan_to_dates("21-36", "20/09/2010")
-
-
 
                 template_values = {'gehol_is_down': is_status_down(),
                                  'last_status_update': get_last_status_update(),
@@ -61,8 +60,21 @@ class StudentSetSummary(webapp.RequestHandler):
                                  'ical_q1_url_title':ical_url_titles[0],
                                  'ical_q2_url_title':ical_url_titles[1],
                                  'q1_span': "from %s to %s" % tuple([q1_span[i].strftime("%B %d, %Y") for i in (0, 1)]),
-                                 'q2_span': "from %s to %s" % tuple([q2_span[i].strftime("%B %d, %Y") for i in (0, 1)])
+                                 'q2_span': "from %s to %s" % tuple([q2_span[i].strftime("%B %d, %Y") for i in (0, 1)]),
                 }
+
+                
+                january_exams_values = {}
+                if self._is_exam_session_available(group_id):
+
+                    january_exams_span = convert_weekspan_to_dates("17-19", "20/09/2010")
+
+                    january_exams_values = {'ical_january_exams_url':"/student_set/ical/january_exams/%s.ics" % (group_id),
+                                            'ical_january_exams_title':"ULB - January exams session -  %s" % (student_profile),
+                                            'january_exams_span':"from %s to %s" % tuple([january_exams_span[i].strftime("%B %d, %Y") for i in (0, 1)]),
+                                            'show_january_exams_session': True
+                    }
+                template_values.update(january_exams_values)
 
                 self._save_successful_request(student_profile, "/student_set/%s" % group_id)
                 path = os.path.join(os.path.dirname(__file__), 'templates/student.html')
@@ -74,6 +86,11 @@ class StudentSetSummary(webapp.RequestHandler):
             logging.debug("group id '%s' is not valid" % group_id)
             self._render_not_found_page()
 
+
+    def _is_exam_session_available(self, group_id):
+        cal = get_student_jan_calendar(group_id)
+        logging.info(cal.events)
+        return cal.has_events()
 
     def _render_not_found_page(self):
         render_studentset_notfound_page(self, resource_type="summary page")
@@ -97,13 +114,14 @@ class StudentSetSummary(webapp.RequestHandler):
 
 class StudentSetIcalRenderer(webapp.RequestHandler):
     calendar_fetch_funcs = {'q1': get_student_q1_calendar,
-                            'q2': get_student_q2_calendar}
+                            'q2': get_student_q2_calendar,
+                            'january_exams': get_student_jan_calendar}
     def get(self):
         parsed = urlparse.urlparse(self.request.uri)
         group_id = parsed.path.split("/")[4].rstrip(".ics")
         term = parsed.path.split("/")[3]
 
-        if term in ("q1", "q2"):
+        if term in ("q1", "q2", "january_exams"):
             cal = self.calendar_fetch_funcs[term](group_id)
             if cal:
                 ical_data = convert_student_calendar_to_ical_string(cal)

@@ -15,7 +15,12 @@
     </div>
 
     <br/><br/>
-    <h3>Two calendars can be generated. Pick what you need.</h3>
+
+     {% if show_january_exams_session %}
+        <h3>Three calendars can be generated. Pick what you need.</h3>
+     {% else %}
+        <h3>Two calendars can be generated. Pick what you need.</h3>
+    {% endif %}
 
 
     <div class="box" style="text-align:center">
@@ -25,19 +30,22 @@
 
 
     <div class="box" style="text-align:center">
-    <h4><a href="{{ical_q2_url}}">{{ical_q2_url_title}}.ics</a></h4>
-    <div class="quiet" style="font-style:italic;"> Second term : {{q2_span}}</div>
+            <h4><a href="{{ical_q2_url}}">{{ical_q2_url_title}}.ics</a></h4>
+        <div class="quiet" style="font-style:italic;"> Second term : {{q2_span}}</div>
     </div>
 
-    {% if show_test_session %}
+    {% if show_january_exams_session %}
         <div class="box" style="text-align:center">
-            <h4><a href="{{ical_tests_jan_url}}">{{ical_tests_jan_url_title}}.ics</a></h4>
-            <div class="quiet" style="font-style:italic;"> January 2010 test session : {{tests_jan_span}}</div>
+            <h4><a href="{{ical_january_exams_url}}">{{ical_january_exams_title}}.ics</a></h4>
+            <div class="quiet" style="font-style:italic;"> January examinations session : {{january_exams_span}}  </div>
         </div>
     {% else %}
+        <div class="box" style="text-align:center">
+            <h4>We tried to find your January exam session, but it yielded no result</h4>
+              <div class="quiet" style="font-style:italic;"> Maybe your faculty isn't using that system yet.</div>
+       </div>
+    {% endif %}
 
-        No events were found for the january tests period. Maybe your faculty is not using the system yet. 
-    {% endif%}
 
         
     <br/><br/>
@@ -48,17 +56,16 @@
         in Google Calendar.
     </p>
 
+    <p>
+        <strong>Important reminder:</strong> The files you download and import from this service are frozen snapshots taken from the GeHoL service.
+        We hope you find it useful, but we won't be able to notify you of possible schedule changes. We have no technical mean to do so.
 
+        <strong>To be notified of schedule changes, don't forget to check your official faculty announcements.</strong>
+        Hopefully they have an <a href="http://en.wikipedia.org/wiki/RSS">RSS</a>  feed or something.
+
+    </p>
    </div>
         
-
-     <!--br/>
-    <h3>This schedule contains events for the following courses:</h3>
-    <ul>
-    {% for event in cal_events %}
-        <li>{{event}}</li>
-    {% endfor %}
-    </ul-->
 
         
 

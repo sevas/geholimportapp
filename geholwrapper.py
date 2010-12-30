@@ -38,6 +38,10 @@ def get_student_q2_calendar(group_id):
     return get_student_calendar(group_id, "21-36")
 
 
+def get_student_jan_calendar(group_id):
+    return get_student_calendar(group_id, "17-19")
+
+
 def get_student_calendar(group_id, weeks):
     try:
         gehol_proxy = gehol.GeholProxy(host)
