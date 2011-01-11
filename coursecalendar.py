@@ -1,7 +1,9 @@
 import os
 import urlparse
+import logging
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
+from google.appengine.api.urlfetch import DownloadError
 from status import is_status_down, get_last_status_update
 from geholwrapper import get_calendar, rebuild_course_gehol_url
 from utils import is_course_mnemo_valid, render_course_notfound_page
@@ -23,35 +25,48 @@ class CourseCalendar(webapp.RequestHandler):
             if is_status_down():
                 self._render_gehol_down_page(course_mnemo)
             else:
-                cal = get_calendar(course_mnemo)
+                try:
+                    cal = get_calendar(course_mnemo)
+                except DownloadError,e:
+                    logging.error("Could not fetch page before deadline")
+                    path = os.path.join(os.path.dirname(__file__), 'templates/deadline_exceeded.html')
+                    request_handler.response.out.write(template.render(path, {}))
+                    return
+
                 if cal:
-                    ical_url, csv_url = self._build_file_urls(course_mnemo)
-                    start, end = convert_weekspan_to_dates("1-36", "20/09/2010")
-                    caption = "Schedule from %s to %s" % (start.strftime("%B %d, %Y"),
-                                                          end.strftime("%B %d, %Y"))
-
-                    template_values = {'gehol_is_down': is_status_down(),
-                                     'last_status_update': get_last_status_update(),
-                                    'mnemo':course_mnemo,
-                                    'ical_url':ical_url,
-                                    'csv_url':csv_url,
-                                    'caption':caption,
-                                    'gehol_url': rebuild_course_gehol_url(course_mnemo)
-                    }
-
-                    template_values.update(cal.metadata)
-
-                    path = os.path.join(os.path.dirname(__file__), 'templates/course.html')
-                    self.response.out.write(template.render(path, template_values))
-
-                    request = PreviousRequest()
-                    request.content = course_mnemo
-                    request.put()
+                    self._render_calendar_summary(cal, course_mnemo)
+                    self._save_successful_request(course_mnemo)
                 else:
                     self._render_not_found_page(course_mnemo)
         else:
             self._render_not_found_page(course_mnemo)
             
+
+    def _render_calendar_summary(self, cal, course_mnemo):
+        ical_url, csv_url = self._build_file_urls(course_mnemo)
+        start, end = convert_weekspan_to_dates("1-36", "20/09/2010")
+        caption = "Schedule from %s to %s" % (start.strftime("%B %d, %Y"),
+                                              end.strftime("%B %d, %Y"))
+
+        template_values = {'gehol_is_down': is_status_down(),
+                         'last_status_update': get_last_status_update(),
+                        'mnemo':course_mnemo,
+                        'ical_url':ical_url,
+                        'csv_url':csv_url,
+                        'caption':caption,
+                        'gehol_url': rebuild_course_gehol_url(course_mnemo)
+        }
+
+        template_values.update(cal.metadata)
+        path = os.path.join(os.path.dirname(__file__), 'templates/course.html')
+        self.response.out.write(template.render(path, template_values))
+
+
+    def _save_successful_request(self, course_mnemo):
+        request = PreviousRequest()
+        request.content = course_mnemo
+        request.put()
+
 
     def _render_not_found_page(self, course_mnemo):
         render_course_notfound_page(self, course_mnemo, "summary page")
