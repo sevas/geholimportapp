@@ -8,6 +8,7 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from google.appengine.api.urlfetch import DownloadError
 from status import is_status_down, get_last_status_update
+from utils import render_deadline_exceeded_page
 from geholwrapper import get_student_q1_calendar, get_student_q2_calendar,convert_student_calendar_to_ical_string, get_student_jan_calendar
 from savedrequests import PreviousStudentSetRequests
 from gehol.utils import convert_weekspan_to_dates
@@ -54,8 +55,7 @@ class StudentSetSummary(webapp.RequestHandler):
                     cal = get_student_q1_calendar(group_id)
                 except DownloadError,e:
                     logging.error("Could not fetch page before deadline")
-                    path = os.path.join(os.path.dirname(__file__), 'templates/deadline_exceeded.html')
-                    request_handler.response.out.write(template.render(path, {}))
+                    render_deadline_exceeded_page(self)
                     return
                 if cal:
                     self._render_calendar_summary(cal, group_id)
@@ -162,8 +162,7 @@ class StudentSetIcalRenderer(webapp.RequestHandler):
                     cal = self.calendar_fetch_funcs[term](group_id)
                 except DownloadError,e:
                     logging.error("Could not fetch page before deadline")
-                    path = os.path.join(os.path.dirname(__file__), 'templates/deadline_exceeded.html')
-                    request_handler.response.out.write(template.render(path, {}))
+                    render_deadline_exceeded_page(self)
 
                 if cal:
                     ical_data = convert_student_calendar_to_ical_string(cal)

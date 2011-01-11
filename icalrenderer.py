@@ -6,7 +6,7 @@ from google.appengine.ext.webapp import template
 from google.appengine.api.urlfetch import DownloadError
 from geholwrapper import get_calendar, convert_course_calendar_to_ical
 from status import is_status_down, get_last_status_update
-from utils import is_course_mnemo_valid, render_course_notfound_page
+from utils import is_course_mnemo_valid, render_course_notfound_page, render_deadline_exceeded_page
 
 class IcalRenderer(webapp.RequestHandler):
     def get(self):
@@ -21,8 +21,7 @@ class IcalRenderer(webapp.RequestHandler):
                     cal = get_calendar(course_mnemo)
                 except DownloadError,e:
                     logging.error("Could not fetch page before deadline")
-                    path = os.path.join(os.path.dirname(__file__), 'templates/deadline_exceeded.html')
-                    request_handler.response.out.write(template.render(path, {}))
+                    render_deadline_exceeded_page(self)
                     return
                 if cal:
                     ical_content = convert_course_calendar_to_ical(cal)

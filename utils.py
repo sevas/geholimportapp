@@ -37,3 +37,10 @@ def render_course_notfound_page(request_handler, mnemo, resource_type):
     }
     path = os.path.join(os.path.dirname(__file__), 'templates/course_notfound.html')
     request_handler.response.out.write(template.render(path, template_values))
+
+def render_deadline_exceeded_page(request_handler):
+    template_values = {'gehol_is_down': is_status_down(),
+                       'last_status_update': get_last_status_update()
+    }
+    path = os.path.join(os.path.dirname(__file__), 'templates/deadline_exceeded.html')
+    request_handler.response.out.write(template.render(path, template_values))
