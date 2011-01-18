@@ -1,5 +1,1 @@
 User-agent: *
-Disallow: /course/ical/*
-Disallow: /course/csv/*
-Disallow: /student_set/q1/ical/*
-Disallow: /student_set/q2/ical/*
