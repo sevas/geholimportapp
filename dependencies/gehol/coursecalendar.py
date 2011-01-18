@@ -116,7 +116,7 @@ class CourseCalendar(BaseCalendar):
                     # activity
                     event['type'] = cell[1].tr.td.contents[0].string
                     current_time = current_time + event['duration']
-                    event['organizer'] = self.metadata['tutor']
+                    event['organizer'] = ""
                     event['title'] = "%s - %s" % (self.metadata['mnemo'], self.metadata['title'])
                     event_list.append(event)
                 else:

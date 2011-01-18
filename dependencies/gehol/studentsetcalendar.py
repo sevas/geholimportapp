@@ -172,7 +172,7 @@ class StudentSetCalendar(BaseCalendar):
         return {
             'type':course_type,
             'location':location,
-            'organizer':course_tutor,
+            'organizer':"",
             'title':course_title,
             'weeks':split_weeks(course_weeks),
             'num_timeslots':num_timeslots,
