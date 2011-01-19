@@ -11,101 +11,148 @@
     <br/><br/>
 
     <div class="faq-entry">
-        <h3  id="data">Where do you get your data from and why should I trust the schedules I get from this service?</h3>
-        <p>We fetch the data directly from the GeHoL service. The <a href="http://en.wikipedia.org/wiki/HTML">HTML</a>
-            content is then parsed using the popular <a href="http://www.crummy.com/software/BeautifulSoup/">BeautifulSoup</a> python library.
-            Events are then created and converted to <a href="http://en.wikipedia.org/wiki/ICalendar">iCalendar</a> or
-            <a href="http://en.wikipedia.org/wiki/Comma-separated_values">CSV</a> files.
-            As far as we're concerned, these files are just another way to present the exact same information.
-        </p>
-        <p>
-            If you won't take our word for it, you can have a look at the source code of our underlying library on this
-            <a href="http://bitbucket.org/sevas/geholimport">bitbucket repository</a>.
-            You can even contribute, if you're into that sort of things.
-            The source code for this entire web application should be released under the same terms, as soon as possible.
-        </p>
+      <h3  id="data">Where do you get your data from and why should I trust the schedules I get from this service?</h3>
+      <p>We fetch the data directly from the GeHoL
+        service. The <a href="http://en.wikipedia.org/wiki/HTML">HTML</a>
+        content is then parsed using the
+        popular <a href="http://www.crummy.com/software/BeautifulSoup/">BeautifulSoup</a>
+        python library.  Events are then created and converted
+        to <a href="http://en.wikipedia.org/wiki/ICalendar">iCalendar</a>
+        or
+        <a href="http://en.wikipedia.org/wiki/Comma-separated_values">CSV</a>
+        files.  As far as we're concerned, these files are just
+        another way to present the exact same information.
+      </p>
+      <p>
+        If you won't take our word for it, you can have a look at the
+        source code of our underlying library on this
+        <a href="http://bitbucket.org/sevas/geholimport">bitbucket
+        repository</a>.  You can even contribute, if you're into that
+        sort of things.  The source code for this entire web
+        application should be released under the same terms, as soon
+        as possible.
+      </p>
     </div>
 
     <div class="faq-entry">
-        <h3 id="files">I clicked a link. I received some file. What do I do now?</h3>
-        <p>We generate two kinds of files. CSV files can be imported in Google Calendar. ICS files can be imported in all major calendar applications.</p>
+        <h3 id="files">
+          I clicked a link. I received some file. What do I do now?
+        </h3>
 
+        <p>We generate two kinds of files. CSV files can be imported
+          in Google Calendar. ICS files can be imported in all major
+          calendar applications.</p>
 
-        <p>By doing so,
-          keep in mind that the files you download and import from this service are frozen
-            snapshots taken from the GeHoL service. These files will contain schedules as they appear on GeHoL, at the time you
-            clicked the download link.
-            We hope you find it useful, but we won't be able to notify you of possible schedule changes if they occur.
-            We have no technical mean to do so. <strong>To be notified of schedule changes, don't forget to check your official
-            faculty announcements.</strong> </p>
+        <p>By doing so, keep in mind that the files you download and
+          import from this service are frozen snapshots taken from the
+          GeHoL service. These files will contain schedules as they
+          appear on GeHoL, at the time you clicked the download link.
+          We hope you find it useful, but we won't be able to notify
+          you of possible schedule changes if they occur.  We have no
+          technical mean to do so. <strong>To be notified of schedule
+          changes, don't forget to check your official faculty
+          announcements.</strong> </p>
     </div>
 
     <div class="faq-entry">
         <h3 id="subscribe">Can I add an iCalendar URL as a live feed?</h3>
         <p><strong>TL;DR : </strong>Yes you can.</p>
         
-        <p>The files are generated on the fly, so you can opy the link and subscribe to it as a <strong>live feed</strong>, if your application supports it.
-            When doing that, your calendar application will query the system from time to time, and update your events if necessary.
-            This means that, if a schedule gets modified on GeHoL, the changes will appears automatically in your application.
+        <p>The files are generated on the fly, so you can copy the link
+          and subscribe to it as a <strong>live feed</strong>, if your
+          application supports it.
+
+          By doing so, your calendar application will try to
+          refresh and update the events periodically.
+
+          It means that, if a schedule gets modified on GeHoL, the
+          changes will appears automatically in your application.
         </p>
 
-        <p>This has been tested with Google Calendar and Apple iCal. However, we have no control on how often your
-            calendar application will try to refresh the events. <strong>We still strongly advice you to check your official faculty announcements
-            for that kind of information</strong>. 
+        <p>
+          This has been tested with Google Calendar and Apple
+          iCal. However, we have no control on how often your
+          calendar application will try to refresh the
+          events. 
+          <strong>We still strongly advise to check your
+            official faculty announcements
+            for that kind of information</strong>. <br/>
+          If no such communication channel exists, well, you should
+          probably ask for it.
         </p>
-
     </div>
 
 
     <div class="faq-entry">
         <h3  id="usability_matters">Why did you do it?</h3>
-        <p>If we look past the rather irritating visual presentation, one fundamental flaw of the GeHoL/Scientia&reg; paradigm is
-          the way the information is presented.</p>
+        <p>If we look past the rather irritating visual presentation,
+          one fundamental flaw of the GeHoL/Scientia&reg; paradigm is
+          the way information is presented.</p>
 
         <p>To take one of the most extreme examples, we don't think
-          anyone's problem is being solved by this kind of schedule (click on the
-          image to witness it in its full glory):</p>
+          anyone's problem is being solved by this kind of schedule
+          (click on the image to witness it in its full glory):</p>
 
         <p><a href="/media/Cours.png"><img src="/media/cours_truncated.png"
                                            width="100%"
                                            alt="extreme scheduling"
-                                           title="GEHOL, Y U NO HELPFUL?!" /></a></p>
+                                           title="GEHOL, Y U NO
+                                           HELPFUL?!" /></a>
+        </p>
 
-        <p>Even with a simpler example, extracting useful information from each event box is tiresome and error-prone.
-           Why should people have to convert an arbitrary week number into a real date ?</p>
+        <p>Even with a simpler example, extracting useful information
+           from each event box is tiresome and error-prone.  Why
+           should people have to convert an arbitrary week number into
+           a real date ?
+        </p>
         
-        <p>The purpose of a calendar system is to help you know when some important events occur.
+        <p>The purpose of a calendar system is to help you know when
+          some important events occur.
 
-          We think people should be able to integrate a schedule
-          in their favorite calendar application.
+          We think people should be able to integrate a schedule in
+          their favorite calendar application.
 
-          Providing an <a href="http://en.wikipedia.org/wiki/ICalendar">iCalendar</a>
-          file is the best way to achieve that.</p>
-
+          Providing
+          an <a href="http://en.wikipedia.org/wiki/ICalendar">iCalendar</a>
+          file is the best way to achieve that.
+        </p>
     </div>
 
 
     <div class="faq-entry">
-        <h3 id="geholurl">What do you mean by <i>"complete GeHoL URL"</i> ? </h3>
+        <h3 id="geholurl">What do you mean by <em>"complete GeHoL URL"</em> ? </h3>
         <p>
-            This service can get you two types of schedules. The first one is per-course schedule. Using the course mnemonic,
-            we can easily reconstruct the complete URL and fetch the data for you.
-            The second type of schedules, however, is problematic, and we need a little work on your part to generate the iCalendar files.
+            This service can get you two types of schedules. The first
+            one is per-course schedule. Using the course mnemonic, we
+            can easily reconstruct the complete URL and fetch the data
+            for you.  The second type of schedules, however, is
+            problematic, and we need a little work on your part to
+            generate the iCalendar files.
         </p>
         <p>
-            You'll need to go <a href="http://164.15.72.157/GeHoL/horaire_anet.php">here</a> and select the values of interest as you normally would.
-            The first two values are mandatory. The third one should be selected only if it makes sense to you. The fourth value won't be used, as we will
-            generate events for the whole term. At the end, you should get something like this:
+            You'll need to
+            go <a href="http://164.15.72.157/GeHoL/horaire_anet.php">here</a>
+            and select the values of interest as you normally would.
+            The first two values are mandatory. The third one should
+            be selected only if it makes sense to you. The fourth
+            value won't be used, as we will generate events for the
+            whole term. At the end, you should get something like
+            this:
         </p>
         <p>
-            <a href="/media/Horaires.png"><img src="/media/Horaires.png" width="100%" alt="URL copying" title="Get yourself a GeHoL URL, for awesome superpowers" /></a>
+            <a href="/media/Horaires.png"><img src="/media/Horaires.png"
+            width="100%" alt="URL copying" title="Get yourself a GeHoL
+            URL, for awesome superpowers" /></a>
         </p>
         <p>
             Right click on the generated URL and copy it.
-            Come back to our main page, paste this URL in the input box, click the <b>Get Schedule</b> button:
+            Come back to our main page, paste this URL in the input
+            box, click the <b>Get Schedule</b> button:
         </p>
         <p>
-            <a href="/media/GeholImporter.png"><img src="/media/GeholImporter.png" width="100%" alt="URL pasting" /></a>
+            <a href="/media/GeholImporter.png"><img src="/media/GeholImporter.png"
+            width="100%" alt="URL pasting" /></a>
+
 
         </p>
     </div>
@@ -114,11 +161,16 @@
     <div class="faq-entry">
         <h3  id="snap">Something went wrong, what can I do? </h3>
         <p>
-            We tried to test this service with many different sorts of schedules, from every faculty.
-            However, parsing that kind of HTML is very fragile. We're not helped by the fact that the GeHoL/Scientia&reg;
-            service sometimes yields incomplete data.
-            It would help if you could report unsuccessful queries to this address :
-            <a href="mailto:geholimportapp@gmail.com?subject=Something about Gehol Importer">geholimportapp@gmail.com</a>.
+            We tried to test this service with many different sorts of
+            schedules, from every faculty.
+
+            However, parsing that kind of HTML is very fragile. We're
+            not helped by the fact that the GeHoL/Scientia&reg;
+
+            service sometimes yields incomplete data.  It would help
+            if you could report unsuccessful queries to this address :
+            <a href="mailto:geholimportapp@gmail.com?subject=Something
+            about Gehol Importer">geholimportapp@gmail.com</a>.
         </p>
     </div>
 
@@ -126,8 +178,12 @@
     <div class="faq-entry">
         <h3  id="gehol_down">The GeHoL server is down, now what?</h3>
         <p>
-            We have no control over that server. Sometimes it gets disconnected from the internet with no indication of what is going on.
-            We try at least to show it clearly in the sidebar on the right.
+            We have no control over that server. Sometimes it gets
+            disconnected from the internet with no indication of what
+            is going on.
+
+            We try at least to show it clearly in the sidebar on the
+            right.
         </p>
     </div>
 
@@ -137,29 +193,37 @@
         <p>
             Yes. Yes it does. And we give up trying to fix it.
 
-            You probably should not explore the internet with that anyway, and try one of the
+            You probably should not explore the internet with that
+            anyway, and try one of the
             <a href="http://www.google.com/chrome/intl/en/landing_chrome.html?hl=en">many</a>
             <a href="http://www.mozilla.com/en-US/firefox/">lovely</a>
             <a href="http://www.apple.com/safari/">alternatives</a>.
         </p>
         <p>
-            <span class="quiet"><i>Update: the layout should be fixed now. The above remark is still valid, though</i></span>
+            <span class="quiet"><i>Update: most of the layout issues
+            should be fixed now. The above remark is still valid,
+            though</i></span>
+
         </p>
     </div>
 
     <div class="faq-entry">
         <h3  id="credits">The favicon looks like a timeless piece of art. How did you do it ? </h3>
         <p>
-            This beautifully crafted artwork comes from the <a href="http://pc.de/icons/">Dusseldorf</a> icon set. This icon set was released
-            under the <a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Licence </a>,
-            therefore, this entry exists.
+          This beautifully crafted artwork comes from
+          the <a href="http://pc.de/icons/">Dusseldorf</a> icon
+          set. This icon set was released under
+          the <a href="http://creativecommons.org/licenses/by/3.0/">Creative
+          Commons Attribution 3.0 Licence </a>, therefore, this entry
+          exists.
         </p>
     </div>
 
     <div class="faq-entry-last">
         <h3  id="i18n">Why is all the site in english ?</h3>
         <p>
-            English is the language civilized people speak on the internet. Get used to it.
+            English is the language civilized people speak on the
+            internet. Get used to it.
         </p>
     </div>
 

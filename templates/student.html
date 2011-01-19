@@ -1,74 +1,85 @@
 {% extends "main.html" %}
 
 {% block title %}
-    {{cal_student_profile}} | Gehol Importer
+   {{cal_student_profile}} | Gehol Importer
 {% endblock %}
 
 {% block content %}
 
     <div class="span-15">
-    <h3>We fetched some information from the <a href="{{gehol_url}}">URL</a> you gave us.</h3>
-    We found the schedule for the following profile:<br/>
-    <div style="padding-left:32px;padding-top:16px;">
-        <i>Faculty : </i>{{cal_faculty}} <br/>
-        <i>Student profile : </i>{{cal_student_profile}}<br/>
-    </div>
 
-    <br/><br/>
+      <h3>We fetched some information from the <a href="{{gehol_url}}">URL</a> you gave us.</h3>
+      We found the schedule for the following profile:<br/>
+      <div style="padding-left:32px;padding-top:16px;text-align:center;">
 
-     {% if show_january_exams_session %}
+        <h3> <em>{{cal_student_profile}}</em> </h3> 
+        <i>Faculté : {{cal_faculty}}</i> <br/>
+      </div>
+
+      <br/><br/>      <br/><br/>
+
+      {% if show_january_exams_session %}
         <h3>Three calendars can be generated. Pick what you need.</h3>
-     {% else %}
+      {% else %}
         <h3>Two calendars can be generated. Pick what you need.</h3>
-    {% endif %}
+      {% endif %}
 
 
-    <div class="box" style="text-align:center">
-    <h4><a href="{{ical_q1_url}}">{{ical_q1_url_title}}.ics</a></h4>
-    <div class="quiet" style="font-style:italic;"> First term : {{q1_span}}</div>
-    </div>
+      <div class="box" style="text-align:center">
+        <h4><a href="{{ical_q1_url}}">{{ical_q1_url_title}}.ics</a></h4>
+        <div class="quiet" style="font-style:italic;"> First term : {{q1_span}}</div>
+      </div>
 
 
-    <div class="box" style="text-align:center">
-            <h4><a href="{{ical_q2_url}}">{{ical_q2_url_title}}.ics</a></h4>
+      <div class="box" style="text-align:center">
+        <h4><a href="{{ical_q2_url}}">{{ical_q2_url_title}}.ics</a></h4>
         <div class="quiet" style="font-style:italic;"> Second term : {{q2_span}}</div>
-    </div>
+      </div>
 
-    {% if show_january_exams_session %}
-        <div class="box" style="text-align:center">
-            <h4><a href="{{ical_january_exams_url}}">{{ical_january_exams_title}}.ics</a></h4>
-            <div class="quiet" style="font-style:italic;"> January examinations session : {{january_exams_span}}  </div>
+      {% if show_january_exams_session %}
+      <div class="box" style="text-align:center">
+        <h4><a href="{{ical_january_exams_url}}">{{ical_january_exams_title}}.ics</a></h4>
+        <div class="quiet" style="font-style:italic;"> 
+          January examinations session : {{january_exams_span}}  
         </div>
-    {% else %}
-        <div class="box" style="text-align:center">
-            <h4>We tried to find your January exams session, but it yielded no result</h4>
-              <div class="quiet" style="font-style:italic;"> Maybe your faculty isn't using that system yet.</div>
-       </div>
-    {% endif %}
+      </div>
+    
+      {% else %}
+    
+      <div class="box" style="text-align:center">
+        <h4>We tried to find your January exams session, but it yielded no result</h4>
+        <div class="quiet" style="font-style:italic;">
+          Maybe your faculty isn't using that system yet.
+        </div>
+      </div>
+    
+      {% endif %}
 
+      <br/><br/>
 
-        
-    <br/><br/>
-    <p>
-        Clicking one of those links will start the download of an <a href="http://en.wikipedia.org/wiki/ICalendar">iCalendar</a>
-        file. iCalendar files can be opened with
-        Apple iCal, Microsoft Outlook and Mozilla Sunbird. This link can also be imported or added as a live url
-        in Google Calendar.
-    </p>
+      <p>
+        Clicking one of those links will start the download of
+        an <a href="http://en.wikipedia.org/wiki/ICalendar">iCalendar</a>
+        file with events for this course.
+        iCalendar files can be opened with
+        Apple iCal, Microsoft Outlook and Mozilla Sunbird. 
+      </p>
+      <p>
+        Alternatively, you can also copy this link and add it 
+        as a 
+        <a href="/questions#subscribe">live url subscription</a> in Google
+        Calendar and Apple iCal. 
+      </p>
 
-    <p>
-        <strong>Important reminder:</strong> The files you download and import from this service are frozen snapshots
-        taken from the GeHoL service. These files will contain schedules as they appear on GeHoL, at the time you
-            clicked the download link.
-        We hope you find it useful, but we won't be able to notify you of possible schedule changes. We have no technical mean to do so.
+      <p>
+        <strong>Important reminder :</strong> The files you
+        download and import from this service are 
+        <a href="/questions#files">frozen snapshots</a>
+        taken from the GeHoL service.
+        <strong>To be notified of schedule changes, don't forget
+          to check your official faculty announcements.</strong>
+      </p>
 
-        <strong>To be notified of schedule changes, don't forget to check your official faculty announcements.</strong>
-       
-
-    </p>
-   </div>
-        
-
-        
-
+    <!-- closing span-15 -->
+    </div>
 {% endblock %}

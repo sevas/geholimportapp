@@ -10,17 +10,18 @@
         <h3>We fetched some information for  <strong>{{mnemo}}</strong>  from this <a href="{{gehol_url}}">URL</a>.</h3>
 
         We found the schedule for the following course:
-        <div style="padding-left:32px;padding-top:16px;">
-            <i>Title: </i>{{title}} <br/>
+        <div style="padding-left:32px;padding-top:16px;text-align:center;">
+
+            <h3><em>{{title}}</em></h3>
             {% if tutor %}
-               <i>Lecturer(s):</i> {{tutor}} <br/>
+               <i> {{tutor}} </i>
             {% else %}
-                <i>No lecturer information was found</i><br/>
+                <i>No lecturer information was found</i>
             {% endif %}
         </div>
 
 
-        <br/> <br/>
+        <br/> <br/> <br/> <br/>
         
         <h3>We can generate the following files for you:</h3>
 
@@ -30,12 +31,18 @@
         </div>
 
         <p>
-            Click this link to download an <a href="http://en.wikipedia.org/wiki/ICalendar">iCalendar</a> file with
-            events for this course.
+            Click this link to download
+            an <a href="http://en.wikipedia.org/wiki/ICalendar">iCalendar</a>
+            file with events for this course.
             iCalendar files can be opened with
-            Apple iCal, Microsoft Outlook and Mozilla Sunbird. This link can also be imported or added as a live url
-            in Google Calendar.
+            Apple iCal, Microsoft Outlook and Mozilla Sunbird.
         </p>
+        <p>
+          Alternatively, you can also copy this link and add it 
+          as a <a href="/questions#subscribe">live url
+          subscription</a> in Google Calendar and Apple iCal. 
+        </p>
+
 
 
         <br/><br/>
@@ -44,21 +51,17 @@
             <div class="quiet" style="font-style:italic;">{{caption}}</div>
         </div>
         <p>
-            Click this link to download a CSV file with the events for this course. This file can be imported in
-            Google Calendar.
+            Click this link to download a CSV file with the events for
+            this course. This file can be imported in Google Calendar.
         </p>
-        <br/>
-        <p>
-            <strong>Important reminder:</strong> The files you download and import from this service are frozen snapshots
-            taken from the GeHoL service. These files will contain schedules as they appear on GeHoL, at the time you
-            clicked the download link.
-            We hope you find it useful, but we won't be able to notify you of possible schedule changes if they occur.
-            We have no technical mean to do so.
 
-            <strong>To be notified of schedule changes, don't forget to check your official faculty announcements.</strong>
-        </p>
         <p>
-            Alternatively, you can also use a calendar application that supports <a href="/questions#files">live URL subscriptions.</a>
+            <strong>Important reminder :</strong> The files you
+            download and import from this service are 
+            <a href="/questions#files">frozen snapshots</a>
+            taken from the GeHoL service.
+            <strong>To be notified of schedule changes, don't forget
+            to check your official faculty announcements.</strong>
         </p>
     </div>
 {% endblock %}
