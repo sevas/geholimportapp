@@ -24,3 +24,16 @@ Nothing, really. We think this application is pretty much feature
 complete as is.
 Some parts of the code are not the prettiest things ever. If I had
 infinite time, they would be.
+
+
+License
+-------
+
+Released under the `MIT licence <http://www.opensource.org/licenses/mit-license.php>`_.
+See COPYING.txt for details.
+
+
+Questions and comments
+----------------------
+
+Send a mail to geholimportapp@gmail.com
