@@ -20,16 +20,7 @@ as `Google Calendar <http://www.google.com/calendar>`_,
 Roadmap
 -------
 
-Upcoming
-~~~~~~~~
-
-- Get a bundle schedule after supplying several course mnemonics
-- Add an "import to Google Calendar" link 
-- Get ics/csv files for a user-supplied GeHoL url.
-
-Maybe
-~~~~~
-
-- Prettier calendar report (maybe using some kind of calendar view)
-- Per-student reports without the need to supply all the courses
-
+Nothing, really. We think this application is pretty much feature
+complete as is.
+Some parts of the code are not the prettiest things ever. If I had
+infinite time, they would be.
