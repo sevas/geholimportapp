@@ -4,15 +4,18 @@ import logging
 from gehol.converters.csvwriter import to_csv
 from gehol.converters.rfc5545icalwriter import convert_geholcalendar_to_ical
 import gehol
-host = '164.15.72.157:8080'
-first_monday = '20/09/2010'
+import conf
+
+host = conf.SCIENTIA_BACKEND_HOST
+first_monday = conf.FIRST_MONDAY
 
 def get_calendar(course_mnemonic):
     gehol_proxy = gehol.GeholProxy(host)
     try:
-        return gehol_proxy.get_course_calendar(course_mnemonic)
+        return gehol_proxy.get_course_calendar(course_mnemonic, conf.ALL_YEAR_WEEKSPAN)
     except gehol.GeholException:
         return None
+
 
 
 def convert_course_calendar_to_csv(cal):
@@ -25,21 +28,26 @@ def convert_course_calendar_to_csv(cal):
         return None
 
 
+
 def convert_course_calendar_to_ical(cal):
     ical = convert_geholcalendar_to_ical(cal, first_monday)
     return ical.as_string()
 
 
+
 def get_student_q1_calendar(group_id):
-    return get_student_calendar(group_id, "1-14")
+    return get_student_calendar(group_id, conf.Q1_WEEKSPAN)
+
 
 
 def get_student_q2_calendar(group_id):
-    return get_student_calendar(group_id, "21-36")
+    return get_student_calendar(group_id, conf.Q2_WEEKSPAN)
+
 
 
 def get_student_jan_calendar(group_id):
-    return get_student_calendar(group_id, "17-19")
+    return get_student_calendar(group_id, conf.JANUARY_EXAMS_WEEKSPAN)
+
 
 
 def get_student_calendar(group_id, weeks):
@@ -50,6 +58,8 @@ def get_student_calendar(group_id, weeks):
     except gehol.GeholException:
         return None
 
+
+
 def convert_student_calendar_to_ical_string(cal):
     try:
         ical_data = convert_geholcalendar_to_ical(cal, first_monday)
@@ -58,11 +68,12 @@ def convert_student_calendar_to_ical_string(cal):
         return None
 
 
-def rebuild_studentset_gehol_url(group_id):
-    return "http://164.15.72.157:8080/Reporting/Individual;Student%20Set%20Groups;id;"+group_id+"?&template=Ann%E9e%20d%27%E9tude&weeks=1-14&days=1-6&periods=5-33&width=0&height=0"
+
 
 def rebuild_studentset_gehol_url(group_id, weeks):
-    return "http://164.15.72.157:8080/Reporting/Individual;Student%20Set%20Groups;id;"+group_id+"?&template=Ann%E9e%20d%27%E9tude&weeks="+weeks+"days=1-6&periods=5-33&width=0&height=0"
+    return conf.GEHOL_STUDENTSET_URL_TEMPLATE % (groupd_id, weeks)
+
+
 
 def rebuild_course_gehol_url(course_mnemo):
-    return "http://164.15.72.157:8080/Reporting/Individual;Courses;name;"+course_mnemo+"?days=1-6&height=0&width=0&periods=5-29&template=cours&weeks=1-36"
+    return conf.GEHOL_COURSE_URL_TEMPLATE % course_mnemo
