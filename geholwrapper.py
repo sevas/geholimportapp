@@ -53,6 +53,14 @@ def get_student_jan_calendar(group_id):
     return get_student_calendar(group_id, conf.JANUARY_EXAMS_WEEKSPAN)
 
 
+def get_student_june_calendar(group_id):
+    return get_student_calendar(group_id, conf.JUNE_EXAMS_WEEKSPAN)
+
+
+def get_student_sept_calendar(group_id):
+    return get_student_calendar(group_id, conf.SEPTEMBER_EXAMS_WEEKSPAN)
+
+
 def get_student_calendar(group_id, weeks):
     try:
         gehol_proxy = gehol.GeholProxy(host)

@@ -18,12 +18,11 @@ SEPTEMBER_EXAMS_WEEKSPAN = "48-50"
 
 
 # There are 3 exam sessions. It's not useful to list them all year long.
-SHOW_JANUARY_EXAMS = True
-SHOW_JUNE_EXAMS = True
-SHOW_SEPTEMBER_EXAMS = True
-EXAM_SESSIONS = {'january':{'show':SHOW_JANUARY_EXAMS, 'weekspan':JANUARY_EXAMS_WEEKSPAN},
-                 'june':{'show':SHOW_JUNE_EXAMS, 'weekspan':JUNE_EXAMS_WEEKSPAN},
-                 'september':{'show':SHOW_SEPTEMBER_EXAMS, 'weekspan':SEPTEMBER_EXAMS_WEEKSPAN}}
+
+CURRENT_EXAM_SESSION = 'june'
+EXAM_SESSION_WEEKSPANS = {'january':JANUARY_EXAMS_WEEKSPAN,
+                          'june':JUNE_EXAMS_WEEKSPAN,
+                        'september':SEPTEMBER_EXAMS_WEEKSPAN}
 
 
 # A bunch of URLs and URL templates

@@ -18,7 +18,8 @@
 
       <br/><br/>      <br/><br/>
 
-      {% if show_january_exams_session %}
+      <!-- there will only be one exam session active at one time so -->
+      {% if exam_session %}
         <h3>Three calendars can be generated. Pick what you need.</h3>
       {% else %}
         <h3>Two calendars can be generated. Pick what you need.</h3>
@@ -36,7 +37,7 @@
         <div class="quiet" style="font-style:italic;"> Second term : {{q2_span}}</div>
       </div>
 
-      {% for exam_session in exam_sessions %}
+      {% if exam_session %}
         {% if exam_session.info_found %}
           <div class="box" style="text-align:center">
            <h4><a href="{{exam_session.ical_url}}">{{exam_session.ical_url_title}}.ics</a></h4>
@@ -55,7 +56,7 @@
           </div>
         {% endif %}
 
-      {% endfor %}
+      {% endif %}
 
 
 

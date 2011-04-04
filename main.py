@@ -66,6 +66,8 @@ application = webapp.WSGIApplication(
                                      ('/geholstatus',  UpdateGeholStatus),
                                      ('/student_set/ical/q./.*\.ics', StudentSetIcalRenderer),
                                      ('/student_set/ical/january_exams/.*\.ics', StudentSetIcalRenderer),
+                                     ('/student_set/ical/june_exams/.*\.ics', StudentSetIcalRenderer),
+                                     ('/student_set/ical/september_exams/.*\.ics', StudentSetIcalRenderer),
                                      ('/student_set/.*', StudentSetSummary ),
                                      ('/questions.*', QuestionsPage),
                                      #('.*', MainPage)
