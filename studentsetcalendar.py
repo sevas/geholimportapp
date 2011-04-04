@@ -187,7 +187,6 @@ class StudentSetIcalRenderer(webapp.RequestHandler):
 
             if term in ("q1", "q2", "january_exams", "june_exams", "september_exams"):
                 try:
-                    logging.info("***** generating ical file : ", term)
                     cal = self.calendar_fetch_funcs[term](group_id)
                 except DownloadError,e:
                     logging.error("Could not fetch page before deadline")
