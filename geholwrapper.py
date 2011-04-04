@@ -45,9 +45,12 @@ def get_student_q2_calendar(group_id):
 
 
 
+def get_student_exam_calendar(group_id, weeks):
+    return get_student_calendar(group_id, weeks)
+
+
 def get_student_jan_calendar(group_id):
     return get_student_calendar(group_id, conf.JANUARY_EXAMS_WEEKSPAN)
-
 
 
 def get_student_calendar(group_id, weeks):
@@ -71,9 +74,9 @@ def convert_student_calendar_to_ical_string(cal):
 
 
 def rebuild_studentset_gehol_url(group_id, weeks):
-    return conf.GEHOL_STUDENTSET_URL_TEMPLATE % (groupd_id, weeks)
+    return conf.GEHOL_STUDENTSET_URL_TEMPLATE % (group_id, weeks)
 
 
 
 def rebuild_course_gehol_url(course_mnemo):
-    return conf.GEHOL_COURSE_URL_TEMPLATE % course_mnemo
+    return conf.GEHOL_COURSE_URL_TEMPLATE % (course_mnemo, conf.ALL_YEAR_WEEKSPAN)

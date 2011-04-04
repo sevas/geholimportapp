@@ -9,12 +9,10 @@ from google.appengine.ext.webapp import template
 from google.appengine.api.urlfetch import DownloadError
 from status import is_status_down, get_last_status_update
 from utils import render_deadline_exceeded_page
-from geholwrapper import get_student_q1_calendar, get_student_q2_calendar,convert_student_calendar_to_ical_string, get_student_jan_calendar
+from geholwrapper import get_student_q1_calendar, get_student_q2_calendar,convert_student_calendar_to_ical_string, get_student_exam_calendar,  get_student_jan_calendar, rebuild_studentset_gehol_url
 from savedrequests import PreviousStudentSetRequests
 from gehol.utils import convert_weekspan_to_dates
-
-def rebuild_gehol_url(group_id):
-    return "http://164.15.72.157:8080/Reporting/Individual;Student%20Set%20Groups;id;"+group_id+"?&template=Ann%E9e%20d%27%E9tude&weeks=1-14&days=1-6&periods=5-33&width=0&height=0"
+import conf
 
 
 def render_studentset_notfound_page(request_handler, resource_type):
@@ -38,9 +36,18 @@ def render_gehol_down(renderer, reason):
     path = os.path.join(os.path.dirname(__file__), 'templates/gehol_down.html')
     renderer.response.out.write(template.render(path, template_values))
 
-    
 
 
+class ExamSessionInfo(object):
+    def __init__(self, session_name, ical_url, ical_url_title, weekspan_string, info_found):
+        self.session_name = session_name
+        self.ical_url = ical_url
+        self.ical_url_title = ical_url_title
+        self.readable_weekspan_string = weekspan_string
+        self.info_found = info_found
+
+
+        
 class StudentSetSummary(webapp.RequestHandler):
     def get(self):
         parsed = urlparse.urlparse(self.request.uri)
@@ -80,12 +87,12 @@ class StudentSetSummary(webapp.RequestHandler):
         ical_url_titles = ["ULB - %s -  %s" % (q, student_profile) for q in ("Q1", "Q2")]
 
 
-        q1_span = convert_weekspan_to_dates("1-14", "20/09/2010")
-        q2_span = convert_weekspan_to_dates("21-36", "20/09/2010")
+        q1_span = convert_weekspan_to_dates(conf.Q1_WEEKSPAN, conf.FIRST_MONDAY)
+        q2_span = convert_weekspan_to_dates(conf.Q2_WEEKSPAN, conf.FIRST_MONDAY)
 
         template_values = {'gehol_is_down': is_status_down(),
                          'last_status_update': get_last_status_update(),
-                         'gehol_url':rebuild_gehol_url(group_id),
+                         'gehol_url':rebuild_studentset_gehol_url(group_id, conf.Q1_WEEKSPAN),
                          'cal_faculty':faculty,
                          'cal_student_profile':student_profile,
                          'cal_events':event_titles,
@@ -100,17 +107,20 @@ class StudentSetSummary(webapp.RequestHandler):
         }
 
 
-        january_exams_values = {}
-        if self._is_exam_session_available(group_id):
+        exam_sessions = []
+        for (session_name, values) in conf.EXAM_SESSIONS.items():
+            if values['show']:
+                session_weekspan = convert_weekspan_to_dates(values['weekspan'], conf.FIRST_MONDAY)
+                ical_url, title = self._make_exam_session_url_and_title(group_id, student_profile, session_name)
+                new_session = ExamSessionInfo(session_name, ical_url, title,
+                                            "from %s to %s" % tuple([session_weekspan[i].strftime("%B %d, %Y") for i in (0, 1)]),
+                                            self._is_exam_session_available(group_id, values['weekspan'])
+                )
+                exam_sessions.append(new_session)
 
-            january_exams_span = convert_weekspan_to_dates("17-19", "20/09/2010")
 
-            january_exams_values = {'ical_january_exams_url':"/student_set/ical/january_exams/%s.ics" % (group_id),
-                                    'ical_january_exams_title':"ULB - January exams session -  %s" % (student_profile),
-                                    'january_exams_span':"from %s to %s" % tuple([january_exams_span[i].strftime("%B %d, %Y") for i in (0, 1)]),
-                                    'show_january_exams_session': True
-            }
-        template_values.update(january_exams_values)
+        template_values['exam_sessions'] = exam_sessions
+
 
         self._save_successful_request(student_profile, "/student_set/%s" % group_id)
         path = os.path.join(os.path.dirname(__file__), 'templates/student.html')
@@ -118,11 +128,17 @@ class StudentSetSummary(webapp.RequestHandler):
 
 
 
+    @staticmethod
+    def _make_exam_session_url_and_title(group_id, student_profile, session_name):
+        return ("/student_set/ical/%s_exams/%s.ics" % (session_name, group_id),
+                "ULB - %s exams session -  %s" % (session_name.capitalize(), student_profile))
 
-    def _is_exam_session_available(self, group_id):
-        cal = get_student_jan_calendar(group_id)
-        logging.info(cal.events)
+
+
+    def _is_exam_session_available(self, group_id, weekspan):
+        cal = get_student_exam_calendar(group_id, weekspan)
         return cal.has_events()
+
 
     def _render_not_found_page(self):
         render_studentset_notfound_page(self, resource_type="summary page")

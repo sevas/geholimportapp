@@ -36,24 +36,28 @@
         <div class="quiet" style="font-style:italic;"> Second term : {{q2_span}}</div>
       </div>
 
-      {% if show_january_exams_session %}
-      <div class="box" style="text-align:center">
-        <h4><a href="{{ical_january_exams_url}}">{{ical_january_exams_title}}.ics</a></h4>
-        <div class="quiet" style="font-style:italic;"> 
-          January examinations session : {{january_exams_span}}  
-        </div>
-      </div>
-    
-      {% else %}
-    
-      <div class="box" style="text-align:center">
-        <h4>We tried to find your January exams session, but it yielded no result</h4>
-        <div class="quiet" style="font-style:italic;">
-          Maybe your faculty isn't using that system yet.
-        </div>
-      </div>
-    
-      {% endif %}
+      {% for exam_session in exam_sessions %}
+        {% if exam_session.info_found %}
+          <div class="box" style="text-align:center">
+           <h4><a href="{{exam_session.ical_url}}">{{exam_session.ical_url_title}}.ics</a></h4>
+           <div class="quiet" style="font-style:italic;">
+              {{exam_session.session_name|capfirst}} examinations session : {{exam_session.readable_weekspan_string}}
+           </div>
+          </div>
+
+
+        {% else %}
+          <div class="box" style="text-align:center">
+            <h4>We tried to find your {{ exam_session.session_name|capfirst }} exams session, but it yielded no result</h4>
+            <div class="quiet" style="font-style:italic;">
+              Maybe your faculty isn't using that system yet.
+            </div>
+          </div>
+        {% endif %}
+
+      {% endfor %}
+
+
 
       <br/><br/>
 
