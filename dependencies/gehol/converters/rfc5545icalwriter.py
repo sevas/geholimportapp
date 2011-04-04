@@ -1,4 +1,20 @@
+"""
+This module replaces the iCalendar python module which can be found here: http://codespeak.net/icalendar/.
+The main reason is that this module implements an old version of the iCalendar standard (rfc 2445).
+
+We noticed that this version of the standard did not work well with several calendar applications. For example, we could
+not add ics files generated with the old spec as live urls in Google Calendar.
+
+This module implements a subset of the rfc 5545 standard. As we only need a flat list of events, we do not support features such as
+- repeatable events
+- rsvp
+- probably many more
+
+"""
+
 __author__ = 'sevas'
+
+
 
 from datetime import datetime, timedelta
 from StringIO import StringIO
