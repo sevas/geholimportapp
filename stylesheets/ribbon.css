@@ -117,3 +117,14 @@
 .gray.ribbon .text {
   border: 1px solid #a4a4a4;
 }
+
+
+.blue.ribbon {
+  background-color: #009;
+  background: -webkit-gradient(linear, left bottom, left top, from(#009), to(#009));
+}
+
+.blue.ribbon .text {
+  color: #E5ECF9;
+  border: 1px solid #E5ECF9;
+}
