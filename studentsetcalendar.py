@@ -29,6 +29,8 @@ def is_studentset_groupid_valid(group_id):
     return len(group_id) == 14 and  group_id[:3] == "%23" and group_id[3:].isalnum()
 
 
+
+
 def render_gehol_down(renderer, reason):
     template_values = {'gehol_is_down': True,
                        'last_status_update': get_last_status_update(),
@@ -76,6 +78,10 @@ class StudentSetSummary(webapp.RequestHandler):
 
 
     def _render_calendar_summary(self, cal, group_id):
+
+        if group_id.startswith("#"):
+            group_id = "%23" + group_id[1:]
+
         logging.info("got a calendar from group id")
         faculty, student_profile = (cal.header_data['faculty'],
                                     cal.header_data['student_profile'])
@@ -105,6 +111,8 @@ class StudentSetSummary(webapp.RequestHandler):
                            tuple([q1_span[i].strftime("%B %d, %Y") for i in (0, 1)]),
                          'q2_span': "from %s to %s" %
                            tuple([q2_span[i].strftime("%B %d, %Y") for i in (0, 1)]),
+                         'big_qrcode_url': conf.STUDENTSET_QRCODE_URL_TEMPLATE % (group_id, 512, 512),
+                         'small_qrcode_url': conf.STUDENTSET_QRCODE_URL_TEMPLATE % (group_id, 256, 256)
         }
 
 
