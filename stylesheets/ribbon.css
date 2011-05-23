@@ -33,7 +33,7 @@
 
   padding: 0.25em 0;
   position: relative;
-  top: 5.2em;
+  top: 4.5em;
 
   /* Defaults friendly for white pages. */
   -moz-box-shadow: 0 0 13px #888;
@@ -44,13 +44,13 @@
 }
 
 .ribbon .text {
-  padding: 0.1em 3em;
+  padding: 0.2em 3em;
 }
 
 .right .ribbon {
   -moz-transform: rotate(45deg);
   -webkit-transform: rotate(45deg);
-  right: -5em;
+  right: -3.5em;
     
 }
 
@@ -127,4 +127,10 @@
 .blue.ribbon .text {
   color: #E5ECF9;
   border: 1px solid #E5ECF9;
+}
+
+.blue.ribbon a {
+
+   color: cyan;
+    text-decoration: none;
 }
