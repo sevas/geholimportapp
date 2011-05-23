@@ -44,7 +44,7 @@ class CourseCalendar(BaseCalendar):
 
 
     def _extract_header(self, html):
-        '''parse html page to find global informations'''
+        """parse html page to find global informations"""
         soup = BeautifulSoup(html)
         bTag = soup.find('td',text=re.compile('Horaire'))
         head = {'mnemo': bTag.split(':')[1].split('-')[0].lstrip(),
@@ -59,8 +59,8 @@ class CourseCalendar(BaseCalendar):
 
     
     def _extract_table(self, html):
-        '''parse html page and process the calendar table
-        intermediate python structure (event list) is returned'''
+        """parse html page and process the calendar table
+        intermediate python structure (event list) is returned"""
         soup = BeautifulSoup(html)
         tables = soup.html.body.findAll(name='table',recursive=False)
         #jump to the calendar table
