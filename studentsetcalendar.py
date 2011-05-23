@@ -56,6 +56,9 @@ class StudentSetSummary(webapp.RequestHandler):
         parsed = urlparse.urlparse(self.request.uri)
         group_id = parsed.path.split("/")[2]
 
+        if not group_id.startswith("%23"):
+            group_id = "%23" + group_id
+                
         if is_status_down():
             render_gehol_down(self, "You asked the schedule for a particular student profile.")
         else:
@@ -107,7 +110,8 @@ class StudentSetSummary(webapp.RequestHandler):
                            tuple([q1_span[i].strftime("%B %d, %Y") for i in (0, 1)]),
                          'q2_span': "from %s to %s" %
                            tuple([q2_span[i].strftime("%B %d, %Y") for i in (0, 1)]),
-                        
+                         'big_qrcode_url': conf.STUDENTSET_QRCODE_URL_TEMPLATE % (group_id[3:], 512, 512),
+                         'small_qrcode_url': conf.STUDENTSET_QRCODE_URL_TEMPLATE % (group_id[3:], 256, 256)
         }
 
 
