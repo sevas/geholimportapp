@@ -78,11 +78,7 @@ class StudentSetSummary(webapp.RequestHandler):
 
 
     def _render_calendar_summary(self, cal, group_id):
-
-        if group_id.startswith("#"):
-            group_id = "%23" + group_id[1:]
-
-        logging.info("got a calendar from group id")
+        logging.info("got a calendar from group id: %s" % group_id)
         faculty, student_profile = (cal.header_data['faculty'],
                                     cal.header_data['student_profile'])
         event_titles = set(["%s (%s) [%s]" %  (e['title'],
@@ -111,8 +107,7 @@ class StudentSetSummary(webapp.RequestHandler):
                            tuple([q1_span[i].strftime("%B %d, %Y") for i in (0, 1)]),
                          'q2_span': "from %s to %s" %
                            tuple([q2_span[i].strftime("%B %d, %Y") for i in (0, 1)]),
-                         'big_qrcode_url': conf.STUDENTSET_QRCODE_URL_TEMPLATE % (group_id, 512, 512),
-                         'small_qrcode_url': conf.STUDENTSET_QRCODE_URL_TEMPLATE % (group_id, 256, 256)
+                        
         }
 
 
