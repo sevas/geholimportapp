@@ -102,8 +102,8 @@ class StudentSetSummary(webapp.RequestHandler):
                            tuple([q1_span[i].strftime("%B %d, %Y") for i in (0, 1)]),
                          'q2_span': "from %s to %s" %
                            tuple([q2_span[i].strftime("%B %d, %Y") for i in (0, 1)]),
-                         'big_qrcode_url': conf.STUDENTSET_QRCODE_URL_TEMPLATE % (group_id[3:], 512, 512),
-                         'small_qrcode_url': conf.STUDENTSET_QRCODE_URL_TEMPLATE % (group_id[3:], 256, 256),
+                         'qrcode_page_url': "/student_set/qrcode/%s" % group_id,
+                         'qrcode_img_url': conf.STUDENTSET_QRCODE_URL_TEMPLATE % (group_id[3:], 256, 256),
                          'mobile_page_url': '/student_set/m/%s' % group_id[3:],
                          
         }
@@ -313,3 +313,51 @@ class StudentSetIcalRenderer(webapp.RequestHandler):
                 render_studentset_notfound_page(self, resource_type="iCal file")
 
 
+
+
+class StudentSetQRCode(webapp.RequestHandler):
+    def get(self):
+        parsed = urlparse.urlparse(self.request.uri)
+        group_id = parsed.path.split("/")[3]
+
+
+        if is_status_down():
+            render_gehol_down(self, "You asked for the QRCode page of a particular student profile.")
+        else:
+            if is_studentset_groupid_valid(group_id):
+                logging.info("group '%s' id is valid" % group_id)
+                try:
+                    cal = get_student_q1_calendar(group_id)
+                except DownloadError,e:
+                    logging.info("Could not fetch remote calendar before deadline")
+                    render_deadline_exceeded_page(self)
+                    return
+                if cal:
+                    self._render_qrcode_page(cal, group_id)
+                else:
+                    logging.info("did not receive a calendar")
+                    self._render_not_found_page()
+            else:
+                logging.info("group id '%s' is not valid" % group_id)
+                self._render_not_found_page()
+
+
+
+    def _render_qrcode_page(self, cal, group_id):
+
+        faculty, student_profile = (cal.header_data['faculty'],
+                                    cal.header_data['student_profile'])
+
+        template_values = {
+           'faculty':faculty,
+            'student_profile':student_profile,
+            'qrcode_img_url': conf.STUDENTSET_QRCODE_URL_TEMPLATE % (group_id[3:], 512, 512)
+        }
+
+        path = os.path.join(os.path.dirname(__file__), 'templates/student_qrcode.html')
+        self.response.out.write(template.render(path, template_values))
+        
+
+    def _render_not_found_page(self):
+        render_studentset_notfound_page(self, resource_type="QRCode page")
+    

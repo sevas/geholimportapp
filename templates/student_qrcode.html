@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <link type="text/css" rel="stylesheet" href="/stylesheets/blueprint/screen.css"  media="screen, projection"/>
+    <link type="text/css" rel="stylesheet" href="/stylesheets/blueprint/plugins/buttons/screen.css" media="screen, projection"/>
+    <link rel="stylesheet" href="/stylesheets/blueprint/print.css" type="text/css" media="print"/>
+    <!--[if  IE ]>
+    <link rel="stylesheet" href="/stylesheets/blueprint/ie.css" type="text/css" media="screen, projection"/>
+    <![endif]-->
+
+    
+    <!-- Google Analytics-->
+    <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-20363215-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+
+    <title>{%block title%}{% endblock %}</title>
+</head>
+<body>
+    <div class="container">
+        <!--Site logo & stuff-->
+        <div class="span-24 last">
+            <div id="banner">
+                <strong><a href="/"> Gehol Importer </a></strong>
+            </div>
+            <hr/>
+        </div>
+
+
+        <div class="span-15">
+            <br/><br/><br/><br/>
+            <div style="text-align: center;">
+                <h1><em>{{ student_profile }}</em></h1>
+
+                <h3><em>{{ faculty }}</em></h3>
+
+                <img src="{{ qrcode_img_url }}" />
+            </div>
+        </div>
+    </div>
+</body>
+</html>
