@@ -35,4 +35,5 @@ GEHOL_COURSE_URL_TEMPLATE = "http://164.15.72.157:8080/Reporting/Individual;Cour
 # qrcode urls templates.
 BASE_URL = "http://geholimport.appspot.com"
 COURSE_QRCODE_URL_TEMPLATE = "http://chart.apis.google.com/chart?cht=qr&chl="+BASE_URL+"/course/%s&chs=%dx%d"
-STUDENTSET_QRCODE_URL_TEMPLATE = "http://chart.apis.google.com/chart?cht=qr&chl="+BASE_URL+"/student_set/%s&chs=%dx%d"
+STUDENTSET_QRCODE_URL_TEMPLATE = "http://chart.apis.google.com/chart?cht=qr&chl="+BASE_URL+"/student_set/m/%s&chs=%dx%d"
+                                 
