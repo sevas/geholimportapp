@@ -9,7 +9,7 @@ from geholwrapper import get_calendar, rebuild_course_gehol_url
 from utils import is_course_mnemo_valid, render_course_notfound_page, render_deadline_exceeded_page
 from savedrequests import PreviousRequest
 from gehol.utils import convert_weekspan_to_dates
-from conf import COURSE_QRCODE_URL_TEMPLATE
+
 
 def rebuild_gehol_url(group_id):
     return "http://164.15.72.157:8080/Reporting/Individual;Student%20Set%20Groups;id;"+group_id+"?&template=Ann%E9e%20d%27%E9tude&weeks=1-14&days=1-6&periods=5-33&width=0&height=0"
@@ -55,8 +55,7 @@ class CourseCalendar(webapp.RequestHandler):
                         'csv_url':csv_url,
                         'caption':caption,
                         'gehol_url': rebuild_course_gehol_url(course_mnemo),
-                        'big_qrcode_url': COURSE_QRCODE_URL_TEMPLATE % (course_mnemo, 512, 512),
-                        'small_qrcode_url': COURSE_QRCODE_URL_TEMPLATE % (course_mnemo, 256, 256)
+                        
         }
 
         template_values.update(cal.metadata)
