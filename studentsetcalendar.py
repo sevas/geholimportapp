@@ -55,9 +55,6 @@ class StudentSetSummary(webapp.RequestHandler):
     def get(self):
         parsed = urlparse.urlparse(self.request.uri)
         group_id = parsed.path.split("/")[2]
-
-        if not group_id.startswith("%23"):
-            group_id = "%23" + group_id
                 
         if is_status_down():
             render_gehol_down(self, "You asked the schedule for a particular student profile.")
@@ -84,11 +81,7 @@ class StudentSetSummary(webapp.RequestHandler):
         logging.info("got a calendar from group id: %s" % group_id)
         faculty, student_profile = (cal.header_data['faculty'],
                                     cal.header_data['student_profile'])
-        event_titles = set(["%s (%s) [%s]" %  (e['title'],
-                                               e['type'],
-                                               e['organizer']) for e in cal.events])
-
-
+        
         ical_urls = ["/student_set/ical/%s/%s.ics" % (q, group_id) for q in ("q1", "q2")]
         ical_url_titles = ["ULB - %s -  %s" % (q, student_profile) for q in ("Q1", "Q2")]
 
@@ -101,7 +94,6 @@ class StudentSetSummary(webapp.RequestHandler):
                          'gehol_url':rebuild_studentset_gehol_url(group_id, conf.Q1_WEEKSPAN),
                          'cal_faculty':faculty,
                          'cal_student_profile':student_profile,
-                         'cal_events':event_titles,
                          'ical_q1_url':ical_urls[0],
                          'ical_q2_url':ical_urls[1],
                          'ical_q1_url_title':ical_url_titles[0],
@@ -111,9 +103,10 @@ class StudentSetSummary(webapp.RequestHandler):
                          'q2_span': "from %s to %s" %
                            tuple([q2_span[i].strftime("%B %d, %Y") for i in (0, 1)]),
                          'big_qrcode_url': conf.STUDENTSET_QRCODE_URL_TEMPLATE % (group_id[3:], 512, 512),
-                         'small_qrcode_url': conf.STUDENTSET_QRCODE_URL_TEMPLATE % (group_id[3:], 256, 256)
+                         'small_qrcode_url': conf.STUDENTSET_QRCODE_URL_TEMPLATE % (group_id[3:], 256, 256),
+                         'mobile_page_url': '/student_set/m/%s' % group_id[3:],
+                         
         }
-
 
 
         current_session_name = conf.CURRENT_EXAM_SESSION
@@ -175,6 +168,113 @@ class StudentSetSummary(webapp.RequestHandler):
         request.url = url
         request.title = title
         request.put()
+
+
+
+class StudentSetMobileSummary(webapp.RequestHandler):
+    def get(self):
+        parsed = urlparse.urlparse(self.request.uri)
+        group_id = parsed.path.split("/")[3]
+
+        group_id = "%23" + group_id
+
+
+        if is_status_down():
+            render_gehol_down(self, "You asked the schedule for a particular student profile.")
+        else:
+            if is_studentset_groupid_valid(group_id):
+                logging.info("group '%s' id is valid" % group_id)
+                try:
+                    cal = get_student_q1_calendar(group_id)
+                except DownloadError,e:
+                    logging.error("Could not fetch page before deadline")
+                    render_deadline_exceeded_page(self)
+                    return
+                if cal:
+                    self._render_calendar_summary(cal, group_id)
+                else:
+                    logging.info("did not receive a calendar")
+                    self._render_not_found_page()
+            else:
+                logging.info("group id '%s' is not valid" % group_id)
+                self._render_not_found_page()
+
+
+
+
+    def _render_calendar_summary(self, cal, group_id):
+        """
+
+        """
+        faculty, student_profile = (cal.header_data['faculty'],
+                                    cal.header_data['student_profile'])
+        
+
+        webcal_urls = [conf.WEBCAL_BASE_URL % "/student_set/ical/%s/%s.ics" % (q, group_id) for q in ("q1", "q2")]
+        webcal_url_titles = ["ULB - %s -  %s" % (q, student_profile) for q in ("Q1", "Q2")]
+
+        q1_span = convert_weekspan_to_dates(conf.Q1_WEEKSPAN, conf.FIRST_MONDAY)
+        q2_span = convert_weekspan_to_dates(conf.Q2_WEEKSPAN, conf.FIRST_MONDAY)
+
+
+        template_values = {'gehol_url':rebuild_studentset_gehol_url(group_id, conf.Q1_WEEKSPAN),
+                         'cal_faculty':faculty,
+                         'cal_student_profile':student_profile,
+                         'webcal_q1_url':webcal_urls[0],
+                         'webcal_q2_url':webcal_urls[1],
+                         'webcal_q1_url_title':webcal_url_titles[0],
+                         'webcal_q2_url_title':webcal_url_titles[1],
+                         'q1_span': "from %s to %s" %
+                           tuple([q1_span[i].strftime("%B %d, %Y") for i in (0, 1)]),
+                         'q2_span': "from %s to %s" %
+                           tuple([q2_span[i].strftime("%B %d, %Y") for i in (0, 1)]),
+                         'full_page_url':"/student_set/%s" % group_id,
+        }
+
+        current_session_name = conf.CURRENT_EXAM_SESSION
+
+        exam_session = None
+        if current_session_name:
+            exam_session = self._extract_current_session_info(current_session_name, group_id, student_profile)
+
+        template_values['exam_session'] = exam_session
+
+        #self._save_successful_request(student_profile, "/student_set/%s" % group_id)
+
+        path = os.path.join(os.path.dirname(__file__), 'templates/student_mobile.html')
+        self.response.out.write(template.render(path, template_values))
+
+
+
+    def _render_not_found_page(self):
+        render_studentset_notfound_page(self, resource_type="summary page")
+
+
+
+    def _extract_current_session_info(self, session_name, group_id, student_profile):
+        weekspan = conf.EXAM_SESSION_WEEKSPANS[session_name]
+
+        session_weekspan = convert_weekspan_to_dates(weekspan, conf.FIRST_MONDAY)
+        ical_url, title = self._make_exam_session_url_and_title(group_id, student_profile, session_name)
+
+        exam_session = ExamSessionInfo(session_name, ical_url, title,
+                                    "from %s to %s" % tuple([session_weekspan[i].strftime("%B %d, %Y") for i in (0, 1)]),
+                                    self._is_exam_session_available(group_id, weekspan))
+
+        return exam_session
+
+
+    @staticmethod
+    def _make_exam_session_url_and_title(group_id, student_profile, session_name):
+        return (conf.WEBCAL_BASE_URL % "/student_set/ical/%s_exams/%s.ics" % (session_name, group_id),
+                "ULB - %s exams session -  %s" % (session_name.capitalize(), student_profile))
+    
+
+    def _is_exam_session_available(self, group_id, weekspan):
+        cal = get_student_exam_calendar(group_id, weekspan)
+        return cal.has_events()
+
+
 
 
 class StudentSetIcalRenderer(webapp.RequestHandler):

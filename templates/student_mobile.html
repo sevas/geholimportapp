@@ -1,0 +1,92 @@
+{% extends "main_mobile.html" %}
+
+{% block title %}
+   {{cal_student_profile}} | Gehol Importer
+{% endblock %}
+
+{% block content %}
+
+    <div>
+
+        <p>
+            Hello. You probably went here by using a QRCode. This dedicated page
+            will allow you to subscribe to calendars on your mobile device, just by opening
+            the links.
+        </p>
+        <br/>
+        <p>
+            As far as we know, this only works with an iPhone, an iPad or
+            an iPod touch.
+        </p>
+    
+        <br/><br/>
+        <div class="bigger" style="text-align: center;">
+            <em>{{cal_student_profile}}</em>
+
+        </div>
+        <div style="text-align: center;">
+            <br/>
+            <em>{{cal_faculty}}</em> <br/>
+        </div>
+
+        <br/><br/>
+
+
+      <!-- there will only be one exam session active at one time so -->
+      {% if exam_session %}
+        Three calendars can be generated. Pick what you need.
+      {% else %}
+        Two calendars can be generated. Pick what you need.
+      {% endif %}
+
+        <br/><br/>
+
+      <div class="box" style="text-align:center">
+        <a href="{{webcal_q1_url}}">{{webcal_q1_url_title}}.ics</a>
+        <div class="quiet" style="font-style:italic;"> First term : {{q1_span}}</div>
+      </div>
+
+
+      <div class="box" style="text-align:center">
+        <a href="{{webcal_q2_url}}">{{webcal_q2_url_title}}.ics</a>
+
+        <div class="quiet" style="font-style:italic;"> Second term : {{q2_span}}</div>
+      </div>
+
+      {% if exam_session %}
+        {% if exam_session.info_found %}
+          <div class="box" style="text-align:center">
+           <a href="{{exam_session.ical_url}}">{{exam_session.ical_url_title}}.ics</a>
+           <div class="quiet" style="font-style:italic;">
+              {{exam_session.session_name|capfirst}} examinations session : {{exam_session.readable_weekspan_string}}
+           </div>
+          </div>
+
+
+        {% else %}
+          <div class="box" style="text-align:center">
+            We tried to find your {{ exam_session.session_name|capfirst }} exams session, but it yielded no result
+            <div class="quiet" style="font-style:italic;">
+              Maybe your faculty isn't using that system yet.
+            </div>
+          </div>
+        {% endif %}
+      {% else %}
+        <div class="box" style="text-align:center">
+         There is no upcoming examination session to show you at the moment
+         <div class="quiet" style="font-style:italic;">
+           Check back in a little while, and it will be here.
+         </div>
+        </div>
+
+      {% endif %}
+
+    <br/><br/>
+
+    <div style="text-align: center;">
+        Go to the <a href="{{ full_page_url }}">full site</a>
+    </div>
+
+
+    </div>
+{% endblock %}

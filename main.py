@@ -68,8 +68,8 @@ application = webapp.WSGIApplication(
                                      ('/student_set/ical/january_exams/.*\.ics', StudentSetIcalRenderer),
                                      ('/student_set/ical/june_exams/.*\.ics', StudentSetIcalRenderer),
                                      ('/student_set/ical/september_exams/.*\.ics', StudentSetIcalRenderer),
-                                     ('/student_set/.*', StudentSetSummary ),
                                      ('/student_set/m/.*', StudentSetMobileSummary),
+                                     ('/student_set/.*', StudentSetSummary ),
                                      ('/questions.*', QuestionsPage),
                                      #('.*', MainPage)
                                      ],

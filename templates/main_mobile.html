@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8"/>
+    <title> {% block title %}{% endblock %}  </title>
+    <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" media="all" href="/stylesheets/lessframework/screen.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!-- Adding "maximum-scale=1" fixes the Mobile Safari auto-zoom bug: http://filamentgroup.com/examples/iosScaleBug/ -->
+
+    <!-- Google Analytics-->
+    <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-20363215-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+</head>
+
+<body lang="en">
+
+    <div id="banner">
+        <strong><a href="/"> Gehol Importer </a></strong>
+    </div>
+
+    <hr>
+    <br/>
+
+    {% block content %}{% endblock %}
+
+
+
+    <div style="text-align: center;">
+        <br/>
+        <hr/>
+        <p>
+            Made with the <a href="http://lessframework.com/">Less framework</a>
+            <br/>
+            Powered by <a href="http://code.google.com/appengine/">Google App Engine</a>
+        </p>
+     </div>
+</body>
+
+</html>

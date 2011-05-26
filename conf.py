@@ -33,6 +33,7 @@ GEHOL_STUDENTSET_URL_TEMPLATE = "http://164.15.72.157:8080/Reporting/Individual;
 GEHOL_COURSE_URL_TEMPLATE = "http://164.15.72.157:8080/Reporting/Individual;Courses;name;%s?&days=1-6&height=0&width=0&periods=5-29&template=cours&weeks=%s"
 
 # qrcode urls templates.
+WEBCAL_BASE_URL = "webcal://geholimport.appspot.com%s"
 BASE_URL = "http://geholimport.appspot.com"
 COURSE_QRCODE_URL_TEMPLATE = "http://chart.apis.google.com/chart?cht=qr&chl="+BASE_URL+"/course/%s&chs=%dx%d"
 STUDENTSET_QRCODE_URL_TEMPLATE = "http://chart.apis.google.com/chart?cht=qr&chl="+BASE_URL+"/student_set/m/%s&chs=%dx%d"
