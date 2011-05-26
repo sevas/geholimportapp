@@ -8,7 +8,7 @@ from check_status import UpdateGeholStatus
 from coursecalendar import CourseCalendar
 from icalrenderer import IcalRenderer
 from csvrenderer import CSVRenderer
-from studentsetcalendar import StudentSetSummary, StudentSetIcalRenderer
+from studentsetcalendar import StudentSetSummary, StudentSetIcalRenderer, StudentSetMobileSummary
 from savedrequests import PreviousRequest, PreviousStudentSetRequests
 
 
@@ -69,6 +69,7 @@ application = webapp.WSGIApplication(
                                      ('/student_set/ical/june_exams/.*\.ics', StudentSetIcalRenderer),
                                      ('/student_set/ical/september_exams/.*\.ics', StudentSetIcalRenderer),
                                      ('/student_set/.*', StudentSetSummary ),
+                                     ('/student_set/m/.*', StudentSetMobileSummary),
                                      ('/questions.*', QuestionsPage),
                                      #('.*', MainPage)
                                      ],
