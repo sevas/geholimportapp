@@ -106,15 +106,20 @@
         </p>
 
         <p style="text-align: center">
-            <a href="http://chart.apis.google.com/chart?cht=qr&chl=http://geholimport.appspot.com/course/INFOH503&chs=512x512">
-                <img src=" http://chart.apis.google.com/chart?cht=qr&chl=http://geholimport.appspot.com/course/INFOH503&chs=256x256" />
+            <a href="http://chart.apis.google.com/chart?cht=qr&chl=http://geholimport.appspot.com/student_set/m/SPLUS35F0C2&chs=512x512">
+                <img src=" http://chart.apis.google.com/chart?cht=qr&chl=http://geholimport.appspot.com/student_set/m/SPLUS35F0C2&chs=256x256" />
             </a>
         </p>
         <p> Feels like the future, doesn't it?</p>
 
         <p>
-            In this service, every page with calendar information for a course or a student profile
-            will now show a QR Code which encodes the URL to that particular web page.
+            In this service, every page with a schedule for a student profile
+            will also display a QRCode which points to the mobile version of that page.
+            From there, you will be able to quickly add the schedules in your native calendar application.
+            To accomplish this, we use the <a href="http://en.wikipedia.org/wiki/Webcal"><tt>webcal://</tt></a> URL scheme, and
+            as far as we know, it only works with iCal for iOS at the moment.
+            Sorry, Android folks. Maybe you can embrace openness and
+            contribute a patch or something.
         </p>
 
         <p>
@@ -127,7 +132,7 @@
             notification system. Yes, the one in your corridor. The hope is that
             it will give students a quicker access to their schedules.
         </p>
-
+        
         <p>
             Obviously, we're just trying out the idea. We'll see if it somehow catches up.
             Maybe we'll enhance it. Or Maybe we'll drop it.
