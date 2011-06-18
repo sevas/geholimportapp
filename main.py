@@ -10,6 +10,7 @@ from icalrenderer import IcalRenderer
 from csvrenderer import CSVRenderer
 from studentsetcalendar import StudentSetSummary, StudentSetIcalRenderer, StudentSetMobileSummary, StudentSetQRCode 
 from savedrequests import PreviousRequest, PreviousStudentSetRequests
+import conf
 
 
 class MainPage(webapp.RequestHandler):
@@ -49,7 +50,8 @@ class Redirect(webapp.RequestHandler):
 class QuestionsPage(webapp.RequestHandler):
     def get(self):
         template_values = {'gehol_is_down': is_status_down(),
-                          'last_status_update': get_last_status_update()
+                          'last_status_update': get_last_status_update(),
+                          'qrcode_sample_url': conf.QRCODE_SAMPLE_URL
         }
 
         path = os.path.join(os.path.dirname(__file__), 'templates/questions.html')

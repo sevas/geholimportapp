@@ -37,4 +37,7 @@ WEBCAL_BASE_URL = "webcal://geholimport.appspot.com%s"
 BASE_URL = "http://geholimport.appspot.com"
 COURSE_QRCODE_URL_TEMPLATE = "http://chart.apis.google.com/chart?cht=qr&chl="+BASE_URL+"/course/%s&chs=%dx%d"
 STUDENTSET_QRCODE_URL_TEMPLATE = "http://chart.apis.google.com/chart?cht=qr&chl="+BASE_URL+"/student_set/m/%s&chs=%dx%d"
-                                 
+
+
+
+QRCODE_SAMPLE_URL = "https://twitter.com/oprah/status/1542224596"
