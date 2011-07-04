@@ -14,12 +14,12 @@ Q1_WEEKSPAN = "1-14"
 Q2_WEEKSPAN = "21-36"
 JANUARY_EXAMS_WEEKSPAN = "17-19"
 JUNE_EXAMS_WEEKSPAN = "38-40"
-SEPTEMBER_EXAMS_WEEKSPAN = "48-50"
+SEPTEMBER_EXAMS_WEEKSPAN = "48-51"
 
 
 # There are 3 exam sessions. It's not useful to list them all year long.
 
-CURRENT_EXAM_SESSION = 'june'
+CURRENT_EXAM_SESSION = 'september'
 EXAM_SESSION_WEEKSPANS = {'january':JANUARY_EXAMS_WEEKSPAN,
                           'june':JUNE_EXAMS_WEEKSPAN,
                         'september':SEPTEMBER_EXAMS_WEEKSPAN}
