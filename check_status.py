@@ -1,9 +1,8 @@
 import httplib
-import socket
 import logging
 from google.appengine.ext import webapp
 from status import set_status_down
-
+from conf import SCIENTIA_BACKEND_HOST, GEHOL_FRONTEND_URL
 
 def check_server(host):
     headers = {"Content-type": "application/x-www-form-urlencoded",
@@ -16,12 +15,13 @@ def check_server(host):
 
 
 def check_gateway():
-    host = "164.15.72.157"    
+    host = GEHOL_FRONTEND_URL
     logging.info("Testing GeHoL gateway : %s " % host)
     return check_server(host)
 
+
 def check_scientia_backend():
-    host = "164.15.72.157:8080"    
+    host = SCIENTIA_BACKEND_HOST
     logging.info("Testing Scientia backend : %s " % host)
     return check_server(host)
 
