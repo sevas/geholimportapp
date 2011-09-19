@@ -6,7 +6,7 @@ __author__ = 'Frederic'
 from datetime import datetime, timedelta
 from BeautifulSoup import BeautifulSoup
 from utils import split_weeks, convert_time, convert_week_number_to_date
-from calendar import BaseCalendar
+from basecalendar import BaseCalendar
 
 class StudentSetCalendar(BaseCalendar):
     def __init__(self, markup):
@@ -61,12 +61,27 @@ class StudentSetCalendar(BaseCalendar):
         return t
 
 
+    @staticmethod
+    def _insert_halfhour_slots_and_convert_to_datetime(hour_cells):
+        hours = []
+        for h in hour_cells:
+            if h.string:
+                hours.append(convert_time(h.string))
+            else:
+                last_added_hour = hours[-1]
+                hours.append(datetime(last_added_hour.year,
+                                           last_added_hour.month,
+                                           last_added_hour.day,
+                                           last_added_hour.hour, 30))
+        return hours
+
+
     def _load_events(self, event_table):
         all_rows = event_table.findChildren('tr', recursive=False)
 
         # get the column labels, save as actual hours objects
         hours_row = all_rows[0].findChildren('td', recursive=False)
-        hours = [convert_time(hour_col.text) for hour_col in hours_row[1:]]
+        hours = self._insert_halfhour_slots_and_convert_to_datetime(hours_row[1:])
 
         # get the events for each day
         event_rows = all_rows[1:]
@@ -155,19 +170,20 @@ class StudentSetCalendar(BaseCalendar):
         num_timeslots = int(object_cell['colspan'])
         cell_tables = object_cell.findChildren('table', recursive=False)
         # event box : 3 tables, one per line :
-        #   - location/course type 
+        #   - location/weeks
         #   - title
-        #   - tutor/weeks
-        location_type_table, title_table, tutor_weeks_table = cell_tables
+        #   - tutor/course type
+        location_weeks_table, title_table, tutor_type_table = cell_tables
 
-        location = location_type_table.tr.findChildren('td')[0].text
-        course_type = location_type_table.tr.findChildren('td')[1].text
+        location = location_weeks_table.tr.findChildren('td')[0].text
+        course_weeks = location_weeks_table.tr.findChildren('td')[1].text
 
         course_title = title_table.tr.td.text
 
-        children = tutor_weeks_table.findChildren('td')
+        children = tutor_type_table.findChildren('td')
         course_tutor = children[0].text
-        course_weeks = children[2].text
+        course_group = children[1].text
+        course_type = children[2].text
 
         return {
             'type':course_type,
@@ -178,7 +194,9 @@ class StudentSetCalendar(BaseCalendar):
             'num_timeslots':num_timeslots,
             'start_time':starting_hour,
             'stop_time':starting_hour + timedelta(hours = self._convert_num_timeslots_to_hours(num_timeslots)),
-            'day':num_day
+            'day':num_day,
+            'lecturer':course_tutor,
+            'group':course_group
         }
     
 
@@ -190,3 +208,5 @@ class StudentSetCalendar(BaseCalendar):
     @staticmethod
     def _slot_has_event(slot):
         return slot.table is not None
+
+

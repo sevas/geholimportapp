@@ -1,20 +1,4 @@
-"""
-This module replaces the iCalendar python module which can be found here: http://codespeak.net/icalendar/.
-The main reason is that this module implements an old version of the iCalendar standard (rfc 2445).
-
-We noticed that this version of the standard did not work well with several calendar applications. For example, we could
-not add ics files generated with the old spec as live urls in Google Calendar.
-
-This module implements a subset of the rfc 5545 standard. As we only need a flat list of events, we do not support features such as
-- repeatable events
-- rsvp
-- probably many more
-
-"""
-
 __author__ = 'sevas'
-
-
 
 from datetime import datetime, timedelta
 from StringIO import StringIO
@@ -98,7 +82,20 @@ class Calendar(object):
         ical_string = out.getvalue()
         out.close()
 
-        return ical_string
+        return ical_string.encode('utf-8')
+
+
+
+TYPE_TO_DESCR = {
+    'THE':u'Theorie',
+    'EXE':u'Exercices'
+}
+
+def convert_type_to_description(type_mnemo):
+    if type_mnemo in TYPE_TO_DESCR:
+        return TYPE_TO_DESCR[type_mnemo]
+    else:
+        return type_mnemo
 
 
 def convert_geholcalendar_to_ical(gehol_calendar, first_monday):
@@ -112,9 +109,11 @@ def convert_geholcalendar_to_ical(gehol_calendar, first_monday):
     for event in gehol_calendar.events:
         ical_event = Event()
         # get some common values for the events we will generate next
-        event_summary =  "%s (%s)" % (event['title'], event['type'])
+        event_type_description = convert_type_to_description(event['type'])
+
+        event_summary =  "%s (%s) %s" % (event['title'], event_type_description, event['group'])
         event_organizer = event['organizer']
-        event_location = event['location']
+        event_location = " ".join(event['location'].split(","))
         event_descr = "%s [%s]" % (event_summary, event_organizer)
 
         for (i, event_week) in enumerate(event['weeks']):

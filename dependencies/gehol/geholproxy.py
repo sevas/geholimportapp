@@ -6,19 +6,24 @@ from geholexceptions import *
 from coursecalendar import CourseCalendar
 from studentsetcalendar import StudentSetCalendar
 
+FIRST_QUADRIMESTER = "1-14"
+SECOND_QUADRIMESTER = "21-36"
+ALL_YEAR = "1-36"
+
+
 class GeholProxy(object):
     """
     Entry point for all Gehol queries
     """
 
-    def __init__(self, host):
+    def __init__(self, host="164.15.72.157:8081"):
         """
-        - host: optionnal gehol host string.
+        - host: optionnal gehol host string. Default value = "164.15.72.157:8080"
         """
         self.host = host
 
         
-    def get_course_calendar(self, course_mnemonic, weeks):
+    def get_course_calendar(self, course_mnemonic, weeks=ALL_YEAR):
         """
         Builds a Gehol query YRL and retrieves the events associated to
         the given course
@@ -72,6 +77,8 @@ class GeholProxy(object):
 
 
     def _build_studentset_query_url(self, group_id, weeks):
+        #http://164.15.72.157:8080/Reporting/Individual;Student%20Set%20Groups;id;%23SPLUS0FACD0?&template=Ann%E9e%20d%27%E9tude&weeks=1-14&days=1-6&periods=5-33&width=0&height=0
+
         params = ("&template=Ann%E9e%20d%27%E9tude&weeks="
                   + weeks
                   + "&days=1-6&periods=5-33&width=0&height=0")

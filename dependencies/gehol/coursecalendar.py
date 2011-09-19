@@ -1,9 +1,9 @@
 import httplib
 import re
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 from BeautifulSoup import BeautifulSoup
 from utils import split_weeks, convert_time
-from calendar import BaseCalendar
+from basecalendar import BaseCalendar
 
 class CourseCalendar(BaseCalendar):
     '''Loads events for a given course'''
@@ -27,7 +27,7 @@ class CourseCalendar(BaseCalendar):
 
 
     def __repr__(self):
-        return "{Mnemo : %s   Title : %s   Tutor : %s   Type : %s    (%d events)}" % (self.metadata['mnemo'],
+        return u"{Mnemo : %s   Title : %s   Tutor : %s   Type : %s    (%d events)}" % (self.metadata['mnemo'],
                self.metadata['title'],
                self.metadata['tutor'],
                self.metadata['type'],
@@ -38,18 +38,18 @@ class CourseCalendar(BaseCalendar):
         try:
             self.metadata = self._extract_header(self.html_content)
             self.events = self._extract_table(self.html_content)
-        except AttributeError:
+        except AttributeError, e:
             self._guess_query_error(self.html_content)
 
 
 
     def _extract_header(self, html):
-        """parse html page to find global informations"""
+        '''parse html page to find global informations'''
         soup = BeautifulSoup(html)
         bTag = soup.find('td',text=re.compile('Horaire'))
         head = {'mnemo': bTag.split(':')[1].split('-')[0].lstrip(),
                 'title': bTag.split(':')[1].split('-')[1].lstrip(),
-                'tuto': None,
+                'tutor': None,
                 'type': None
         }
         bTag = soup.find('td',text=re.compile('Titulaire'))
@@ -59,8 +59,8 @@ class CourseCalendar(BaseCalendar):
 
     
     def _extract_table(self, html):
-        """parse html page and process the calendar table
-        intermediate python structure (event list) is returned"""
+        '''parse html page and process the calendar table
+        intermediate python structure (event list) is returned'''
         soup = BeautifulSoup(html)
         tables = soup.html.body.findAll(name='table',recursive=False)
         #jump to the calendar table
@@ -70,7 +70,14 @@ class CourseCalendar(BaseCalendar):
         hours_line = lines[0].findAll(name='td',recursive=False)
         hours = []
         for h in hours_line[1:]:
-            hours.append(convert_time(h.string))
+            if h.string:
+                hours.append(convert_time(h.string))
+            else:
+                last_added_hour = hours[-1]
+                hours.append(datetime(last_added_hour.year,
+                                           last_added_hour.month,
+                                           last_added_hour.day,
+                                           last_added_hour.hour, 30))
         #process all lines
         #search the number of row for that day
         n_rows = []
@@ -122,3 +129,5 @@ class CourseCalendar(BaseCalendar):
                 else:
                     current_time += 1
         return event_list
+
+
