@@ -9,10 +9,11 @@ from geholwrapper import get_calendar, rebuild_course_gehol_url
 from utils import is_course_mnemo_valid, render_course_notfound_page, render_deadline_exceeded_page
 from savedrequests import PreviousRequest
 from gehol.utils import convert_weekspan_to_dates
+import conf
 
 
 def rebuild_gehol_url(group_id):
-    return "http://164.15.72.157:8080/Reporting/Individual;Student%20Set%20Groups;id;"+group_id+"?&template=Ann%E9e%20d%27%E9tude&weeks=1-14&days=1-6&periods=5-33&width=0&height=0"
+    return "http://164.15.72.157:8081/Reporting/Individual;Student%20Set%20Groups;id;"+group_id+"?&template=Ann%E9e%20d%27%E9tude&weeks=1-14&days=1-6&periods=5-33&width=0&height=0"
 
 
 
@@ -44,7 +45,7 @@ class CourseCalendar(webapp.RequestHandler):
 
     def _render_calendar_summary(self, cal, course_mnemo):
         ical_url, csv_url = self._build_file_urls(course_mnemo)
-        start, end = convert_weekspan_to_dates("1-36", "20/09/2010")
+        start, end = convert_weekspan_to_dates(conf.Q1_WEEKSPAN, conf.FIRST_MONDAY)
         caption = "Schedule from %s to %s" % (start.strftime("%B %d, %Y"),
                                               end.strftime("%B %d, %Y"))
 
