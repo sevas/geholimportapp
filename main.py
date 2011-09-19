@@ -63,7 +63,7 @@ application = webapp.WSGIApplication(
                                      [('/', MainPage),
                                      ('/redirect', Redirect),
                                      ('/course/ical/.*', IcalRenderer),
-                                     ('/course/csv/.*', CSVRenderer),
+                                     #('/course/csv/.*', CSVRenderer),
                                      ('/course/.*', CourseCalendar),
                                      ('/geholstatus',  UpdateGeholStatus),
                                      ('/student_set/ical/q./.*\.ics', StudentSetIcalRenderer),
