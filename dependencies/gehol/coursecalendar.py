@@ -125,6 +125,7 @@ class CourseCalendar(BaseCalendar):
                     current_time = current_time + event['duration']
                     event['organizer'] = ""
                     event['title'] = "%s - %s" % (self.metadata['mnemo'], self.metadata['title'])
+                    event['group'] = ''
                     event_list.append(event)
                 else:
                     current_time += 1
