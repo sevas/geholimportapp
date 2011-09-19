@@ -46,19 +46,18 @@ class CourseCalendar(webapp.RequestHandler):
     def _render_calendar_summary(self, cal, course_mnemo):
         ical_url, csv_url = self._build_file_urls(course_mnemo)
         start, end = convert_weekspan_to_dates(conf.Q1_WEEKSPAN, conf.FIRST_MONDAY)
-        caption = "Schedule from %s to %s" % (start.strftime("%B %d, %Y"),
-                                              end.strftime("%B %d, %Y"))
 
         template_values = {'gehol_is_down': is_status_down(),
-                         'last_status_update': get_last_status_update(),
+                        'last_status_update': get_last_status_update(),
                         'mnemo':course_mnemo,
                         'ical_url':ical_url,
                         'csv_url':csv_url,
-                        'caption':caption,
                         'gehol_url': rebuild_course_gehol_url(course_mnemo),
-                        
-        }
+                        'start_time':start.strftime("%B %d, %Y"),
+                        'end_time':end.strftime("%B %d, %Y"),
+                        'has_events':cal.has_events()
 
+        }
         template_values.update(cal.metadata)
         path = os.path.join(os.path.dirname(__file__), 'templates/course.html')
         self.response.out.write(template.render(path, template_values))

@@ -23,12 +23,30 @@
 
         <br/> <br/> <br/> <br/>
         
-        <h3>We can generate the following files for you:</h3>
 
-        <div class="box" style="text-align:center">
-            <h3><a href="{{ical_url}}">{{mnemo}}.ics</a></h3>
-            <div class="quiet" style="font-style:italic;">  {{caption}}</div>
+
+        {% if has_events %}
+            <h3>We can generate the following file for you:</h3>
+            <div class="box" style="text-align:center">
+                <h3><a href="{{ical_url}}">{{mnemo}}.ics</a></h3>
+
+                <div class="quiet" style="font-style:italic;">
+                    Schedule from {{ start_time }} to {{ end_time }}.
+                </div>
+            </div>
+        {% else %}
+            <h3>We could have generated the following file for you:</h3>
+            <div class="box" style="text-align:center">
+                <h3>{{mnemo}}.ics</h3>
+            <div class="quiet" style="font-style:italic;">
+                But this course appears to have no events between
+                {{ start_time }}and {{ end_time }}. <br/>
+                Come back for the second term.
+
+            </div>
         </div>
+        {% endif %}
+
 
         <p>
             Click this link to download
