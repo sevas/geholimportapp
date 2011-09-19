@@ -12,7 +12,7 @@ first_monday = conf.FIRST_MONDAY
 def get_calendar(course_mnemonic):
     gehol_proxy = gehol.GeholProxy(host)
     try:
-        return gehol_proxy.get_course_calendar(course_mnemonic, conf.ALL_YEAR_WEEKSPAN)
+        return gehol_proxy.get_course_calendar(course_mnemonic, conf.Q1_WEEKSPAN)
     except gehol.GeholException:
         return None
 
@@ -87,4 +87,4 @@ def rebuild_studentset_gehol_url(group_id, weeks):
 
 
 def rebuild_course_gehol_url(course_mnemo):
-    return conf.GEHOL_COURSE_URL_TEMPLATE % (course_mnemo, conf.ALL_YEAR_WEEKSPAN)
+    return conf.GEHOL_COURSE_URL_TEMPLATE % (course_mnemo, conf.Q1_WEEKSPAN)
