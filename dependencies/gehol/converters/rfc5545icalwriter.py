@@ -86,18 +86,6 @@ class Calendar(object):
 
 
 
-TYPE_TO_DESCR = {
-    'THE':u'Theorie',
-    'EXE':u'Exercices'
-}
-
-def convert_type_to_description(type_mnemo):
-    if type_mnemo in TYPE_TO_DESCR:
-        return TYPE_TO_DESCR[type_mnemo]
-    else:
-        return type_mnemo
-
-
 def convert_geholcalendar_to_ical(gehol_calendar, first_monday):
     date_init = datetime.strptime(first_monday,'%d/%m/%Y')
 
@@ -108,26 +96,19 @@ def convert_geholcalendar_to_ical(gehol_calendar, first_monday):
 
     for event in gehol_calendar.events:
         ical_event = Event()
-        # get some common values for the events we will generate next
-        event_type_description = convert_type_to_description(event['type'])
 
-        event_summary =  "%s (%s) %s" % (event['title'], event_type_description, event['group'])
-        event_organizer = event['organizer']
-        event_location = " ".join(event['location'].split(","))
-        event_descr = "%s [%s]" % (event_summary, event_organizer)
-
-        for (i, event_week) in enumerate(event['weeks']):
-            delta = timedelta(days=(event_week-1)*7+(event['day']))
-            dtstart = date_init+delta + timedelta(hours = event['start_time'].hour,
-                                                  minutes = event['start_time'].minute)
-            dtend = date_init+delta + timedelta(hours = event['stop_time'].hour,
-                                                minutes = event['stop_time'].minute)
+        for (i, event_week) in enumerate(event.weeks):
+            delta = timedelta(days=(event_week-1)*7 + event.day)
+            dtstart = date_init+delta + timedelta(hours = event.start_time.hour,
+                                                  minutes = event.start_time.minute)
+            dtend = date_init+delta + timedelta(hours = event.stop_time.hour,
+                                                minutes = event.stop_time.minute)
 
             ical_event = Event()
-            ical_event.summary = event_summary
-            ical_event.location = event_location
-            ical_event.description = event_descr
-            ical_event.organizer = event_organizer
+            ical_event.summary = event.summary
+            ical_event.location = event.location
+            ical_event.description = event.description
+            ical_event.organizer = event.organizer
 
             ical_event.dtstamp = dtstart
             ical_event.dtstart = dtstart

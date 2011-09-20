@@ -3,8 +3,27 @@ import re
 from datetime import datetime, timedelta, time
 from BeautifulSoup import BeautifulSoup
 from utils import split_weeks, convert_time
-from basecalendar import BaseCalendar
+from basecalendar import BaseCalendar, BaseEvent, convert_type_to_description
 
+class CourseEvent(BaseEvent):
+    def __init__(self, **kwargs):
+        super(CourseEvent, self).__init__(**kwargs)
+        self.type = kwargs['type']
+        self.title = kwargs['title']
+
+    @property
+    def summary(self):
+        event_type_description = convert_type_to_description(self.type)
+        event_summary =  "%s (%s)" % (self.title, event_type_description)
+        return event_summary
+
+
+    @property
+    def description(self):
+        return "%s [%s]" % (self.summary, self.organizer)
+
+
+    
 class CourseCalendar(BaseCalendar):
     '''Loads events for a given course'''
     def __init__(self, markup):
@@ -104,29 +123,29 @@ class CourseCalendar(BaseCalendar):
                 cell = s.findAll(name='table',recursive=False)
                 # event found
                 if len(cell)>1:
-                    event = {'no_line': no_line,
-                             'day': day,
-                             'start_time': hours[current_time],
-                             'duration': int(s['colspan'])
+                    event_data = { 'day': day,
+                                    'start_time': hours[current_time],
+                                    'duration': int(s['colspan'])
                     }
                     #duration in hours is extract from the colspan
                     #compute end time (1 colspan=1/2 hour)
-                    delta = timedelta(hours=event['duration']/2)
-                    event['stop_time'] = hours[current_time]+delta
+                    delta = timedelta(hours=event_data['duration']/2)
+                    event_data['stop_time'] = hours[current_time]+delta
                     td = cell[0].tr.findAll(name='td',recursive=False)
                     # Gehol weeks when the event occurs
-                    event['weeks'] = split_weeks(td[0].contents[0].string)
+                    event_data['weeks'] = split_weeks(td[0].contents[0].string)
                     # location
-                    event['location'] = td[1].contents[0].string
-                    if event['location'] is None:
-                        event['location'] = ''
+                    event_data['location'] = td[1].contents[0].string
+                    if not event_data['location']:
+                        event_data['location'] = ''
                     # activity
-                    event['type'] = cell[1].tr.td.contents[0].string
-                    current_time = current_time + event['duration']
-                    event['organizer'] = ""
-                    event['title'] = "%s - %s" % (self.metadata['mnemo'], self.metadata['title'])
-                    event['group'] = ''
-                    event_list.append(event)
+                    event_data['type'] = cell[1].tr.td.contents[0].string
+                    current_time = current_time + event_data['duration']
+                    event_data['organizer'] = ""
+                    event_data['title'] = "%s - %s" % (self.metadata['mnemo'], self.metadata['title'])
+
+                    course_event = CourseEvent(**event_data)
+                    event_list.append(course_event)
                 else:
                     current_time += 1
         return event_list

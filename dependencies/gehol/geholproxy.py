@@ -5,6 +5,7 @@ import httplib
 from geholexceptions import *
 from coursecalendar import CourseCalendar
 from studentsetcalendar import StudentSetCalendar
+from professorcalendar import ProfessorCalendar
 
 FIRST_QUADRIMESTER = "1-14"
 SECOND_QUADRIMESTER = "21-36"
@@ -62,6 +63,20 @@ class GeholProxy(object):
         return cal
 
 
+    def get_professor_calendar(self, professor_id, weeks):
+        url = self._build_professor_query_url(professor_id, weeks)
+        return self.get_professor_calendar_from_url("http://%s%s" % (self.host, url))
+
+
+    def get_professor_calendar_from_url(self, url):
+        parsed_url = urlparse.urlparse(url)
+        scheme, netloc, path, params, query, frag = parsed_url
+        self.host = netloc
+        html_data = self._get_html_data("%s;%s?%s" % (path, params, query))
+        cal = ProfessorCalendar(html_data)
+        return cal
+
+
     def _build_course_query_url(self, mnemo, weeks):
         """
         Builds a Gehol query url for the given course mnemonic.
@@ -77,8 +92,6 @@ class GeholProxy(object):
 
 
     def _build_studentset_query_url(self, group_id, weeks):
-        #http://164.15.72.157:8080/Reporting/Individual;Student%20Set%20Groups;id;%23SPLUS0FACD0?&template=Ann%E9e%20d%27%E9tude&weeks=1-14&days=1-6&periods=5-33&width=0&height=0
-
         params = ("&template=Ann%E9e%20d%27%E9tude&weeks="
                   + weeks
                   + "&days=1-6&periods=5-33&width=0&height=0")
@@ -88,6 +101,17 @@ class GeholProxy(object):
                 + params)
 
 
+    def _build_professor_query_url(self, professor_id, weeks):
+        params = (  "&template=Professeur&weeks="
+                    + weeks
+                    + "&days=1-6&periods=1-30&width=0&height=0")
+        return (    "/Reporting/Individual;Staff;id;"
+                    + str(professor_id)
+                    + "?"
+                    + params)
+
+
+    
     def _get_html_data(self, url):
         """
         Fetches html data. Returns a file-like object from which to

@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+#adapted from studentsetcalendar
+#################TO DO #####################"
 
 __author__ = 'Frederic'
 
@@ -9,56 +11,53 @@ from utils import split_weeks, convert_time, convert_week_number_to_date
 from basecalendar import BaseCalendar, BaseEvent, convert_type_to_description
 
 
-class StudentSetEvent(BaseEvent):
+class ProfessorEvent(BaseEvent):
     def __init__(self, **kwargs):
-        super(StudentSetEvent, self).__init__(**kwargs)
+        super(ProfessorEvent, self).__init__(**kwargs)
         self.type = kwargs['type']
         self.title = kwargs['title']
-        self.group = kwargs['group']
+        self.mnemo = kwargs['mnemo']
 
 
     @property
     def summary(self):
         event_type_description = convert_type_to_description(self.type)
-        if self.group:
-            event_summary =  u"%s (%s) [%s]" % (self.title, event_type_description, self.group)
-        else:
-            event_summary =  u"%s (%s)" % (self.title, event_type_description)
+        event_summary =  u"%s: %s (%s)" % (self.mnemo, self.title, event_type_description)
         return event_summary
 
 
     @property
     def description(self):
-        return "%s [%s]" % (self.summary, self.organizer)
+        return self.summary
 
 
 
 
-class StudentSetCalendar(BaseCalendar):
+class ProfessorCalendar(BaseCalendar):
     def __init__(self, markup):
-        super(StudentSetCalendar, self).__init__()
+        super(ProfessorCalendar, self).__init__()
         if self._is_file_type_object(markup):
             markup = markup.read()
         self.html_content = markup
         soup = BeautifulSoup(self.html_content, fromEncoding='iso-8859-1')
-        self.header_data = {'student_profile':None, 'faculty':None}
+        self.header_data = {}
         self._load_content_from_soup(soup)
 
 
     @property
     def description(self):
-        descr = "[%s] %s" % (self.header_data['faculty'],
-                             self.header_data['student_profile'])
-        return descr.replace(':', '-')
+        descr = u"Schedule for %s" % (u''.join(self.header_data['teacher_name'].split(',')))
+        return descr
 
 
     @property
     def name(self):
-        return  self.header_data['student_profile'].replace(':', '-')
+        return  u"ULB - " + u''.join(self.header_data['teacher_name'].split(','))
 
 
     def _load_content_from_soup(self, soup):
-        try:
+        #try:
+        if True:
             top_level_tables = soup.html.body.findAll(name="table", recursive=False)
             # Take only the first 3 top-level tables. Sometimes the html is
             # broken and we don't get the 4th.
@@ -68,23 +67,25 @@ class StudentSetCalendar(BaseCalendar):
 
             self._load_header_data(header)
             self._load_events(event_grid)
-        except AttributeError,e:
-            self._guess_query_error(self.html_content)
-        except ValueError,e:
-            self._guess_query_error(self.html_content)
+        #except AttributeError,e:
+        #    self._guess_query_error(self.html_content)
+        #except ValueError,e:
+        #    self._guess_query_error(self.html_content)
             
     def _load_header_data(self, header):
         all_entries = header.findAll(name='table')
-        faculty_table = all_entries[4]
-        profile_table = all_entries[6]
-        self.header_data['faculty'] = self._extract_data_from_header_table(faculty_table)
-        self.header_data['student_profile'] = self._extract_data_from_header_table(profile_table)
+        teacher_info_table = all_entries[3]
+        self.header_data['teacher_name'] = self._extract_teacher_info_from_header_table(teacher_info_table)
 
 
     @staticmethod
-    def _extract_data_from_header_table(table):
-        t = table.td.getText()
-        return t
+    def _extract_teacher_info_from_header_table(table):
+        try:
+            t = table.td.getText()
+            teacher_name = t.split(':')[1]
+            return teacher_name.strip()
+        except :
+            return None
 
 
     @staticmethod
@@ -102,13 +103,14 @@ class StudentSetCalendar(BaseCalendar):
         return hours
 
 
+
     def _load_events(self, event_table):
         all_rows = event_table.findChildren('tr', recursive=False)
 
         # get the column labels, save as actual hours objects
         hours_row = all_rows[0].findChildren('td', recursive=False)
         hours = self._insert_halfhour_slots_and_convert_to_datetime(hours_row[1:])
-
+        
         # get the events for each day
         event_rows = all_rows[1:]
         self.events = []
@@ -172,11 +174,9 @@ class StudentSetCalendar(BaseCalendar):
         for time_slot in all_day_slots:
             if self._slot_has_event(time_slot):
                 new_event_data = self._process_event(time_slot,
-                                                     hours[current_time_idx],
-                                                     num_day)
-
-                new_event = StudentSetEvent(**new_event_data)
-                events.append(new_event)
+                                                hours[current_time_idx],
+                                                num_day)
+                events.append(ProfessorEvent(**new_event_data))
                 current_time_idx += new_event_data['num_timeslots']
             else:
                 # This is tricky : in the first row of each day, the first
@@ -198,33 +198,31 @@ class StudentSetCalendar(BaseCalendar):
         num_timeslots = int(object_cell['colspan'])
         cell_tables = object_cell.findChildren('table', recursive=False)
         # event box : 3 tables, one per line :
-        #   - location/weeks
+        #   - weeks/location/type
+        #   - mnemo
         #   - title
-        #   - tutor/course type
-        location_weeks_table, title_table, tutor_type_table = cell_tables
+        first, second, third = cell_tables
 
-        location = location_weeks_table.tr.findChildren('td')[0].text
-        course_weeks = location_weeks_table.tr.findChildren('td')[1].text
 
-        course_title = title_table.tr.td.text
+        course_weeks = first.tr.findChildren('td')[0].text
+        location = first.tr.findChildren('td')[1].text
+        course_type = first.tr.findChildren('td')[2].text
 
-        children = tutor_type_table.findChildren('td')
-        course_tutor = children[0].text
-        course_group = children[1].text
-        course_type = children[2].text
+        course_mnemo = second.tr.td.text
 
+        course_title = third.tr.td.text
+        
         return {
             'type':course_type,
             'location':location,
             'organizer':"",
             'title':course_title,
+            'mnemo':course_mnemo,
             'weeks':split_weeks(course_weeks),
             'num_timeslots':num_timeslots,
             'start_time':starting_hour,
             'stop_time':starting_hour + timedelta(hours = self._convert_num_timeslots_to_hours(num_timeslots)),
-            'day':num_day,
-            'lecturer':course_tutor,
-            'group':course_group
+            'day':num_day
         }
     
 
@@ -238,3 +236,14 @@ class StudentSetCalendar(BaseCalendar):
         return slot.table is not None
 
 
+
+
+if __name__ == "__main__":
+    f = open("../../data/teacher-2012/francoise.html")
+    p = ProfessorCalendar(f)
+    print p.name
+    print p.description
+    for e in p.events:
+        print e.summary
+
+    print p.events
