@@ -293,3 +293,12 @@ hr.space {background:#fff;color:#fff;visibility:hidden;}
     padding-bottom:64px;
     padding-top:16px;
 }
+
+
+.new-stuff{
+    color: #009;
+    background: #E5ECF9;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 0.3em;
+}

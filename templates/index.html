@@ -6,6 +6,29 @@
 
 {% block content %}
 
+   <div class="span-15">
+        <h3><span class="new-stuff">New!</span> You're a professor, and you want your schedule for an entire term: </h3>
+
+        <form action="/redirect" method="post">
+            <fieldset style="border:none">
+                <label for="professor_gehol_url">Paste the complete GeHoL URL for your schedule in the input box below (<a href="/questions#geholurl_staff">Tell me more</a>):</label>
+                <br/>
+                <input type="text" id="professor_gehol_url" name="professor_gehol_url" class="text" style="width:100%"/>
+                <div style="text-align:center"><input type="submit" value="Get schedule"/></div>
+
+            </fieldset>
+        </form>
+        <br/><br/>
+        <br/><br/>
+        <br/><br/>
+    </div>
+
+    <br/><br/>
+    <hr/>
+    <br/><br/>
+
+
+
     <div class="span-15">
         <h3>You're a student, and you want your schedule for an entire term or an exams session: </h3>
 
@@ -27,34 +50,17 @@
            </li>
         {% endfor %}
         </ul>
-        <br/><br/>
-    </div>
-
-       <br/><br/>
-    <hr/>
+    <br/><br/>
+    <br/><br/>
     <br/><br/>
 
-
-    <div class="span-15">
-        <h3>You're a professor, and you want your schedule for an entire term: </h3>
-
-        <form action="/redirect" method="post">
-            <fieldset style="border:none">
-                <label for="gehol_url">Paste the complete GeHoL URL for your schedule in the input box below (<a href="/questions#geholurl_staff">Wait, what?</a>):</label>
-                <br/>
-                <input type="text" id="professor_gehol_url" name="professor_gehol_url" class="text" style="width:100%"/>
-                <div style="text-align:center"><input type="submit" value="Get schedule"/></div>
-
-            </fieldset>
-        </form>
-        <br/><br/>
     </div>
-
 
     <br/><br/>
     <hr/>
     <br/><br/>
 
+    
    <div class="span-15">
         <h3>You want the schedule for a specific course: </h3>
 
