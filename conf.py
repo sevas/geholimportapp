@@ -38,4 +38,4 @@ STUDENTSET_QRCODE_URL_TEMPLATE = "http://chart.apis.google.com/chart?cht=qr&chl=
 
 
 
-QRCODE_SAMPLE_URL = "https://twitter.com/oprah/status/1542224596"
+QRCODE_SAMPLE_URL = "http://www.computerweekly.com/PhotoGalleries/232923/19_20_Jet-pack-Thunderball-1965-Sean-Connery.JPG"
