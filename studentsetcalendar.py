@@ -9,7 +9,7 @@ from google.appengine.ext.webapp import template
 from google.appengine.api.urlfetch import DownloadError
 from status import is_status_down, get_last_status_update
 from utils import render_deadline_exceeded_page
-from geholwrapper import get_student_q1_calendar, get_student_q2_calendar,convert_student_calendar_to_ical_string, rebuild_studentset_gehol_url
+from geholwrapper import get_student_q1_calendar, get_student_q2_calendar,convert_student_calendar_to_ical_string, make_studentset_gehol_url
 from geholwrapper import  get_student_exam_calendar,  get_student_jan_calendar, get_student_june_calendar, get_student_sept_calendar
 from savedrequests import PreviousStudentSetRequests
 from gehol.utils import convert_weekspan_to_dates
@@ -91,7 +91,7 @@ class StudentSetSummary(webapp.RequestHandler):
 
         template_values = {'gehol_is_down': is_status_down(),
                          'last_status_update': get_last_status_update(),
-                         'gehol_url':rebuild_studentset_gehol_url(group_id, conf.Q1_WEEKSPAN),
+                         'gehol_url':make_studentset_gehol_url(group_id, conf.Q1_WEEKSPAN),
                          'cal_faculty':faculty,
                          'cal_student_profile':student_profile,
                          'ical_q1_url':ical_urls[0],
@@ -217,7 +217,7 @@ class StudentSetMobileSummary(webapp.RequestHandler):
         q2_span = convert_weekspan_to_dates(conf.Q2_WEEKSPAN, conf.FIRST_MONDAY)
 
 
-        template_values = {'gehol_url':rebuild_studentset_gehol_url(group_id, conf.Q1_WEEKSPAN),
+        template_values = {'gehol_url':make_studentset_gehol_url(group_id, conf.Q1_WEEKSPAN),
                          'cal_faculty':faculty,
                          'cal_student_profile':student_profile,
                          'webcal_q1_url':webcal_urls[0],

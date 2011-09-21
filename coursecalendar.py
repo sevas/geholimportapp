@@ -5,7 +5,7 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from google.appengine.api.urlfetch import DownloadError
 from status import is_status_down, get_last_status_update
-from geholwrapper import get_calendar, rebuild_course_gehol_url
+from geholwrapper import get_calendar, make_course_gehol_url
 from utils import is_course_mnemo_valid, render_course_notfound_page, render_deadline_exceeded_page
 from savedrequests import PreviousRequest
 from gehol.utils import convert_weekspan_to_dates
@@ -52,7 +52,7 @@ class CourseCalendar(webapp.RequestHandler):
                         'mnemo':course_mnemo,
                         'ical_url':ical_url,
                         'csv_url':csv_url,
-                        'gehol_url': rebuild_course_gehol_url(course_mnemo),
+                        'gehol_url': make_course_gehol_url(course_mnemo),
                         'start_time':start.strftime("%B %d, %Y"),
                         'end_time':end.strftime("%B %d, %Y"),
                         'has_events':cal.has_events()
