@@ -37,3 +37,31 @@ def convert_weekspan_to_dates(weekspan, first_monday):
     start, end = [int(i) for i in weekspan.split("-")]
     return (convert_week_number_to_date(start, first_monday),
             convert_week_number_to_date(end, first_monday, 5))
+
+
+
+def capitalize_word(word):
+    if not word:
+        return ""
+    elif len(word) == 1:
+        return word[0].upper()
+    else:
+        return word[:1].upper() + word[1:]
+
+def capitalize_hyphenated_name(name):
+    fragments = name.split("-")
+    return u"-".join([capitalize_word(w) for w in fragments])
+
+
+
+def capitalize_name(name):
+    pass
+
+
+
+def as_readable_name(lecturers):
+    fragments = lecturers.split(',')
+    pairs = [fragments[2*i, 2*i+1] for i in len(fragments) / 2]
+    for (first, last) in pairs:
+        capitalized_last_name = last_name.lower()
+        readable_name = u"%s %s" % (first_name, last_name)

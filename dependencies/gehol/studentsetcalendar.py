@@ -5,7 +5,7 @@ __author__ = 'Frederic'
 
 from datetime import datetime, timedelta
 from BeautifulSoup import BeautifulSoup
-from utils import split_weeks, convert_time, convert_week_number_to_date
+from utils import split_weeks, convert_time
 from basecalendar import BaseCalendar, BaseEvent, convert_type_to_description
 
 
@@ -15,21 +15,30 @@ class StudentSetEvent(BaseEvent):
         self.type = kwargs['type']
         self.title = kwargs['title']
         self.group = kwargs['group']
+        self.lecturer = kwargs['lecturer']
 
 
     @property
     def summary(self):
         event_type_description = convert_type_to_description(self.type)
-        if self.group:
-            event_summary =  u"%s (%s) [%s]" % (self.title, event_type_description, self.group)
+
+        if self.lecturer:
+            event_summary =  u"%s with %s (%s)" % (self.title,
+                                                   self.lecturer,
+                                                   event_type_description)
         else:
             event_summary =  u"%s (%s)" % (self.title, event_type_description)
+
+
+        if self.group:
+            event_summary = u"%s [%s]" % (event_summary, self.group)
+
         return event_summary
 
 
     @property
     def description(self):
-        return "%s [%s]" % (self.summary, self.organizer)
+        return self.summary
 
 
 
@@ -218,13 +227,13 @@ class StudentSetCalendar(BaseCalendar):
             'location':location,
             'organizer':"",
             'title':course_title,
+            'lecturer':course_tutor,
+            'group':course_group,
             'weeks':split_weeks(course_weeks),
             'num_timeslots':num_timeslots,
             'start_time':starting_hour,
             'stop_time':starting_hour + timedelta(hours = self._convert_num_timeslots_to_hours(num_timeslots)),
-            'day':num_day,
-            'lecturer':course_tutor,
-            'group':course_group
+            'day':num_day
         }
     
 
@@ -237,4 +246,14 @@ class StudentSetCalendar(BaseCalendar):
     def _slot_has_event(slot):
         return slot.table is not None
 
+
+if __name__ == "__main__":
+    f = open("../../data/student-2012/FSA_BA1.html")
+    p = StudentSetCalendar(f)
+    print p.name
+    print p.description
+    for e in p.events:
+        print e.summary
+
+    print p.events
 
