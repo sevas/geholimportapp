@@ -1,0 +1,74 @@
+{% extends "main.html" %}
+
+{% block title %}
+   {{professor_name}} | Gehol Importer
+{% endblock %}
+
+{% block content %}
+
+    <div class="span-15">
+
+      <h3>We fetched some information from the <a href="{{gehol_url}}">URL</a> you gave us.</h3>
+      We found the schedule for the following professor:<br/>
+      <div style="padding-left:32px;padding-top:16px;text-align:center;">
+
+        <h3> <em>{{professor_name}}</em> </h3>
+
+      </div>
+
+      <br/><br/>      <br/><br/>
+
+
+      <h3>Two calendars can be generated. Pick what you need.</h3>
+
+
+
+      <div class="box" style="text-align:center">
+        <h4><a href="{{ical_q1_url}}">{{ical_q1_url_title}}.ics</a></h4>
+        <div class="quiet" style="font-style:italic;"> First term : {{q1_span}}</div>
+      </div>
+
+
+      <!--div class="box" style="text-align:center">
+        <h4><a href="{{ical_q2_url}}">{{ical_q2_url_title}}.ics</a></h4>
+        <div class="quiet" style="font-style:italic;"> Second term : {{q2_span}}</div>
+      </div-->
+
+      <div class="box" style="text-align:center">
+        <h4>Schedules for the second term are not available yet</h4>
+        <div class="quiet" style="font-style:italic;">
+
+            According to the <a href="http://scientia-web.ulb.ac.be/gehol_20112012/">powers that be</a>,
+            they are currently not valid.
+            Hence, we won't show them just yet.
+         </div>
+      </div>
+
+
+     <p>
+        Clicking one of those links will start the download of
+        an <a href="http://en.wikipedia.org/wiki/ICalendar">iCalendar</a>
+        file with events for all the courses associated with this student profile.
+        iCalendar files can be opened with
+        Apple iCal, Microsoft Outlook and Mozilla Sunbird.
+      </p>
+      <p>
+        Alternatively, you can also copy this link and add it
+        as a
+        <a href="/questions#subscribe">live url subscription</a> in Google
+        Calendar and Apple iCal.
+      </p>
+
+      <p>
+        <strong>Important reminder :</strong> The files you
+        download and import from this service are
+        <a href="/questions#files">frozen snapshots</a>
+        taken from the GeHoL service.
+        <strong>To be notified of schedule changes, don't forget
+          to check your official faculty announcements.</strong>
+      </p>
+
+  </div>
+
+    
+{% endblock %}

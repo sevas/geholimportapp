@@ -39,12 +39,17 @@ class Redirect(webapp.RequestHandler):
         if course_mnemo:
             self.redirect("/course/%s" % course_mnemo.upper())
         else:
-            gehol_url = self.request.get('gehol_url')
-            if gehol_url:
-                group_id = StudentSetSummary._extract_group_id(gehol_url)
+            student_gehol_url = self.request.get('student_gehol_url')
+            if student_gehol_url:
+                group_id = StudentSetSummary._extract_group_id(student_gehol_url)
                 self.redirect("/student_set/%s" % group_id)
             else:
-                self.redirect("/")
+                professor_gehol_url = self.request.get('professor_gehol_url')
+                if professor_gehol_url:
+                    staff_member_id = ProfessorSummary._extract_staff_member_id(professor_gehol_url)
+                    self.redirect("/staff/%s" % staff_member_id)
+                else:
+                    self.redirect("/")
 
 
 class QuestionsPage(webapp.RequestHandler):
@@ -75,7 +80,6 @@ application = webapp.WSGIApplication(
                                      ('/staff/ical/.*\.ics', ProfessorIcalRenderer),
                                      ('/staff/.*', ProfessorSummary),
                                      ('/questions.*', QuestionsPage),
-                                     #('.*', MainPage)
                                      ],
                                      debug=True)
 
