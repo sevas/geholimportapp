@@ -1,16 +1,12 @@
 import sys
 sys.path.append('./dependencies')
 import logging
-from gehol.converters.csvwriter import to_csv
 from gehol.converters.rfc5545icalwriter import convert_geholcalendar_to_ical
 import gehol
 import conf
 
-host = conf.SCIENTIA_BACKEND_HOST
-first_monday = conf.FIRST_MONDAY
-
 def get_calendar(course_mnemonic):
-    gehol_proxy = gehol.GeholProxy(host)
+    gehol_proxy = gehol.GeholProxy(conf.SCIENTIA_BACKEND_HOST)
     try:
         return gehol_proxy.get_course_calendar(course_mnemonic, conf.Q1_WEEKSPAN)
     except gehol.GeholException:
@@ -18,19 +14,9 @@ def get_calendar(course_mnemonic):
 
 
 
-def convert_course_calendar_to_csv(cal):
-    try:
-        csv_string = to_csv(cal.metadata, cal.events, first_monday)
-        return csv_string
-
-    except Exception,e:
-        logging.debug("something went wrong while converting calendar %s : %s" % (cal.name, e.message))
-        return None
-
-
 
 def convert_course_calendar_to_ical(cal):
-    ical = convert_geholcalendar_to_ical(cal, first_monday)
+    ical = convert_geholcalendar_to_ical(cal, conf.FIRST_MONDAY)
     return ical.as_string()
 
 
@@ -63,7 +49,7 @@ def get_student_sept_calendar(group_id):
 
 def get_student_calendar(group_id, weeks):
     try:
-        gehol_proxy = gehol.GeholProxy(host)
+        gehol_proxy = gehol.GeholProxy(conf.SCIENTIA_BACKEND_HOST)
         cal = gehol_proxy.get_studentset_calendar(group_id, weeks)
         return cal
     except gehol.GeholException:
@@ -73,18 +59,56 @@ def get_student_calendar(group_id, weeks):
 
 def convert_student_calendar_to_ical_string(cal):
     try:
-        ical_data = convert_geholcalendar_to_ical(cal, first_monday)
+        ical_data = convert_geholcalendar_to_ical(cal, conf.FIRST_MONDAY)
         return ical_data.as_string()
     except Exception,e:
         return None
 
 
 
-
-def rebuild_studentset_gehol_url(group_id, weeks):
-    return conf.GEHOL_STUDENTSET_URL_TEMPLATE % (group_id, weeks)
-
+def get_professor_q1_calendar(staff_member_id):
+    return get_professor_calendar(staff_member_id, conf.Q1_WEEKSPAN)
 
 
-def rebuild_course_gehol_url(course_mnemo):
-    return conf.GEHOL_COURSE_URL_TEMPLATE % (course_mnemo, conf.Q1_WEEKSPAN)
+
+def get_professor_q2_calendar(staff_member_id):
+    return get_professor_calendar(staff_member_id, conf.Q2_WEEKSPAN)
+
+
+
+def get_professor_calendar(staff_member_id, weeks):
+    try:
+        gehol_proxy = gehol.GeholProxy(conf.SCIENTIA_BACKEND_HOST)
+        cal = gehol_proxy.get_professor_calendar(staff_member_id, weeks)
+        return cal
+    except gehol.GeholException:
+        return None
+
+
+def convert_professor_calendar_to_ical_string(cal):
+    try:
+        ical_data = convert_geholcalendar_to_ical(cal, conf.FIRST_MONDAY)
+        return ical_data.as_string()
+    except Exception,e:
+        return None
+
+
+
+def make_studentset_gehol_url(group_id, weeks):
+    host = conf.SCIENTIA_BACKEND_HOST
+    template_url = "http://%s/Reporting/Individual;Student%%20Set%%20Groups;id;%s?&template=Ann%%E9e%%20d%%27%%E9tude&weeks=%s&days=1-6&periods=5-33&width=0&height=0"
+    return template_url % (host, group_id, weeks)
+
+
+
+def make_course_gehol_url(course_mnemo, weeks=conf.Q1_WEEKSPAN):
+    host = conf.SCIENTIA_BACKEND_HOST
+    template_url =  "http://%s/Reporting/Individual;Courses;name;%s?&days=1-6&height=0&width=0&periods=5-29&template=cours&weeks=%s"
+    return template_url % (host, course_mnemo, conf.Q1_WEEKSPAN)
+
+
+
+def make_professor_gehol_url(staff_member_id, weeks):
+    host = conf.SCIENTIA_BACKEND_HOST
+    template_url = "http://%s/Reporting/Individual;Staff;id;%s?&template=Professeur&weeks=%s&days=1-6&periods=1-30&width=0&height=0"
+    return template_url % (host, staff_member_id, weeks)
