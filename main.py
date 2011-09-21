@@ -7,8 +7,8 @@ from status import is_status_down, get_last_status_update
 from check_status import UpdateGeholStatus
 from coursecalendar import CourseCalendar
 from icalrenderer import IcalRenderer
-from csvrenderer import CSVRenderer
-from studentsetcalendar import StudentSetSummary, StudentSetIcalRenderer, StudentSetMobileSummary, StudentSetQRCode 
+from studentsetcalendar import StudentSetSummary, StudentSetIcalRenderer, StudentSetMobileSummary, StudentSetQRCode
+from professorcalendar import ProfessorIcalRenderer, ProfessorSummary
 from savedrequests import PreviousRequest, PreviousStudentSetRequests
 import conf
 
@@ -63,7 +63,6 @@ application = webapp.WSGIApplication(
                                      [('/', MainPage),
                                      ('/redirect', Redirect),
                                      ('/course/ical/.*', IcalRenderer),
-                                     #('/course/csv/.*', CSVRenderer),
                                      ('/course/.*', CourseCalendar),
                                      ('/geholstatus',  UpdateGeholStatus),
                                      ('/student_set/ical/q./.*\.ics', StudentSetIcalRenderer),
@@ -73,6 +72,8 @@ application = webapp.WSGIApplication(
                                      ('/student_set/qrcode/.*', StudentSetQRCode),
                                      ('/student_set/m/.*', StudentSetMobileSummary),
                                      ('/student_set/.*', StudentSetSummary ),
+                                     ('/staff/ical/.*\.ics', ProfessorIcalRenderer),
+                                     ('/staff/.*', ProfessorSummary),
                                      ('/questions.*', QuestionsPage),
                                      #('.*', MainPage)
                                      ],
