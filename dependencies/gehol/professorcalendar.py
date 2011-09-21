@@ -56,8 +56,7 @@ class ProfessorCalendar(BaseCalendar):
 
 
     def _load_content_from_soup(self, soup):
-        #try:
-        if True:
+        try:
             top_level_tables = soup.html.body.findAll(name="table", recursive=False)
             # Take only the first 3 top-level tables. Sometimes the html is
             # broken and we don't get the 4th.
@@ -67,10 +66,10 @@ class ProfessorCalendar(BaseCalendar):
 
             self._load_header_data(header)
             self._load_events(event_grid)
-        #except AttributeError,e:
-        #    self._guess_query_error(self.html_content)
-        #except ValueError,e:
-        #    self._guess_query_error(self.html_content)
+        except AttributeError,e:
+            self._guess_query_error(self.html_content)
+        except ValueError,e:
+            self._guess_query_error(self.html_content)
             
     def _load_header_data(self, header):
         all_entries = header.findAll(name='table')
