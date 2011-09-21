@@ -10,7 +10,7 @@ from utils import is_course_mnemo_valid, render_course_notfound_page, render_dea
 from savedrequests import PreviousRequest
 from gehol.utils import convert_weekspan_to_dates
 import conf
-
+import version
 
 def rebuild_gehol_url(group_id):
     return "http://164.15.72.157:8081/Reporting/Individual;Student%20Set%20Groups;id;"+group_id+"?&template=Ann%E9e%20d%27%E9tude&weeks=1-14&days=1-6&periods=5-33&width=0&height=0"
@@ -47,7 +47,8 @@ class CourseCalendar(webapp.RequestHandler):
         ical_url, csv_url = self._build_file_urls(course_mnemo)
         start, end = convert_weekspan_to_dates(conf.Q1_WEEKSPAN, conf.FIRST_MONDAY)
 
-        template_values = {'gehol_is_down': is_status_down(),
+        template_values = {'version':version.VERSION,
+                        'gehol_is_down': is_status_down(),
                         'last_status_update': get_last_status_update(),
                         'mnemo':course_mnemo,
                         'ical_url':ical_url,
@@ -77,7 +78,8 @@ class CourseCalendar(webapp.RequestHandler):
         reason = "You asked the schedule for the following course : %s." % course_mnemo
         template_values = {'gehol_is_down': is_status_down(),
                            'last_status_update': get_last_status_update(),
-                           'request':reason
+                           'request':reason,
+                           'version':version.VERSION
         }
 
         path = os.path.join(os.path.dirname(__file__), 'templates/gehol_down.html')

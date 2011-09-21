@@ -13,7 +13,7 @@ from geholwrapper import get_professor_q1_calendar, get_professor_q2_calendar
 from geholwrapper import convert_professor_calendar_to_ical_string, make_professor_gehol_url
 from gehol.utils import convert_weekspan_to_dates
 import conf
-
+import version
 
 def is_staff_member_id_valid(staff_member_id):
     return staff_member_id.isdigit()
@@ -23,7 +23,8 @@ def is_staff_member_id_valid(staff_member_id):
 def render_professor_notfound_page(request_handler, resource_type):
     template_values = {'gehol_is_down': is_status_down(),
                        'last_status_update': get_last_status_update(),
-                       'resource_type':resource_type
+                       'resource_type':resource_type,
+                       'version':version.VERSION
     }
     path = os.path.join(os.path.dirname(__file__), 'templates/professor_notfound.html')
     request_handler.response.out.write(template.render(path, template_values))
@@ -34,7 +35,8 @@ def render_professor_notfound_page(request_handler, resource_type):
 def render_gehol_down(renderer, reason):
     template_values = {'gehol_is_down': True,
                        'last_status_update': get_last_status_update(),
-                       'request':reason
+                       'request':reason,
+                       'version':version.VERSION
                        }
     path = os.path.join(os.path.dirname(__file__), 'templates/gehol_down.html')
     renderer.response.out.write(template.render(path, template_values))
@@ -79,6 +81,7 @@ class ProfessorSummary(webapp.RequestHandler):
 
         template_values = {'gehol_is_down': is_status_down(),
                          'last_status_update': get_last_status_update(),
+                         'version':version.VERSION,
                          'gehol_url':make_professor_gehol_url(staff_member_id, conf.Q1_WEEKSPAN),
                          'professor_name':professor_name,
                          'ical_q1_url':ical_urls[0],
@@ -110,11 +113,6 @@ class ProfessorSummary(webapp.RequestHandler):
         # should look like : 'Staff;id;52485'
         # we keep the last part
         return p.split(';')[-1]
-
-
-
-
-
 
 
 

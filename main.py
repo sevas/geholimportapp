@@ -11,6 +11,7 @@ from studentsetcalendar import StudentSetSummary, StudentSetIcalRenderer, Studen
 from professorcalendar import ProfessorIcalRenderer, ProfessorSummary
 from savedrequests import PreviousRequest, PreviousStudentSetRequests
 import conf
+import version
 
 
 class MainPage(webapp.RequestHandler):
@@ -21,7 +22,8 @@ class MainPage(webapp.RequestHandler):
         template_values = {'last_courses': last_fetched_courses,
                            'last_studentsets':last_fetched_studentsets,
                            'gehol_is_down': is_status_down(),
-                           'last_status_update': get_last_status_update()
+                           'last_status_update': get_last_status_update(),
+                           'version':version.VERSION
                         }
 
         path = os.path.join(os.path.dirname(__file__), 'templates/index.html')
@@ -54,7 +56,8 @@ class Redirect(webapp.RequestHandler):
 
 class QuestionsPage(webapp.RequestHandler):
     def get(self):
-        template_values = {'gehol_is_down': is_status_down(),
+        template_values = {'version':version.VERSION,
+                            'gehol_is_down': is_status_down(),
                           'last_status_update': get_last_status_update(),
                           'qrcode_sample_url': conf.QRCODE_SAMPLE_URL
         }

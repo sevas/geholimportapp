@@ -14,12 +14,13 @@ from geholwrapper import  get_student_exam_calendar,  get_student_jan_calendar, 
 from savedrequests import PreviousStudentSetRequests
 from gehol.utils import convert_weekspan_to_dates
 import conf
-
+import version
 
 def render_studentset_notfound_page(request_handler, resource_type):
     template_values = {'gehol_is_down': is_status_down(),
                        'last_status_update': get_last_status_update(),
-                       'resource_type':resource_type
+                       'resource_type':resource_type,
+                       'version':version.VERSION
     }
     path = os.path.join(os.path.dirname(__file__), 'templates/studentset_notfound.html')
     request_handler.response.out.write(template.render(path, template_values))
@@ -34,7 +35,8 @@ def is_studentset_groupid_valid(group_id):
 def render_gehol_down(renderer, reason):
     template_values = {'gehol_is_down': True,
                        'last_status_update': get_last_status_update(),
-                       'request':reason
+                       'request':reason,
+                       'version':version.VERSION
                        }
     path = os.path.join(os.path.dirname(__file__), 'templates/gehol_down.html')
     renderer.response.out.write(template.render(path, template_values))
@@ -91,6 +93,7 @@ class StudentSetSummary(webapp.RequestHandler):
 
         template_values = {'gehol_is_down': is_status_down(),
                          'last_status_update': get_last_status_update(),
+                         'version':version.VERSION,
                          'gehol_url':make_studentset_gehol_url(group_id, conf.Q1_WEEKSPAN),
                          'cal_faculty':faculty,
                          'cal_student_profile':student_profile,
@@ -217,7 +220,8 @@ class StudentSetMobileSummary(webapp.RequestHandler):
         q2_span = convert_weekspan_to_dates(conf.Q2_WEEKSPAN, conf.FIRST_MONDAY)
 
 
-        template_values = {'gehol_url':make_studentset_gehol_url(group_id, conf.Q1_WEEKSPAN),
+        template_values = {'version':version.VERSION,
+                         'gehol_url':make_studentset_gehol_url(group_id, conf.Q1_WEEKSPAN),
                          'cal_faculty':faculty,
                          'cal_student_profile':student_profile,
                          'webcal_q1_url':webcal_urls[0],
