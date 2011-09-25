@@ -6,10 +6,21 @@ from geholexceptions import *
 
 TYPE_TO_DESCR = {
     'THE':u'Theorie',
-    'EXE':u'Exercices'
+    'EXE':u'Exercices',
+    'EXC':u'Excursion',
+    'GDC':u'Guidance',
+    'STG':u'Stage',
+    'TPR':u'Laboratoire',
+    'AGD':u'Agenda',
+    'GLB':u'Theorie ou Exercices',
+    'PRS':u'Travaux personnels',
+    'ACD':u'Activite academique'
 }
 
 def convert_type_to_description(type_mnemo):
+    """
+    Convert an activity type acronym into a human readable description.
+    """
     if type_mnemo in TYPE_TO_DESCR:
         return TYPE_TO_DESCR[type_mnemo]
     else:
@@ -29,11 +40,11 @@ class BaseEvent(object):
         be serialized in an iCal file.
 
         We only keep here the data relating to the time at which
-        the event will occur.
+        the event will occur, as well as the organizer and location.
 
-        The summary, organizer, location and description are
-        dependent on the type of calendar you're handling, it is thus
-        your responsability to subclass BaseEvent and override the properties.
+        The summary and description are dependent on the type of calendar
+        you're handling, it is thus your responsability to subclass BaseEvent
+        and override the associated object properties.
 
         """
         self.weeks = kwargs['weeks']
@@ -45,12 +56,12 @@ class BaseEvent(object):
 
     @property
     def summary(self):
-        return NotImplementedError
+        raise NotImplementedError
 
 
     @property
     def description(self):
-        return NotImplementedError
+        raise NotImplementedError
 
 
     def __repr__(self):
@@ -62,6 +73,18 @@ class BaseEvent(object):
 
 
 class BaseCalendar(object):
+    """
+    Class defines the interface for a calendar that will be
+    serialized by the rfc5545icalwriter module.
+
+
+    The name and description properties need to be overridden
+    in a subclass, as their content is different depending on the
+    type of calendar you're handling.
+
+    This class also contains a list of events, which should be subclasses
+    of BaseEvent.
+    """
     def __init__(self):
         self.events = []
         
