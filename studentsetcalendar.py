@@ -192,7 +192,7 @@ class StudentSetMobileSummary(webapp.RequestHandler):
                 except DownloadError,e:
                     logging.error("Could not fetch page before deadline")
                     render_deadline_exceeded_page(self)
-                    return
+                    cal = None
                 if cal:
                     self._render_calendar_summary(cal, group_id)
                 else:

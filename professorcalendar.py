@@ -137,6 +137,7 @@ class ProfessorIcalRenderer(webapp.RequestHandler):
                 except DownloadError,e:
                     logging.error("Could not fetch page before deadline")
                     render_deadline_exceeded_page(self)
+                    cal = None
 
                 if cal:
                     ical_data = convert_professor_calendar_to_ical_string(cal)
