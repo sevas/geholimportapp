@@ -13,7 +13,7 @@ import conf
 import version
 
 def rebuild_gehol_url(group_id):
-    return "http://164.15.72.157:8081/Reporting/Individual;Student%20Set%20Groups;id;"+group_id+"?&template=Ann%E9e%20d%27%E9tude&weeks=1-14&days=1-6&periods=5-33&width=0&height=0"
+    return "http://164.15.72.157:8081/Reporting/Individual;Student%20Set%20Groups;id;"+group_id+"?&template=Ann%E9e%20d%27%E9tude&weeks=1-36&days=1-6&periods=5-33&width=0&height=0"
 
 
 
@@ -28,7 +28,7 @@ class CourseCalendar(webapp.RequestHandler):
                 self._render_gehol_down_page(course_mnemo)
             else:
                 try:
-                    cal = get_calendar(course_mnemo)
+                    cal = get_calendar(course_mnemo, conf.Q2_WEEKSPAN)
                 except DownloadError,e:
                     logging.error("Could not fetch page before deadline")
                     render_deadline_exceeded_page(self)
@@ -45,7 +45,7 @@ class CourseCalendar(webapp.RequestHandler):
 
     def _render_calendar_summary(self, cal, course_mnemo):
         ical_url, csv_url = self._build_file_urls(course_mnemo)
-        start, end = convert_weekspan_to_dates(conf.Q1_WEEKSPAN, conf.FIRST_MONDAY)
+        start, end = convert_weekspan_to_dates(conf.Q2_WEEKSPAN, conf.FIRST_MONDAY)
 
         template_values = {'version':version.VERSION,
                         'gehol_is_down': is_status_down(),

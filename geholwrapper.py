@@ -5,10 +5,10 @@ from gehol.converters.rfc5545icalwriter import convert_geholcalendar_to_ical
 import gehol
 import conf
 
-def get_calendar(course_mnemonic):
+def get_calendar(course_mnemonic, weekspan):
     gehol_proxy = gehol.GeholProxy(conf.SCIENTIA_BACKEND_HOST)
     try:
-        return gehol_proxy.get_course_calendar(course_mnemonic, conf.Q1_WEEKSPAN)
+        return gehol_proxy.get_course_calendar(course_mnemonic, weekspan)
     except gehol.GeholException:
         return None
 

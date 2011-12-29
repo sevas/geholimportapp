@@ -16,7 +16,8 @@ import conf
 import version
 
 def is_staff_member_id_valid(staff_member_id):
-    return staff_member_id.isdigit()
+    return staff_member_id.isalnum()
+
 
 
 
@@ -82,7 +83,7 @@ class ProfessorSummary(webapp.RequestHandler):
         template_values = {'gehol_is_down': is_status_down(),
                          'last_status_update': get_last_status_update(),
                          'version':version.VERSION,
-                         'gehol_url':make_professor_gehol_url(staff_member_id, conf.Q1_WEEKSPAN),
+                         'gehol_url':make_professor_gehol_url(staff_member_id, conf.Q2_WEEKSPAN),
                          'professor_name':professor_name,
                          'ical_q1_url':ical_urls[0],
                          'ical_q2_url':ical_urls[1],

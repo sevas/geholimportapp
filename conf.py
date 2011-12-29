@@ -18,8 +18,7 @@ SEPTEMBER_EXAMS_WEEKSPAN = "48-51"
 
 
 # There are 3 exam sessions. It's not useful to list them all year long.
-
-CURRENT_EXAM_SESSION = None
+CURRENT_EXAM_SESSION = 'january'
 EXAM_SESSION_WEEKSPANS = {'january':JANUARY_EXAMS_WEEKSPAN,
                           'june':JUNE_EXAMS_WEEKSPAN,
                         'september':SEPTEMBER_EXAMS_WEEKSPAN}

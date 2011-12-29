@@ -26,27 +26,16 @@
       {% endif %}
 
 
-      <div class="box" style="text-align:center">
+      <!--div class="box" style="text-align:center">
         <h4><a href="{{ical_q1_url}}">{{ical_q1_url_title}}.ics</a></h4>
         <div class="quiet" style="font-style:italic;"> First term : {{q1_span}}</div>
-      </div>
-
-
-      <!--div class="box" style="text-align:center">
-        <h4><a href="{{ical_q2_url}}">{{ical_q2_url_title}}.ics</a></h4>
-        <div class="quiet" style="font-style:italic;"> Second term : {{q2_span}}</div>
       </div-->
 
-      <div class="box" style="text-align:center">
-        <h4>Schedules for the second term are not available yet</h4>
-        <div class="quiet" style="font-style:italic;">
-           
-            According to the <a href="http://scientia-web.ulb.ac.be/gehol_20112012/">powers that be</a>,
-            they are currently not valid.
-            Hence, we won't show them just yet.
-         </div>
-      </div>
 
+      <div class="box" style="text-align:center">
+        <h4><a href="{{ical_q2_url}}">{{ical_q2_url_title}}.ics</a></h4>
+        <div class="quiet" style="font-style:italic;"> Second term : {{q2_span}}</div>
+      </div>
 
       {% if exam_session %}
         {% if exam_session.info_found %}
