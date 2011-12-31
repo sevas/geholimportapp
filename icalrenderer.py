@@ -7,6 +7,7 @@ from google.appengine.api.urlfetch import DownloadError
 from geholwrapper import get_calendar, convert_course_calendar_to_ical
 from status import is_status_down, get_last_status_update
 from utils import is_course_mnemo_valid, render_course_notfound_page, render_deadline_exceeded_page
+import conf
 
 class IcalRenderer(webapp.RequestHandler):
     def get(self):
@@ -18,7 +19,7 @@ class IcalRenderer(webapp.RequestHandler):
                 self._render_gehol_down_page(course_mnemo)
             else:
                 try:
-                    cal = get_calendar(course_mnemo)
+                    cal = get_calendar(course_mnemo, conf.Q2_WEEKSPAN)
                 except DownloadError,e:
                     logging.error("Could not fetch page before deadline")
                     render_deadline_exceeded_page(self)
