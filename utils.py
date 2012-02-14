@@ -26,7 +26,7 @@ def split_weeks(weeks):
 
 
 def is_course_mnemo_valid(course_mnemo):
-    return course_mnemo.isalnum() and len(course_mnemo) == 8
+    return course_mnemo.isalnum() and len(course_mnemo) < 32
 
 
 

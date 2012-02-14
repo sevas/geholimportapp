@@ -104,7 +104,7 @@ def make_studentset_gehol_url(group_id, weeks):
 def make_course_gehol_url(course_mnemo, weeks=conf.Q1_WEEKSPAN):
     host = conf.SCIENTIA_BACKEND_HOST
     template_url =  "http://%s/Reporting/Individual;Courses;name;%s?&days=1-6&height=0&width=0&periods=5-29&template=cours&weeks=%s"
-    return template_url % (host, course_mnemo, conf.Q1_WEEKSPAN)
+    return template_url % (host, course_mnemo, conf.Q2_WEEKSPAN)
 
 
 
