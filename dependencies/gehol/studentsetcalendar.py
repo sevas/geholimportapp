@@ -5,7 +5,7 @@ __author__ = 'Frederic'
 
 from datetime import datetime, timedelta
 from BeautifulSoup import BeautifulSoup
-from utils import split_weeks, convert_time
+from utils import split_weeks, insert_halfhour_slots_and_convert_to_datetime
 from basecalendar import BaseCalendar, BaseEvent, convert_type_to_description
 
 
@@ -96,27 +96,12 @@ class StudentSetCalendar(BaseCalendar):
         return t
 
 
-    @staticmethod
-    def _insert_halfhour_slots_and_convert_to_datetime(hour_cells):
-        hours = []
-        for h in hour_cells:
-            if h.string:
-                hours.append(convert_time(h.string))
-            else:
-                last_added_hour = hours[-1]
-                hours.append(datetime(last_added_hour.year,
-                                           last_added_hour.month,
-                                           last_added_hour.day,
-                                           last_added_hour.hour, 30))
-        return hours
-
-
     def _load_events(self, event_table):
         all_rows = event_table.findChildren('tr', recursive=False)
 
         # get the column labels, save as actual hours objects
         hours_row = all_rows[0].findChildren('td', recursive=False)
-        hours = self._insert_halfhour_slots_and_convert_to_datetime(hours_row[1:])
+        hours = insert_halfhour_slots_and_convert_to_datetime(hours_row[1:])
 
         # get the events for each day
         event_rows = all_rows[1:]

@@ -2,7 +2,7 @@ import httplib
 import re
 from datetime import datetime, timedelta, time
 from BeautifulSoup import BeautifulSoup
-from utils import split_weeks, convert_time
+from utils import split_weeks, insert_halfhour_slots_and_convert_to_datetime
 from basecalendar import BaseCalendar, BaseEvent, convert_type_to_description
 
 class CourseEvent(BaseEvent):
@@ -86,17 +86,8 @@ class CourseCalendar(BaseCalendar):
         cal = tables[1]
         lines = cal.findAll(name='tr',recursive=False)
         #isolate first tab line with hours
-        hours_line = lines[0].findAll(name='td',recursive=False)
-        hours = []
-        for h in hours_line[1:]:
-            if h.string:
-                hours.append(convert_time(h.string))
-            else:
-                last_added_hour = hours[-1]
-                hours.append(datetime(last_added_hour.year,
-                                           last_added_hour.month,
-                                           last_added_hour.day,
-                                           last_added_hour.hour, 30))
+        hours_line = lines[0].findChildren(name='td',recursive=False)[1:]
+        hours = insert_halfhour_slots_and_convert_to_datetime(hours_line)
         #process all lines
         #search the number of row for that day
         n_rows = []
