@@ -9,7 +9,7 @@ from google.appengine.ext.webapp import template
 from google.appengine.api.urlfetch import DownloadError
 from status import is_status_down, get_last_status_update
 from utils import render_deadline_exceeded_page
-from geholwrapper import get_professor_q1_calendar, get_professor_q2_calendar
+from geholwrapper import get_professor_q1_calendar, get_professor_q2_calendar, get_professor_january_calendar, get_professor_sept_calendar, get_professor_june_calendar, get_professor_calendar
 from geholwrapper import convert_professor_calendar_to_ical_string, make_professor_gehol_url
 from gehol.utils import convert_weekspan_to_dates
 import conf
@@ -19,6 +19,13 @@ def is_staff_member_id_valid(staff_member_id):
     return staff_member_id.isalnum()
 
 
+class ExamSessionInfo(object):
+    def __init__(self, session_name, ical_url, ical_url_title, weekspan_string, info_found):
+        self.session_name = session_name
+        self.ical_url = ical_url
+        self.ical_url_title = ical_url_title
+        self.readable_weekspan_string = weekspan_string
+        self.info_found = info_found
 
 
 def render_professor_notfound_page(request_handler, resource_type):
@@ -95,10 +102,43 @@ class ProfessorSummary(webapp.RequestHandler):
                            tuple([q2_span[i].strftime("%B %d, %Y") for i in (0, 1)]),
         }
 
+        current_session_name = conf.CURRENT_EXAM_SESSION
+        exam_session = None
+        if current_session_name:
+            exam_session = self._extract_current_session_info(current_session_name, staff_member_id)
+
+        template_values['exam_session'] = exam_session
+
 
         #self._save_successful_request(professor_name, "/staff/%s" % staff_member_id)
         path = os.path.join(os.path.dirname(__file__), 'templates/staff.html')
         self.response.out.write(template.render(path, template_values))
+
+
+
+    def _extract_current_session_info(self, session_name, staff_member_id):
+        weekspan = conf.EXAM_SESSION_WEEKSPANS[session_name]
+
+        session_weekspan = convert_weekspan_to_dates(weekspan, conf.FIRST_MONDAY)
+        ical_url, title = self._make_exam_session_url_and_title(staff_member_id, session_name)
+
+        exam_session = ExamSessionInfo(session_name, ical_url, title,
+                                    "from %s to %s" % tuple([session_weekspan[i].strftime("%B %d, %Y") for i in (0, 1)]),
+                                    self._is_exam_session_available(staff_member_id, weekspan)
+        )
+
+        return exam_session
+
+
+    @staticmethod
+    def _make_exam_session_url_and_title(staff_member_id, session_name):
+        return (conf.WEBCAL_BASE_URL % "/staff/ical/%s_exams/%s.ics" % (session_name, staff_member_id),
+                "ULB - %s exams session -  %s" % (session_name.capitalize(), staff_member_id))
+
+
+    def _is_exam_session_available(self, staff_member_id, weekspan):
+        cal = get_professor_calendar(staff_member_id, weekspan)
+        return cal.has_events()
 
 
 
@@ -122,7 +162,10 @@ class ProfessorSummary(webapp.RequestHandler):
 
 class ProfessorIcalRenderer(webapp.RequestHandler):
     calendar_fetch_funcs = {'q1': get_professor_q1_calendar,
-                            'q2': get_professor_q2_calendar}
+                            'q2': get_professor_q2_calendar,
+                            'january_exams': get_professor_january_calendar,
+                            'june_exams': get_professor_june_calendar,
+                            'september_exams': get_professor_sept_calendar}
     def get(self):
 
         if is_status_down():
@@ -131,9 +174,10 @@ class ProfessorIcalRenderer(webapp.RequestHandler):
             parsed = urlparse.urlparse(self.request.uri)
             staff_member_id = parsed.path.split("/")[4].rstrip(".ics")
             term = parsed.path.split("/")[3]
-
-            if term in ("q1", "q2"):
+            logging.info("------")
+            if term in ("q1", "q2", "january_exams", "june_exams", "september_exams"):
                 try:
+                    logging.info("*** rendering staff/"+term)
                     cal = self.calendar_fetch_funcs[term](staff_member_id)
                 except DownloadError,e:
                     logging.error("Could not fetch page before deadline")

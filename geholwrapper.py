@@ -75,6 +75,17 @@ def get_professor_q2_calendar(staff_member_id):
     return get_professor_calendar(staff_member_id, conf.Q2_WEEKSPAN)
 
 
+def get_professor_sept_calendar(staff_member_id):
+    return get_professor_calendar(staff_member_id, conf.SEPTEMBER_EXAMS_WEEKSPAN)
+
+def get_professor_june_calendar(staff_member_id):
+    return get_professor_calendar(staff_member_id, conf.JUNE_EXAMS_WEEKSPAN)
+
+def get_professor_january_calendar(staff_member_id):
+    return get_professor_calendar(staff_member_id, conf.JANUARY_EXAMS_WEEKSPAN)
+
+
+
 
 def get_professor_calendar(staff_member_id, weeks):
     try:
